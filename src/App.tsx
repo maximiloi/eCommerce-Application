@@ -3,7 +3,7 @@ function App() {
     <div>
       Frontends, Inc
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
