@@ -1,9 +1,5 @@
 function App() {
-  return (
-    <div>
-      Frontends, Inc
-    </div>
-  );
+  return <div>Frontends, Inc</div>;
 }
 
 export default App;
