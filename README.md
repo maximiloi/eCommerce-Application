@@ -28,13 +28,13 @@ React, Redux, TypeScript, Vite, SCSS, ESLint, Prettier, Husky and Jest
 Clone the project
 
 ```bash
-  git clone https://link-to-project
+  git clone git@github.com:maximiloi/eCommerce-Application.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd my-project
+  cd eCommerce-Application
 ```
 
 Install dependencies
