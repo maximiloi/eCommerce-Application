@@ -17,17 +17,18 @@ module.exports = {
       env: {
         node: true,
       },
-      files: ['.eslintrc.{js,cjs}'],
+      files: ['.eslintrc.{js,cjs}', '*.ts', '*.tsx'],
       parserOptions: {
         sourceType: 'script',
       },
     },
   ],
   parser: '@typescript-eslint/parser',
+  root: true,
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: './tsconfig.json',
+    project: ['./tsconfig.json'],
   },
   plugins: ['@typescript-eslint', 'react', 'prettier'],
   rules: {
