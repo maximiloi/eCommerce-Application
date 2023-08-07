@@ -1,0 +1,25 @@
+// Title
+%text-title-large {
+  @include typography(700, 42px, 46px, 0px);
+}
+%text-title-medium {
+  @include typography(700, 36px, 38px, 0.5px);
+}
+%text-title-small {
+  @include typography(700, 24px, 28px, 0.5px);
+}
+
+//Text
+%text-large {
+  @include typography(400, 24px, 28px, 0.15px);
+}
+%text-medium {
+  @include typography(400, 20px, 24px, 0px);
+}
+%text-small {
+  @include typography(400, 16px, 20px, 0px);
+}
+
+%transition {
+  transition: all 0.3s ease-in-out;
+}

@@ -1,4 +1,3 @@
-
 # Frontends, Inc ![Static Badge](https://img.shields.io/badge/Frontends%2C%20Inc.-4B32C3?style=plastic&logo=apachespark&logoColor=ffffff)
 
 
