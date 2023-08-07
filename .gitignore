@@ -141,4 +141,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.husky
