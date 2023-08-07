@@ -13,12 +13,12 @@ Once you have selected the monster(s) you want to hire, you can proceed to the c
 
 ## Demo
 
-[deploy link](#)
+[deploy link](https://monster-shop.netlify.app/)
 
 
 ## Tech Stack
 
-React, Redux, TypeScript, Vite, SCSS, ESLint, Prettier, Husky and Jest
+Commercetools, React, TypeScript, Vite, SCSS, ESLint, Prettier, Husky and Jest
 
 
 
@@ -33,7 +33,7 @@ Clone the project
 Go to the project directory
 
 ```bash
-  cd eCommerce-Application
+  cd monster-shop
 ```
 
 Install dependencies
@@ -66,6 +66,7 @@ To run Jest tests
 ```
 ## Badges
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/05b7792b-7f74-4045-b88b-907a577e2d28/deploy-status)](https://app.netlify.com/sites/monster-shop/deploys)
 [![Eslint](https://img.shields.io/badge/fix%20problems-Eslint%20v8.46.0-8080F2
 )](https://eslint.org/docs/latest/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
