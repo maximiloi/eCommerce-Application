@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "test": "jest",
     "preview": "vite preview",
-    "prepare": "husky install"
+    "prepare": "cd .. && husky install monster-shop/.husky"
   },
   "dependencies": {
     "react": "^18.2.0",
