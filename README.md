@@ -13,12 +13,12 @@ Once you have selected the monster(s) you want to hire, you can proceed to the c
 
 ## Demo
 
-[deploy link](#)
+[deploy link](https://monster-shop.netlify.app/)
 
 
 ## Tech Stack
 
-React, Redux, TypeScript, Vite, SCSS, ESLint, Prettier, Husky and Jest
+Commercetools, React, TypeScript, Vite, SCSS, ESLint, Prettier, Husky and Jest
 
 
 
@@ -33,7 +33,7 @@ Clone the project
 Go to the project directory
 
 ```bash
-  cd eCommerce-Application
+  cd eCommerce-Application/monster-shop
 ```
 
 Install dependencies
