@@ -8,13 +8,15 @@
     "build": "tsc && vite build",
     "format": "prettier --write .",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "jest",
     "preview": "vite preview",
     "prepare": "cd .. && husky install monster-shop/.husky"
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.14.2"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.22.5",

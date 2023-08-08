@@ -1,11 +1,23 @@
-import Logo from './components/Logo/Logo';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import MainPage from './pages/MainPage';
+import AuthPage from './pages/AuthPage';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+import Page404 from './pages/Page404';
 
 function App() {
   return (
-    <>
-      <div>&nbsp;</div>
-      <Logo />
-    </>
+    <BrowserRouter>
+      <h1>Frontends, Inc</h1>
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/auth" element={<AuthPage />}>
+          <Route path="" element={<SignIn />} />
+          <Route path="register" element={<SignUp />} />
+        </Route>
+        <Route path="/*" element={<Page404 />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
