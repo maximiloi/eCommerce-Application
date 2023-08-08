@@ -1,5 +1,12 @@
+import Logo from './components/Logo/Logo';
+
 function App() {
-  return <div>Frontends, Inc</div>;
+  return (
+    <>
+      <div>&nbsp;</div>
+      <Logo />
+    </>
+  );
 }
 
 export default App;

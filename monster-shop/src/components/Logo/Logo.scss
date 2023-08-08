@@ -1,0 +1,41 @@
+@import '../../sass/abstracts/variables';
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid $color-dark-m;
+  background-color: $color-logo-bg;
+
+  font-family: $font-logo;
+
+  &__header {
+    max-width: 250px;
+
+    & .logo__img {
+      & img {
+        width: 75px;
+        height: 67px;
+      }
+    }
+
+    & .logo__wrapper {
+      max-width: 150px;
+      padding: 0 5px;
+
+      display: flex;
+      flex-direction: column;
+
+      & :nth-child(1) {
+        font-size: 28px;
+      }
+
+      & :nth-child(2) {
+        font-size: 86px;
+        margin-top: -20px;
+        margin-bottom: -10px;
+      }
+    }
+  }
+}
