@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import AuthPage from './pages/AuthPage';
 import SignIn from './pages/SignIn';
@@ -15,8 +15,7 @@ function App() {
           <Route path="" element={<SignIn />} />
           <Route path="register" element={<SignUp />} />
         </Route>
-        <Route path="/404" element={<Page404 />} />
-        <Route path="*" element={<Navigate to="/404" />} />
+        <Route path="/*" element={<Page404 />} />
       </Routes>
     </BrowserRouter>
   );
