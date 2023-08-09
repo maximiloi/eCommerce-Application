@@ -4,20 +4,23 @@ import AuthPage from './pages/AuthPage';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Page404 from './pages/Page404';
+import Header from './components/Header/Header';
 
 function App() {
   return (
-    <BrowserRouter>
-      <h1>Frontends, Inc</h1>
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/auth" element={<AuthPage />}>
-          <Route path="" element={<SignIn />} />
-          <Route path="register" element={<SignUp />} />
-        </Route>
-        <Route path="/*" element={<Page404 />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <Header />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/auth" element={<AuthPage />}>
+            <Route path="" element={<SignIn />} />
+            <Route path="register" element={<SignUp />} />
+          </Route>
+          <Route path="/*" element={<Page404 />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

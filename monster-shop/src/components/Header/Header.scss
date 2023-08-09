@@ -1,0 +1,28 @@
+@import '../../sass/abstracts/variables';
+
+.header {
+  background-color: #00000080;
+  font-size: $font-desktop;
+
+  &__container {
+    margin: 0 auto;
+    padding: 30px;
+    max-width: $content-width;
+
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__nav {
+
+    & ul {
+      list-style: none;
+      display: flex;
+
+      & li {
+        margin-left: 30px;
+      }
+    }
+
+  }
+}
