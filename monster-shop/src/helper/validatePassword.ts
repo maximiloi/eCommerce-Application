@@ -23,7 +23,7 @@ const validatePassword = (value: string) => {
     return 'Password must contain at least one special character (!@#$%^&*).';
   }
 
-  return true; // Если пароль прошел все проверки
+  return true;
 };
 
 export default validatePassword;
