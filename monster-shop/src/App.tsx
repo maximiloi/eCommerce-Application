@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import AuthPage from './pages/AuthPage';
 import SignIn from './pages/SignIn';
@@ -10,16 +10,18 @@ function App() {
   return (
     <>
       <Header />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/auth" element={<AuthPage />}>
-            <Route path="" element={<SignIn />} />
-            <Route path="register" element={<SignUp />} />
-          </Route>
-          <Route path="/*" element={<Page404 />} />
-        </Routes>
-      </BrowserRouter>
+      <main className="main">
+        <div className="main__container">
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/auth" element={<AuthPage />}>
+              <Route path="" element={<SignIn />} />
+              <Route path="register" element={<SignUp />} />
+            </Route>
+            <Route path="/*" element={<Page404 />} />
+          </Routes>
+        </div>
+      </main>
     </>
   );
 }

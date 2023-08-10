@@ -11,17 +11,14 @@
 
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 
   &__nav {
+    display: flex;
 
-    & ul {
-      list-style: none;
-      display: flex;
-
-      & li {
-        margin-left: 30px;
-      }
+    & a {
+      margin-left: 30px;
     }
 
   }

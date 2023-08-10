@@ -41,3 +41,11 @@ a:hover::before {
   transform-origin: left;
   transform: scaleX(1);
 }
+
+.main {
+  &__container {
+    margin: 0 auto;
+    padding: 30px;
+    max-width: $content-width;
+  }
+}
