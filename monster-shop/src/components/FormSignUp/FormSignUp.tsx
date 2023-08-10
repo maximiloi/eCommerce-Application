@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import validatePassword from '../../helper/validatePassword';
 
 import './FormSignUp.scss';
 
@@ -67,14 +68,15 @@ export default function FormSignUp() {
         {...register('password', {
           required: 'Password is required',
           minLength: {
-            value: 6,
-            message: 'Password must have at least 6 characters',
+            value: 8,
+            message: 'Password must have at least 8 characters',
           },
+          validate: validatePassword,
         })}
       />
       {errors?.password && (
         <span>
-          {errors?.password.message || 'Password must be at least 6 characters'}
+          {errors?.password.message || 'Password must be at least 8 characters'}
         </span>
       )}
       <input
