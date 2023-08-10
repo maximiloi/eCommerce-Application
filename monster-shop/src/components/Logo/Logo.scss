@@ -2,7 +2,7 @@
 
 .logo {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
 
   border: 1px solid $color-dark-m;
@@ -11,12 +11,13 @@
   font-family: $font-logo;
 
   &__header {
-    max-width: 250px;
+    max-width: 220px;
+    max-height: 70px;
 
     & .logo__img {
       & img {
-        width: 75px;
-        height: 67px;
+        width: 58px;
+        height: 52px;
       }
     }
 
@@ -28,13 +29,13 @@
       flex-direction: column;
 
       & :nth-child(1) {
-        font-size: 28px;
+        font-size: 24px;
       }
 
       & :nth-child(2) {
-        font-size: 86px;
-        margin-top: -20px;
-        margin-bottom: -10px;
+        font-size: 52px;
+        margin-top: -12px;
+        margin-bottom: -6px;
       }
     }
   }
