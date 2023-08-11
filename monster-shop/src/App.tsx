@@ -6,6 +6,8 @@ import SignUp from './pages/SignUp';
 import Page404 from './pages/Page404';
 import Header from './components/Header/Header';
 
+import './App.scss';
+
 function App() {
   return (
     <>

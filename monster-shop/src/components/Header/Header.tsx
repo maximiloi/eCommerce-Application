@@ -9,8 +9,9 @@ function Header() {
       <div className="header__container">
         <Logo />
         <div className="header__nav">
-          <NavLink to="/auth">Sign In</NavLink>
-          <NavLink to="/auth/register">Sign Up</NavLink>
+          <NavLink className="btn" to="/auth">
+            Login In Now
+          </NavLink>
         </div>
       </div>
     </header>

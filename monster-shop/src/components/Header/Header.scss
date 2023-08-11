@@ -1,25 +1,15 @@
 @import '../../sass/abstracts/variables';
 
 .header {
-  background-color: #00000080;
   font-size: $font-desktop;
 
   &__container {
     margin: 0 auto;
-    padding: 30px;
+    padding: 20px 30px;
     max-width: $content-width;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  &__nav {
-    display: flex;
-
-    & a {
-      margin-left: 30px;
-    }
-
   }
 }
