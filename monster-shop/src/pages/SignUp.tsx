@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import FormSignUp from '../components/FormSignUp/FormSignUp';
 
 function SignUp() {
@@ -6,6 +7,7 @@ function SignUp() {
       <div className="register__container">
         <h2>Sign Up</h2>
         <FormSignUp />
+        <NavLink to="/auth">You have an account, Login</NavLink>
       </div>
     </div>
   );

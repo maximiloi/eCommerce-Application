@@ -10,7 +10,7 @@ function Header() {
         <Logo />
         <div className="header__nav">
           <NavLink className="btn" to="/auth">
-            Login In Now
+            Log In Now
           </NavLink>
         </div>
       </div>
