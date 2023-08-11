@@ -47,6 +47,10 @@ export default function FormSignUp() {
         placeholder="First Name"
         {...register('firstName', {
           required: 'Enter your "First Name", required field',
+          pattern: {
+            value: /[a-zA-Z]$/i,
+            message: 'The first name should only contain letters',
+          },
         })}
       />
       {errors?.firstName && (
@@ -57,6 +61,10 @@ export default function FormSignUp() {
         placeholder="Last Name"
         {...register('lastName', {
           required: 'Enter your "Last Name", required field',
+          pattern: {
+            value: /[a-zA-Z]$/i,
+            message: 'The last name should only contain letters',
+          },
         })}
       />
       {errors?.lastName && (
