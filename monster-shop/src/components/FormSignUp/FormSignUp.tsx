@@ -9,6 +9,10 @@ type FormValues = {
   lastName: string;
   password: string;
   confirmPassword: string;
+  street: string;
+  city: string;
+  postalCode: string;
+  country: string;
 };
 
 export default function FormSignUp() {
@@ -48,7 +52,7 @@ export default function FormSignUp() {
         {...register('firstName', {
           required: 'Enter your "First Name", required field',
           pattern: {
-            value: /[a-zA-Z]$/i,
+            value: /[a-zA-Zа-яА-Я]$/i,
             message: 'The first name should only contain letters',
           },
         })}
@@ -62,7 +66,7 @@ export default function FormSignUp() {
         {...register('lastName', {
           required: 'Enter your "Last Name", required field',
           pattern: {
-            value: /[a-zA-Z]$/i,
+            value: /[a-zA-Zа-яА-Я]$/i,
             message: 'The last name should only contain letters',
           },
         })}
@@ -98,6 +102,59 @@ export default function FormSignUp() {
       getValues('confirmPassword') ? (
         <span>Confirm Password not match</span>
       ) : null}
+
+      <input
+        type="text"
+        placeholder="Street"
+        {...register('street', {
+          required: 'Enter your "Street", required field',
+        })}
+      />
+      {errors?.lastName && (
+        <span>{errors?.lastName.message || 'Required field'}</span>
+      )}
+
+      <input
+        type="text"
+        placeholder="City"
+        {...register('city', {
+          required: 'Enter your "City", required field',
+          pattern: {
+            value: /[a-zA-Zа-яА-Я]$/i,
+            message: 'The City should only contain letters',
+          },
+        })}
+      />
+      {errors?.lastName && (
+        <span>{errors?.lastName.message || 'Required field'}</span>
+      )}
+
+      <input
+        type="text"
+        placeholder="Postal code"
+        {...register('postalCode', {
+          required: 'Enter your "Postal code", required field',
+          pattern: {
+            value: /[0-9]$/i,
+            message: 'Can Postal code only contain numbers',
+          },
+        })}
+      />
+      {errors?.lastName && (
+        <span>{errors?.lastName.message || 'Required field'}</span>
+      )}
+
+      <input
+        type="text"
+        placeholder="Country"
+        {...register('country', {
+          required: 'Enter your "Country", required field',
+        })}
+      />
+      {errors?.lastName && (
+        <span>{errors?.lastName.message || 'Required field'}</span>
+      )}
+
       <input type="submit" disabled={!isValid} />
     </form>
   );
