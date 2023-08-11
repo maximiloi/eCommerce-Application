@@ -110,8 +110,8 @@ export default function FormSignUp() {
           required: 'Enter your "Street", required field',
         })}
       />
-      {errors?.lastName && (
-        <span>{errors?.lastName.message || 'Required field'}</span>
+      {errors?.street && (
+        <span>{errors?.street.message || 'Required field'}</span>
       )}
 
       <input
@@ -125,9 +125,7 @@ export default function FormSignUp() {
           },
         })}
       />
-      {errors?.lastName && (
-        <span>{errors?.lastName.message || 'Required field'}</span>
-      )}
+      {errors?.city && <span>{errors?.city.message || 'Required field'}</span>}
 
       <input
         type="text"
@@ -140,8 +138,8 @@ export default function FormSignUp() {
           },
         })}
       />
-      {errors?.lastName && (
-        <span>{errors?.lastName.message || 'Required field'}</span>
+      {errors?.postalCode && (
+        <span>{errors?.postalCode.message || 'Required field'}</span>
       )}
 
       <input
@@ -151,8 +149,8 @@ export default function FormSignUp() {
           required: 'Enter your "Country", required field',
         })}
       />
-      {errors?.lastName && (
-        <span>{errors?.lastName.message || 'Required field'}</span>
+      {errors?.country && (
+        <span>{errors?.country.message || 'Required field'}</span>
       )}
 
       <input type="submit" disabled={!isValid} />
