@@ -8,6 +8,10 @@
   &__content {
     max-width: 50%;
     margin: 0 auto;
+
+    @include media-tablet {
+      max-width: 100%;
+    }
   }
 
   .btn {
