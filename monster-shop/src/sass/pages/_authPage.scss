@@ -1,0 +1,52 @@
+.auth {
+
+  &__btns {
+    padding: 1rem 0;
+    text-align: center;
+  }
+
+  &__content {
+    max-width: 50%;
+    margin: 0 auto;
+  }
+
+  .btn {
+    background-color: $color-logo-bg;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    border-radius: 10rem;
+    border: none;
+    cursor: pointer;
+    @extend %transition;
+
+    &:hover {
+      background-color: darken($color-logo-bg, 10%);
+    }
+
+    a {
+      color: $color-dark-m;
+      font-family: $font-text;
+      @extend %text-large;
+
+      &:hover {
+        color: #000000;
+      }
+    }
+  }
+}
+
+.login,
+.register {
+  border-radius: 2rem;
+  padding: 2rem;
+  @include background-opacity($color-light-m, 0.5);
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h2 {
+      margin: 0 0 1rem;
+    }
+  }
+}

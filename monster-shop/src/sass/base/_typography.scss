@@ -1,1 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Barriecito&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+body {
+  font-family: $font-text;
+}
+
+h2 {
+  font-family: $font-logo;
+  color: $color-text;
+  @extend %text-title-medium;
+}
