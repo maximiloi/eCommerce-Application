@@ -12,6 +12,9 @@
 /* components */
 @import './sass/components/buttons';
 
+/* pages */
+@import './sass/pages/login-form';
+
 .main {
   &__container {
     margin: 0 auto;

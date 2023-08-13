@@ -1,12 +1,10 @@
 import { NavLink } from 'react-router-dom';
 import FormSignIn from '../components/FormSignIn/FormSignIn';
 
-import '../sass/pages/_SignIn.scss';
-
 function SignIn() {
   return (
-    <div className="sign-in">
-      <div className="sign-in__container">
+    <div className="login-form">
+      <div className="login-form__container">
         <h2>Sign In</h2>
         <FormSignIn />
         <NavLink to="/auth/register">No Account, Register</NavLink>
