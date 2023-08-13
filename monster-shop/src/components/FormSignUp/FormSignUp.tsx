@@ -3,6 +3,7 @@ import { Button, ButtonProps, TextField, styled } from '@mui/material';
 import { yellow } from '@mui/material/colors';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 import 'dayjs/locale/en-gb';
 import './FormSignUp.scss';
 
@@ -26,6 +27,8 @@ const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
     backgroundColor: yellow[500],
   },
 }));
+
+const limit = dayjs().subtract(13, 'year');
 
 export default function FormSignUp() {
   const {
@@ -102,7 +105,12 @@ export default function FormSignUp() {
         autoComplete="current-lastName"
       />
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
-        <DatePicker views={['year', 'month', 'day']} disableFuture />
+        <DatePicker
+          views={['year', 'month', 'day']}
+          maxDate={limit}
+          disableFuture
+          {...register('date', { required: 'Enter date of birth' })}
+        />
       </LocalizationProvider>
       <TextField
         label="Password"
