@@ -7,7 +7,6 @@ import './FormSignIn.scss';
 type FormValues = {
   eMail: string;
   password: string;
-  TextField: string;
 };
 
 const ColorButton = styled(Button)<ButtonProps>(() => ({
@@ -33,7 +32,7 @@ export default function FormSignIn() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="form">
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Controller
         render={({ field }) => (
           <TextField
@@ -42,9 +41,9 @@ export default function FormSignIn() {
             type="email"
             label="E-mail"
             fullWidth
-            autoComplete="current-email"
+            autoComplete="email"
             {...register('eMail', {
-              required: 'Enter your e-mail',
+              required: 'Enter your e-mail, required field',
               pattern: {
                 value: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
                 message: 'Enter valid e-mail',
@@ -54,7 +53,7 @@ export default function FormSignIn() {
             helperText={errors?.eMail?.message}
           />
         )}
-        name="TextField"
+        name="eMail"
         control={control}
       />
 
@@ -66,7 +65,6 @@ export default function FormSignIn() {
             type="password"
             label="Password"
             fullWidth
-            autoComplete="current-password"
             {...register('password', {
               required: 'Enter your password',
               minLength: {
@@ -79,7 +77,7 @@ export default function FormSignIn() {
             helperText={errors?.password?.message}
           />
         )}
-        name="TextField"
+        name="password"
         control={control}
       />
 
