@@ -7,6 +7,7 @@ import './FormSignIn.scss';
 type FormValues = {
   eMail: string;
   password: string;
+  TextField: string;
 };
 
 const ColorButton = styled(Button)<ButtonProps>(() => ({
@@ -53,7 +54,7 @@ export default function FormSignIn() {
             helperText={errors?.eMail?.message}
           />
         )}
-        name="eMail"
+        name="TextField"
         control={control}
       />
 
@@ -77,7 +78,7 @@ export default function FormSignIn() {
             helperText={errors?.password?.message}
           />
         )}
-        name="password"
+        name="TextField"
         control={control}
       />
 
