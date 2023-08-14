@@ -51,9 +51,12 @@
     "vite": "^4.4.5"
   },
   "lint-staged": {
-    "*.{js,ts,tsx,jsx}": [
+    "*.scss": [
+      "npx prettier --write"
+    ],
+    "*.{tsx, ts}": [
       "npx prettier --write",
-      "eslint . --fix"
+      "npx eslint --fix"
     ]
   }
 }
