@@ -3,4 +3,7 @@
 #app {
   height: 100vh;
   background-color: $color-background;
+  background-image: url('./assets/images/wallpaper.jpg');
+  background-position: 50% 50%;
+  color: $color-light-xs;
 }

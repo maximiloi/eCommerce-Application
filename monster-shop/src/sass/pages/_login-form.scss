@@ -2,5 +2,11 @@
   &__container {
     max-width: 500px;
     margin: 0 auto;
+
+    padding: 30px;
+    border-radius: 10px;
+
+    background-color: rgba(246, 246, 246, 0.9);
+    color: $color-dark-m;
   }
 }
