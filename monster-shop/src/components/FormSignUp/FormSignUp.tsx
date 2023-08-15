@@ -130,8 +130,8 @@ export default function FormSignUp() {
                 message: 'Enter valid Last Name',
               },
             })}
-            error={errors?.firstName !== undefined}
-            helperText={errors?.firstName?.message}
+            error={errors?.lastName !== undefined}
+            helperText={errors?.lastName?.message}
           />
         )}
         name="TextField"
