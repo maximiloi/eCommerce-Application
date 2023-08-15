@@ -21,15 +21,14 @@
     text-decoration: none;
     text-align: center;
 
-    background-color: rgba(246, 246, 246, 0.9);
     color: $color-dark-xs;
+    background-color: rgba(246, 246, 246, 0.75);
 
     &.active {
-      color: black;
-    }
-
-    &.disabled {
       cursor: default;
+
+      color: black;
+      background-color: rgba(246, 246, 246, 0.9);
     }
   }
 }
