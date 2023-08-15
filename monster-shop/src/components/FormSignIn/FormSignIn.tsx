@@ -66,7 +66,7 @@ export default function FormSignIn() {
             label="Password"
             fullWidth
             {...register('password', {
-              required: 'Enter your password',
+              required: 'Enter your password, required field',
               minLength: {
                 value: 8,
                 message: 'Password must have at least 8 characters',

@@ -12,9 +12,6 @@
   color: black;
 
   &__header {
-    max-width: 220px;
-    max-height: 70px;
-
     & .logo__img {
       margin-left: 5px;
 
@@ -25,7 +22,6 @@
     }
 
     & .logo__wrapper {
-      max-width: 150px;
       padding: 0 5px;
 
       display: flex;
