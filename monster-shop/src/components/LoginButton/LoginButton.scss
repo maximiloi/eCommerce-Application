@@ -14,7 +14,6 @@
     padding: $font-desktop 0;
 
     border: 1px solid $color-dark-s;
-    border-bottom: none;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 
@@ -26,6 +25,8 @@
 
     &.active {
       cursor: default;
+
+      border-bottom: none;
 
       color: black;
       background-color: rgba(246, 246, 246, 0.9);
