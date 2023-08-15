@@ -60,7 +60,7 @@ export default function FormSignUp() {
             helperText={errors?.eMail?.message}
           />
         )}
-        name="TextField"
+        name="eMail"
         control={control}
       />
 
@@ -73,7 +73,7 @@ export default function FormSignUp() {
             label="Password"
             fullWidth
             {...register('password', {
-              required: 'Enter your password',
+              required: 'Enter your password, required field',
               minLength: {
                 value: 8,
                 message: 'Password must have at least 8 characters',
@@ -84,7 +84,7 @@ export default function FormSignUp() {
             helperText={errors?.password?.message}
           />
         )}
-        name="TextField"
+        name="password"
         control={control}
       />
 
@@ -109,7 +109,7 @@ export default function FormSignUp() {
             helperText={errors?.firstName?.message}
           />
         )}
-        name="TextField"
+        name="firstName"
         control={control}
       />
 
@@ -134,7 +134,7 @@ export default function FormSignUp() {
             helperText={errors?.lastName?.message}
           />
         )}
-        name="TextField"
+        name="lastName"
         control={control}
       />
 
@@ -151,7 +151,7 @@ export default function FormSignUp() {
               required: 'Enter your Street, required field',
               minLength: { value: 1, message: 'Minimum 1 symbols' },
               pattern: {
-                value: /^[a-zA-Z\u0400-\u04FFҐґЁёІіЇїЎў]+$/u,
+                value: /^[a-zA-Zа-яА-ЯёЁґҐєЄіІїЇщЩЬьЫыъЪэЭ-]+$/u,
                 message: 'Enter valid Street',
               },
             })}
@@ -159,7 +159,7 @@ export default function FormSignUp() {
             helperText={errors?.street?.message}
           />
         )}
-        name="TextField"
+        name="street"
         control={control}
       />
 
@@ -176,7 +176,7 @@ export default function FormSignUp() {
               required: 'Enter your City, required field',
               minLength: { value: 1, message: 'Minimum 1 symbols' },
               pattern: {
-                value: /^[a-zA-Z]+$/u,
+                value: /^[a-zA-Zа-яА-ЯёЁґҐєЄіІїЇщЩЬьЫыъЪэЭ-]+$/u,
                 message: 'Enter valid City',
               },
             })}
@@ -226,7 +226,7 @@ export default function FormSignUp() {
               required: 'Enter your Country, required field',
               minLength: { value: 1, message: 'Minimum 1 symbols' },
               pattern: {
-                value: /^[a-zA-Z]+$/u,
+                value: /^[a-zA-Zа-яА-ЯёЁґҐєЄіІїЇщЩЬьЫыъЪэЭ-]+$/u,
                 message: 'Enter valid Country',
               },
             })}
