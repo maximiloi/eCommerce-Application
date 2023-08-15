@@ -9,7 +9,7 @@ function SignIn() {
         <LoginButton />
         <div className="login-form__wrapper">
           <FormSignIn />
-          <Link className="login-form__link" to="/auth/register">
+          <Link className="login-form__link" to="/register">
             No Account, Register
           </Link>
         </div>
