@@ -33,6 +33,7 @@ export default function FormSignIn() {
       <Controller
         name="email"
         control={control}
+        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}
@@ -57,6 +58,7 @@ export default function FormSignIn() {
       <Controller
         name="password"
         control={control}
+        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}

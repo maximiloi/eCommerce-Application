@@ -1,11 +1,12 @@
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, ButtonProps, styled } from '@mui/material';
+
 import validatePassword from '../../helper/validatePassword';
 
 import './FormSignUp.scss';
 
 type FormValues = {
-  eMail: string;
+  email: string;
   firstName: string;
   lastName: string;
   password: string;
@@ -13,7 +14,6 @@ type FormValues = {
   city: string;
   postalCode: string;
   country: string;
-  TextField: string;
 };
 
 const ColorButton = styled(Button)<ButtonProps>(() => ({
@@ -26,7 +26,6 @@ const ColorButton = styled(Button)<ButtonProps>(() => ({
 
 export default function FormSignUp() {
   const {
-    register,
     handleSubmit,
     formState: { errors, isValid },
     reset,
@@ -41,201 +40,197 @@ export default function FormSignUp() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Controller
+        name="email"
+        control={control}
+        defaultValue=""
+        rules={{
+          required: 'Email is required',
+          pattern: {
+            value: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
+            message: 'Enter valid email address',
+          },
+        }}
         render={({ field }) => (
           <TextField
-            {...field}
             margin="dense"
-            type="email"
-            label="E-mail"
             fullWidth
-            autoComplete="email"
-            {...register('eMail', {
-              required: 'Enter your e-mail, required field',
-              pattern: {
-                value: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
-                message: 'Enter valid e-mail',
-              },
-            })}
-            error={errors?.eMail !== undefined}
-            helperText={errors?.eMail?.message}
+            label="Email"
+            error={!!errors.email}
+            helperText={errors.email ? errors.email.message : ''}
+            {...field}
           />
         )}
-        name="eMail"
-        control={control}
       />
 
       <Controller
-        render={({ field }) => (
-          <TextField
-            {...field}
-            margin="dense"
-            type="password"
-            label="Password"
-            fullWidth
-            {...register('password', {
-              required: 'Enter your password, required field',
-              minLength: {
-                value: 8,
-                message: 'Password must have at least 8 characters',
-              },
-              validate: validatePassword,
-            })}
-            error={errors?.password !== undefined}
-            helperText={errors?.password?.message}
-          />
-        )}
         name="password"
         control={control}
+        defaultValue=""
+        rules={{
+          required: 'Password is required',
+          minLength: {
+            value: 8,
+            message: 'Password must have at least 8 characters',
+          },
+          validate: validatePassword,
+        }}
+        render={({ field }) => (
+          <TextField
+            margin="dense"
+            fullWidth
+            type="password"
+            label="Password"
+            error={!!errors.password}
+            helperText={errors.password ? errors.password.message : ''}
+            {...field}
+          />
+        )}
       />
 
       <Controller
-        render={({ field }) => (
-          <TextField
-            {...field}
-            margin="dense"
-            type="text"
-            label="First Name"
-            fullWidth
-            autoComplete="given-name"
-            {...register('firstName', {
-              required: 'Enter your First Name, required field',
-              minLength: { value: 1, message: 'Minimum 1 symbols' },
-              pattern: {
-                value: /^[a-zA-Z\u0400-\u04FFҐґЁёІіЇїЎў]+$/u,
-                message: 'Enter valid First Name',
-              },
-            })}
-            error={errors?.firstName !== undefined}
-            helperText={errors?.firstName?.message}
-          />
-        )}
         name="firstName"
         control={control}
+        defaultValue=""
+        rules={{
+          required: 'First name is required',
+          pattern: {
+            value: /^[a-zA-Z\u0400-\u04FFҐґЁёІіЇїЎў]+$/u,
+            message: 'Invalid first name',
+          },
+        }}
+        render={({ field }) => (
+          <TextField
+            margin="dense"
+            fullWidth
+            label="First Name"
+            error={!!errors.firstName}
+            helperText={errors.firstName ? errors.firstName.message : ''}
+            {...field}
+          />
+        )}
       />
 
       <Controller
-        render={({ field }) => (
-          <TextField
-            {...field}
-            margin="dense"
-            type="text"
-            label="Last Name"
-            fullWidth
-            autoComplete="family-name"
-            {...register('lastName', {
-              required: 'Enter your Last Name, required field',
-              minLength: { value: 1, message: 'Minimum 1 symbols' },
-              pattern: {
-                value: /^[a-zA-Z\u0400-\u04FFҐґЁёІіЇїЎў]+$/u,
-                message: 'Enter valid Last Name',
-              },
-            })}
-            error={errors?.lastName !== undefined}
-            helperText={errors?.lastName?.message}
-          />
-        )}
         name="lastName"
         control={control}
+        defaultValue=""
+        rules={{
+          required: 'Last name is required',
+          pattern: {
+            value: /^[a-zA-Z\u0400-\u04FFҐґЁёІіЇїЎў]+$/u,
+            message: 'Invalid last name',
+          },
+        }}
+        render={({ field }) => (
+          <TextField
+            margin="dense"
+            fullWidth
+            label="Last Name"
+            error={!!errors.lastName}
+            helperText={errors.lastName ? errors.lastName.message : ''}
+            {...field}
+          />
+        )}
       />
 
       <Controller
-        render={({ field }) => (
-          <TextField
-            {...field}
-            margin="dense"
-            type="text"
-            label="Street"
-            fullWidth
-            autoComplete="address-line1"
-            {...register('street', {
-              required: 'Enter your Street, required field',
-              minLength: { value: 1, message: 'Minimum 1 symbols' },
-              pattern: {
-                value: /^[a-zA-Zа-яА-ЯёЁґҐєЄіІїЇщЩЬьЫыъЪэЭ-]+$/u,
-                message: 'Enter valid Street',
-              },
-            })}
-            error={errors?.street !== undefined}
-            helperText={errors?.street?.message}
-          />
-        )}
         name="street"
         control={control}
+        defaultValue=""
+        rules={{
+          required: 'Street is required',
+          minLength: {
+            value: 1,
+            message: 'Street must contain at least one character',
+          },
+        }}
+        render={({ field }) => (
+          <TextField
+            label="Street"
+            margin="dense"
+            fullWidth
+            autoComplete="address-line1"
+            {...field}
+            error={!!errors.street}
+            helperText={errors.street ? errors.street.message : ''}
+          />
+        )}
       />
 
       <Controller
+        name="city"
+        control={control}
+        defaultValue=""
+        rules={{
+          required: 'City is required',
+          minLength: {
+            value: 1,
+            message: 'City must contain at least one character',
+          },
+        }}
         render={({ field }) => (
           <TextField
-            {...field}
-            margin="dense"
-            type="text"
             label="City"
+            margin="dense"
             fullWidth
             autoComplete="address-level2"
-            {...register('city', {
-              required: 'Enter your City, required field',
-              minLength: { value: 1, message: 'Minimum 1 symbols' },
-              pattern: {
-                value: /^[a-zA-Zа-яА-ЯёЁґҐєЄіІїЇщЩЬьЫыъЪэЭ-]+$/u,
-                message: 'Enter valid City',
-              },
-            })}
-            error={errors?.city !== undefined}
-            helperText={errors?.city?.message}
+            {...field}
+            error={!!errors.city}
+            helperText={errors.city ? errors.city.message : ''}
           />
         )}
-        name="TextField"
-        control={control}
       />
 
       <Controller
+        name="postalCode"
+        control={control}
+        defaultValue=""
+        rules={{
+          required: 'Postal code is required',
+          minLength: {
+            value: 1,
+            message: 'Postal code must contain at least one character',
+          },
+        }}
         render={({ field }) => (
           <TextField
-            {...field}
-            margin="dense"
-            type="text"
             label="Postal code"
+            margin="dense"
             fullWidth
             autoComplete="postal-code"
-            {...register('postalCode', {
-              required: 'Enter your Postal code, required field',
-              minLength: { value: 1, message: 'Minimum 1 symbols' },
-              pattern: {
-                value: /^[0-9]+$/u,
-                message: 'Enter valid Postal code',
-              },
-            })}
-            error={errors?.postalCode !== undefined}
-            helperText={errors?.postalCode?.message}
+            {...field}
+            error={!!errors.postalCode}
+            helperText={errors.postalCode ? errors.postalCode.message : ''}
           />
         )}
-        name="TextField"
-        control={control}
       />
 
       <Controller
+        name="country"
+        control={control}
+        defaultValue=""
+        rules={{
+          required: 'Country is required',
+          minLength: {
+            value: 1,
+            message: 'Country must contain at least one character',
+          },
+          pattern: {
+            value: /^[a-zA-Zа-яА-ЯёЁґҐєЄіІїЇщЩЬьЫыъЪэЭ-]+$/u,
+            message: 'Enter valid Country',
+          },
+        }}
         render={({ field }) => (
           <TextField
-            {...field}
-            margin="dense"
-            type="text"
             label="Country"
+            margin="dense"
             fullWidth
             autoComplete="country-name"
-            {...register('country', {
-              required: 'Enter your Country, required field',
-              minLength: { value: 1, message: 'Minimum 1 symbols' },
-              pattern: {
-                value: /^[a-zA-Zа-яА-ЯёЁґҐєЄіІїЇщЩЬьЫыъЪэЭ-]+$/u,
-                message: 'Enter valid Country',
-              },
-            })}
-            error={errors?.country !== undefined}
-            helperText={errors?.country?.message}
+            {...field}
+            error={!!errors.country}
+            helperText={errors.country ? errors.country.message : ''}
           />
         )}
-        name="TextField"
-        control={control}
       />
 
       <ColorButton
