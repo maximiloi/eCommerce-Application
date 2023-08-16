@@ -25,6 +25,9 @@ export default function FormSignIn() {
   const onSubmit = (data: CustomerSignin) => {
     console.log(data);
     login(data);
+    // TODO: тут надо дождаться ответа от сервера, если ошибка 400 вывести поп ап
+    // "Incorrect e-mail or password"
+    // Если все окей то сделать резет, и изменить название кнопки
     reset();
   };
 
