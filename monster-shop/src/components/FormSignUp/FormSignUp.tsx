@@ -133,105 +133,110 @@ export default function FormSignUp() {
         )}
       />
 
-      <Controller
-        name="street"
-        control={control}
-        defaultValue=""
-        rules={{
-          required: 'Street is required',
-          minLength: {
-            value: 1,
-            message: 'Street must contain at least one character',
-          },
-        }}
-        render={({ field }) => (
-          <TextField
-            label="Street"
-            margin="dense"
-            fullWidth
-            autoComplete="address-line1"
-            {...field}
-            error={!!errors.street}
-            helperText={errors.street ? errors.street.message : ''}
+      <details>
+        <summary>Address field</summary>
+        <div>
+          <Controller
+            name="street"
+            control={control}
+            defaultValue=""
+            rules={{
+              required: 'Street is required',
+              minLength: {
+                value: 1,
+                message: 'Street must contain at least one character',
+              },
+            }}
+            render={({ field }) => (
+              <TextField
+                label="Street"
+                margin="dense"
+                fullWidth
+                autoComplete="address-line1"
+                {...field}
+                error={!!errors.street}
+                helperText={errors.street ? errors.street.message : ''}
+              />
+            )}
           />
-        )}
-      />
 
-      <Controller
-        name="city"
-        control={control}
-        defaultValue=""
-        rules={{
-          required: 'City is required',
-          minLength: {
-            value: 1,
-            message: 'City must contain at least one character',
-          },
-        }}
-        render={({ field }) => (
-          <TextField
-            label="City"
-            margin="dense"
-            fullWidth
-            autoComplete="address-level2"
-            {...field}
-            error={!!errors.city}
-            helperText={errors.city ? errors.city.message : ''}
+          <Controller
+            name="city"
+            control={control}
+            defaultValue=""
+            rules={{
+              required: 'City is required',
+              minLength: {
+                value: 1,
+                message: 'City must contain at least one character',
+              },
+            }}
+            render={({ field }) => (
+              <TextField
+                label="City"
+                margin="dense"
+                fullWidth
+                autoComplete="address-level2"
+                {...field}
+                error={!!errors.city}
+                helperText={errors.city ? errors.city.message : ''}
+              />
+            )}
           />
-        )}
-      />
 
-      <Controller
-        name="postalCode"
-        control={control}
-        defaultValue=""
-        rules={{
-          required: 'Postal code is required',
-          minLength: {
-            value: 1,
-            message: 'Postal code must contain at least one character',
-          },
-        }}
-        render={({ field }) => (
-          <TextField
-            label="Postal code"
-            margin="dense"
-            fullWidth
-            autoComplete="postal-code"
-            {...field}
-            error={!!errors.postalCode}
-            helperText={errors.postalCode ? errors.postalCode.message : ''}
+          <Controller
+            name="postalCode"
+            control={control}
+            defaultValue=""
+            rules={{
+              required: 'Postal code is required',
+              minLength: {
+                value: 1,
+                message: 'Postal code must contain at least one character',
+              },
+            }}
+            render={({ field }) => (
+              <TextField
+                label="Postal code"
+                margin="dense"
+                fullWidth
+                autoComplete="postal-code"
+                {...field}
+                error={!!errors.postalCode}
+                helperText={errors.postalCode ? errors.postalCode.message : ''}
+              />
+            )}
           />
-        )}
-      />
 
-      <Controller
-        name="country"
-        control={control}
-        defaultValue=""
-        rules={{
-          required: 'Country is required',
-          minLength: {
-            value: 1,
-            message: 'Country must contain at least one character',
-          },
-          pattern: {
-            value: /^[a-zA-Zа-яА-ЯёЁґҐєЄіІїЇщЩЬьЫыъЪэЭ-]+$/u,
-            message: 'Enter valid Country',
-          },
-        }}
-        render={({ field }) => (
-          <TextField
-            label="Country"
-            margin="dense"
-            fullWidth
-            autoComplete="country-name"
-            {...field}
-            error={!!errors.country}
-            helperText={errors.country ? errors.country.message : ''}
+          <Controller
+            name="country"
+            control={control}
+            defaultValue=""
+            rules={{
+              required: 'Country is required',
+              minLength: {
+                value: 1,
+                message: 'Country must contain at least one character',
+              },
+              pattern: {
+                value: /^[a-zA-Zа-яА-ЯёЁґҐєЄіІїЇщЩЬьЫыъЪэЭ-]+$/u,
+                message: 'Enter valid Country',
+              },
+            }}
+            render={({ field }) => (
+              <TextField
+                label="Country"
+                margin="dense"
+                fullWidth
+                autoComplete="country-name"
+                {...field}
+                error={!!errors.country}
+                helperText={errors.country ? errors.country.message : ''}
+              />
+            )}
           />
-        )}
-      />
+        </div>
+      </details>
 
       <ColorButton
         className="btn"
