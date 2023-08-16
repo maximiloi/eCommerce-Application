@@ -9,12 +9,12 @@
   background-color: $color-logo-bg;
 
   font-family: $font-logo;
+  color: black;
 
   &__header {
-    max-width: 220px;
-    max-height: 70px;
-
     & .logo__img {
+      margin-left: 5px;
+
       & img {
         width: 58px;
         height: 52px;
@@ -22,7 +22,6 @@
     }
 
     & .logo__wrapper {
-      max-width: 150px;
       padding: 0 5px;
 
       display: flex;
