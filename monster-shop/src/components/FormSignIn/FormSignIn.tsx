@@ -1,15 +1,11 @@
 import { useForm, Controller } from 'react-hook-form';
-import { TextField, Button, ButtonProps, styled } from '@mui/material';
+import { TextField, Button, styled } from '@mui/material';
+import { CustomerSignin } from '@commercetools/platform-sdk';
 import validatePassword from '../../helper/validatePassword';
-
 import './FormSignIn.scss';
+import { login } from '../../api/AuthorizedUser/requests';
 
-type FormValues = {
-  eMail: string;
-  password: string;
-};
-
-const ColorButton = styled(Button)<ButtonProps>(() => ({
+const ColorButton = styled(Button)(() => ({
   color: '#000',
   backgroundColor: '#f0c349',
   '&:hover': {
@@ -24,10 +20,11 @@ export default function FormSignIn() {
     formState: { errors, isValid },
     reset,
     control,
-  } = useForm<FormValues>({ mode: 'onBlur' });
+  } = useForm<CustomerSignin>({ mode: 'onBlur' });
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = (data: CustomerSignin) => {
     console.log(data);
+    login(data);
     reset();
   };
 
@@ -42,18 +39,18 @@ export default function FormSignIn() {
             label="E-mail"
             fullWidth
             autoComplete="email"
-            {...register('eMail', {
+            {...register('email', {
               required: 'Enter your e-mail, required field',
               pattern: {
                 value: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
                 message: 'Enter valid e-mail',
               },
             })}
-            error={errors?.eMail !== undefined}
-            helperText={errors?.eMail?.message}
+            error={errors?.email !== undefined}
+            helperText={errors?.email?.message}
           />
         )}
-        name="eMail"
+        name="email"
         control={control}
       />
 
