@@ -31,6 +31,8 @@ export default function FormSignIn() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Controller
+        name="email"
+        control={control}
         render={({ field }) => (
           <TextField
             {...field}
@@ -50,11 +52,11 @@ export default function FormSignIn() {
             helperText={errors?.email?.message}
           />
         )}
-        name="email"
-        control={control}
       />
 
       <Controller
+        name="password"
+        control={control}
         render={({ field }) => (
           <TextField
             {...field}
@@ -74,8 +76,6 @@ export default function FormSignIn() {
             helperText={errors?.password?.message}
           />
         )}
-        name="password"
-        control={control}
       />
 
       <ColorButton
