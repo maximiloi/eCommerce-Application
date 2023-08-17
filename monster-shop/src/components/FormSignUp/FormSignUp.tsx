@@ -1,9 +1,14 @@
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, ButtonProps, styled } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import validatePassword from '../../helper/validatePassword';
+import validateDateBirth from '../../helper/validateDateBirth';
 
 import './FormSignUp.scss';
+import 'dayjs/locale/en-gb';
 
 type FormValues = {
   email: string;
@@ -14,6 +19,7 @@ type FormValues = {
   city: string;
   postalCode: string;
   country: string;
+  dateOfBirth: string;
 };
 
 const ColorButton = styled(Button)<ButtonProps>(() => ({
@@ -133,8 +139,51 @@ export default function FormSignUp() {
         )}
       />
 
+      <Controller
+        name="dateOfBirth"
+        control={control}
+        defaultValue={null}
+        rules={{
+          required: 'Date of birth is required',
+          validate: validateDateBirth,
+        }}
+        dateOfBirth
+        render={({ field }) => (
+          <LocalizationProvider
+            dateAdapter={AdapterDayjs}
+            adapterLocale="en-gb"
+          >
+            <DatePicker
+              label="Date of Birth"
+              format="DD/MM/YYYY"
+              disableFuture
+              slotProps={{
+                textField: {
+                  margin: 'dense',
+                  // helperText: 'Please fill this field',
+                  fullWidth: true,
+                },
+              }}
+              value={field.value}
+              onChange={(newValue) => {
+                field.onChange(newValue);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  error={!!errors.dateOfBirth}
+                  helperText={
+                    errors.dateOfBirth ? errors.dateOfBirth.message : ''
+                  }
+                  {...params}
+                />
+              )}
+            />
+          </LocalizationProvider>
+        )}
+      />
+
       <details>
-        <summary>Address field</summary>
+        <summary>Shipping Address</summary>
         <div>
           <Controller
             name="street"
