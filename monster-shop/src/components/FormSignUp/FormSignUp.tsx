@@ -43,7 +43,7 @@ export default function FormSignUp() {
     const addressArray: string[] = [street, city, postalCode, country];
 
     console.log('addressArray: ', addressArray);
-    console.log('birthDate: ', data.dateOfBirth.$d);
+    console.log('birthDate: ', data.dateOfBirth.format('DD/MM/YYYY'));
     console.log(data);
 
     // reset();
@@ -153,7 +153,7 @@ export default function FormSignUp() {
           required: 'Date of Birth is required',
           validate: validateDateBirth,
         }}
-        render={({ field: { ref, ...rest } }) => (
+        render={({ field }) => (
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateField
               label="Date of Birth"
@@ -162,7 +162,7 @@ export default function FormSignUp() {
               fullWidth
               error={!!errors.dateOfBirth}
               helperText={errors.dateOfBirth ? errors.dateOfBirth.message : ''}
-              {...rest}
+              {...field}
             />
           </LocalizationProvider>
         )}
