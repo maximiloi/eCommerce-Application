@@ -4,11 +4,9 @@ const validateDateBirth = (value: string) => {
   const age = today.getFullYear() - birthDate.getFullYear();
 
   if (age < 13) {
-    console.log('age: ', age);
-    return 'User must be 13 years old or older';
+    return 'Your age must be over 13 years old';
   }
 
-  console.log('age: ', age);
   return true;
 };
 

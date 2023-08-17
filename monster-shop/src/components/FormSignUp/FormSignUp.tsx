@@ -1,6 +1,7 @@
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, ButtonProps, styled } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DateField } from '@mui/x-date-pickers/DateField';
+// import { MyCustomerDraft } from '@commercetools/platform-sdk';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
@@ -8,7 +9,6 @@ import validatePassword from '../../helper/validatePassword';
 import validateDateBirth from '../../helper/validateDateBirth';
 
 import './FormSignUp.scss';
-import 'dayjs/locale/en-gb';
 
 type FormValues = {
   email: string;
@@ -34,13 +34,19 @@ export default function FormSignUp() {
   const {
     handleSubmit,
     formState: { errors, isValid },
-    reset,
+    // reset,
     control,
   } = useForm<FormValues>({ mode: 'onBlur' });
 
   const onSubmit = (data: FormValues) => {
+    const { street, city, postalCode, country } = data;
+    const addressArray: string[] = [street, city, postalCode, country];
+
+    console.log('addressArray: ', addressArray);
+    console.log('birthDate: ', data.dateOfBirth.$d);
     console.log(data);
-    reset();
+
+    // reset();
   };
 
   return (
@@ -144,39 +150,19 @@ export default function FormSignUp() {
         control={control}
         defaultValue={null}
         rules={{
-          required: 'Date of birth is required',
+          required: 'Date of Birth is required',
           validate: validateDateBirth,
         }}
-        dateOfBirth
-        render={({ field }) => (
-          <LocalizationProvider
-            dateAdapter={AdapterDayjs}
-            adapterLocale="en-gb"
-          >
-            <DatePicker
+        render={({ field: { ref, ...rest } }) => (
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateField
               label="Date of Birth"
               format="DD/MM/YYYY"
-              disableFuture
-              slotProps={{
-                textField: {
-                  margin: 'dense',
-                  // helperText: 'Please fill this field',
-                  fullWidth: true,
-                },
-              }}
-              value={field.value}
-              onChange={(newValue) => {
-                field.onChange(newValue);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  error={!!errors.dateOfBirth}
-                  helperText={
-                    errors.dateOfBirth ? errors.dateOfBirth.message : ''
-                  }
-                  {...params}
-                />
-              )}
+              margin="dense"
+              fullWidth
+              error={!!errors.dateOfBirth}
+              helperText={errors.dateOfBirth ? errors.dateOfBirth.message : ''}
+              {...rest}
             />
           </LocalizationProvider>
         )}
