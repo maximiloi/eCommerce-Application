@@ -4,6 +4,7 @@ import { DateField } from '@mui/x-date-pickers/DateField';
 // import { MyCustomerDraft } from '@commercetools/platform-sdk';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import * as dayjs from 'dayjs';
 
 import validatePassword from '../../helper/validatePassword';
 import validateDateBirth from '../../helper/validateDateBirth';
@@ -43,7 +44,7 @@ export default function FormSignUp() {
     const addressArray: string[] = [street, city, postalCode, country];
 
     console.log('addressArray: ', addressArray);
-    console.log('birthDate: ', data.dateOfBirth.format('DD/MM/YYYY'));
+    console.log('birthDate: ', dayjs(data.dateOfBirth).format('DD/MM/YYYY'));
     console.log(data);
 
     // reset();
