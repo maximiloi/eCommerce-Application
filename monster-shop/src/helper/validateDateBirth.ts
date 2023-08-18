@@ -1,7 +1,6 @@
-const validateDateBirth: (value: string) => true | string = (
-  value: string
+const validateDateBirth: (value: string | null) => true | string = (
+  value: string | null
 ): true | string => {
-  console.log('value: ', value);
   const today = new Date();
   const birthDate = new Date(value);
   const age = today.getFullYear() - birthDate.getFullYear();

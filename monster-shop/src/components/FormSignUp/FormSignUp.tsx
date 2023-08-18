@@ -1,10 +1,10 @@
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, ButtonProps, styled } from '@mui/material';
 import { DateField } from '@mui/x-date-pickers/DateField';
-// import { MyCustomerDraft } from '@commercetools/platform-sdk';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
+// import { MyCustomerDraft } from '@commercetools/platform-sdk';
 
 import validatePassword from '../../helper/validatePassword';
 import validateDateBirth from '../../helper/validateDateBirth';
@@ -20,7 +20,7 @@ type FormValues = {
   city: string;
   postalCode: string;
   country: string;
-  dateOfBirth: string;
+  dateOfBirth: string | null;
 };
 
 const ColorButton = styled(Button)<ButtonProps>(() => ({
@@ -37,7 +37,10 @@ export default function FormSignUp() {
     formState: { errors, isValid },
     // reset,
     control,
-  } = useForm<FormValues>({ mode: 'onBlur' });
+  } = useForm<FormValues>({
+    mode: 'onBlur',
+    defaultValues: { dateOfBirth: null },
+  });
 
   const onSubmit = (data: FormValues) => {
     const { street, city, postalCode, country } = data;
@@ -146,28 +149,28 @@ export default function FormSignUp() {
         )}
       />
 
-      <Controller
-        name="dateOfBirth"
-        control={control}
-        defaultValue={null}
-        rules={{
-          required: 'Date of Birth is required',
-          validate: validateDateBirth,
-        }}
-        render={({ field }) => (
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Controller
+          name="dateOfBirth"
+          control={control}
+          defaultValue={null}
+          rules={{
+            required: 'Date of Birth is required',
+            validate: validateDateBirth,
+          }}
+          render={({ field }) => (
             <DateField
               label="Date of Birth"
               format="DD/MM/YYYY"
               margin="dense"
               fullWidth
+              {...field}
               error={!!errors.dateOfBirth}
               helperText={errors.dateOfBirth ? errors.dateOfBirth.message : ''}
-              {...field}
             />
-          </LocalizationProvider>
-        )}
-      />
+          )}
+        />
+      </LocalizationProvider>
 
       <details>
         <summary>Shipping Address</summary>
