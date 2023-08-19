@@ -1,12 +1,16 @@
-const validateDateBirth: (value: string | null) => true | string = (
+const validateDateBirth: (value: string | null) => string | true = (
   value: string | null
-): true | string => {
-  const today = new Date();
-  const birthDate = new Date(value);
-  const age = today.getFullYear() - birthDate.getFullYear();
+): string | true => {
+  const ageConsent = 13;
 
-  if (age < 13) {
-    return 'Your age must be over 13 years old';
+  if (value !== null) {
+    const today = new Date();
+    const birthDate = new Date(value.toString());
+    const age: number = today.getFullYear() - birthDate.getFullYear();
+
+    if (age < ageConsent) {
+      return `Your age must be over ${ageConsent} years old`;
+    }
   }
 
   return true;
