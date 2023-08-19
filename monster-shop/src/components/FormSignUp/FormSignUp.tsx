@@ -43,7 +43,7 @@ export default function FormSignUp() {
   const {
     handleSubmit,
     formState: { errors, isValid },
-    // reset,
+    reset,
     control,
   } = useForm<FormValues>({
     mode: 'onBlur',
@@ -58,7 +58,7 @@ export default function FormSignUp() {
     console.log('birthDate: ', dayjs(data.dateOfBirth).format('DD/MM/YYYY'));
     console.log(data);
 
-    // reset();
+    reset();
   };
 
   return (
