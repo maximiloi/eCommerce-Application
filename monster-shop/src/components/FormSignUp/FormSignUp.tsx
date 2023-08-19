@@ -70,6 +70,7 @@ export default function FormSignUp() {
           <TextField
             margin="dense"
             fullWidth
+            required
             label="Email"
             error={!!errors.email}
             helperText={errors.email ? errors.email.message : ''}
@@ -94,6 +95,7 @@ export default function FormSignUp() {
           <TextField
             margin="dense"
             fullWidth
+            required
             type="password"
             label="Password"
             error={!!errors.password}
@@ -118,6 +120,7 @@ export default function FormSignUp() {
           <TextField
             margin="dense"
             fullWidth
+            required
             label="First Name"
             error={!!errors.firstName}
             helperText={errors.firstName ? errors.firstName.message : ''}
@@ -141,6 +144,7 @@ export default function FormSignUp() {
           <TextField
             margin="dense"
             fullWidth
+            required
             label="Last Name"
             error={!!errors.lastName}
             helperText={errors.lastName ? errors.lastName.message : ''}
@@ -160,13 +164,14 @@ export default function FormSignUp() {
           }}
           render={({ field }) => (
             <DateField
-              label="Date of Birth"
-              format="DD/MM/YYYY"
               margin="dense"
               fullWidth
-              {...field}
+              required
+              label="Date of Birth"
+              format="DD/MM/YYYY"
               error={!!errors.dateOfBirth}
               helperText={errors.dateOfBirth ? errors.dateOfBirth.message : ''}
+              {...field}
             />
           )}
         />
@@ -188,9 +193,10 @@ export default function FormSignUp() {
             }}
             render={({ field }) => (
               <TextField
-                label="Street"
                 margin="dense"
                 fullWidth
+                required
+                label="Street"
                 autoComplete="address-line1"
                 {...field}
                 error={!!errors.street}
@@ -215,6 +221,7 @@ export default function FormSignUp() {
                 label="City"
                 margin="dense"
                 fullWidth
+                required
                 autoComplete="address-level2"
                 {...field}
                 error={!!errors.city}
@@ -239,6 +246,7 @@ export default function FormSignUp() {
                 label="Postal code"
                 margin="dense"
                 fullWidth
+                required
                 autoComplete="postal-code"
                 {...field}
                 error={!!errors.postalCode}
@@ -267,6 +275,7 @@ export default function FormSignUp() {
                 label="Country"
                 margin="dense"
                 fullWidth
+                required
                 autoComplete="country-name"
                 {...field}
                 error={!!errors.country}
