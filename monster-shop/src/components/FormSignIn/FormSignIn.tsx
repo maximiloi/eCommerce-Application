@@ -1,6 +1,7 @@
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, styled } from '@mui/material';
 import { CustomerSignin } from '@commercetools/platform-sdk';
+import { useNavigate } from 'react-router-dom';
 import validatePassword from '../../helper/validatePassword';
 import './FormSignIn.scss';
 import { login } from '../../api/AuthorizedUser/requests';
@@ -14,6 +15,8 @@ const ColorButton = styled(Button)(() => ({
 }));
 
 export default function FormSignIn() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -25,6 +28,7 @@ export default function FormSignIn() {
   const onSubmit = (data: CustomerSignin) => {
     console.log(data);
     login(data);
+    navigate('/');
     reset();
   };
 

@@ -4,6 +4,7 @@ import {
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
 import authClient from './auth';
+import User from '../user';
 
 const apiRoot = createApiBuilderFromCtpClient(authClient).withProjectKey({
   projectKey: 'monster-shop',
@@ -18,7 +19,8 @@ export function login(customerSignin: CustomerSignin) {
     })
     .execute()
     .then((response) => {
-      console.log('User registered successfully:', response.body);
+      User.newUser(response.body.customer);
+      console.log('User logined successfully:', User.data);
     })
     .catch((error) => {
       console.error('Error registering user:', error);
@@ -33,8 +35,9 @@ export function signup(myCustomerDraft: MyCustomerDraft) {
       body: myCustomerDraft,
     })
     .execute()
-    .then((responce) => {
-      console.log('User registered successfully:', responce.body);
+    .then((response) => {
+      User.newUser(response.body.customer);
+      console.log('User registered successfully:', User.data);
     })
     .catch((error) => {
       console.error('Error registering user:', error);
