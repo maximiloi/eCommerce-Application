@@ -1,5 +1,12 @@
 import { useForm, Controller } from 'react-hook-form';
-import { TextField, Button, ButtonProps, styled } from '@mui/material';
+import {
+  TextField,
+  Button,
+  ButtonProps,
+  Checkbox,
+  FormControlLabel,
+  styled,
+} from '@mui/material';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -21,6 +28,7 @@ type FormValues = {
   postalCode: string;
   country: string;
   dateOfBirth: string | null;
+  defaultAddress: boolean;
 };
 
 const ColorButton = styled(Button)<ButtonProps>(() => ({
@@ -171,6 +179,7 @@ export default function FormSignUp() {
               format="DD/MM/YYYY"
               error={!!errors.dateOfBirth}
               helperText={errors.dateOfBirth ? errors.dateOfBirth.message : ''}
+              autoComplete="bday"
               {...field}
             />
           )}
@@ -280,6 +289,19 @@ export default function FormSignUp() {
                 {...field}
                 error={!!errors.country}
                 helperText={errors.country ? errors.country.message : ''}
+              />
+            )}
+          />
+
+          <Controller
+            name="defaultAddress"
+            control={control}
+            render={({ field }) => (
+              <FormControlLabel
+                required
+                control={<Checkbox defaultChecked />}
+                label="Make it a default address"
+                {...field}
               />
             )}
           />
