@@ -177,9 +177,14 @@ export default function FormSignUp() {
               required
               label="Date of Birth"
               format="DD/MM/YYYY"
-              error={!!errors.dateOfBirth}
-              helperText={errors.dateOfBirth ? errors.dateOfBirth.message : ''}
-              autoComplete="bday"
+              slotProps={{
+                textField: {
+                  error: !!errors.dateOfBirth,
+                  helperText: errors.dateOfBirth
+                    ? errors.dateOfBirth.message
+                    : '',
+                },
+              }}
               {...field}
             />
           )}
@@ -298,7 +303,6 @@ export default function FormSignUp() {
             control={control}
             render={({ field }) => (
               <FormControlLabel
-                required
                 control={<Checkbox defaultChecked />}
                 label="Make it a default address"
                 {...field}
