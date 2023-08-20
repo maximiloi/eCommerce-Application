@@ -96,7 +96,7 @@ export default function FormSignUp() {
             size="small"
             fullWidth
             required
-            label="Email"
+            label="E-mail"
             error={!!errors.email}
             helperText={errors.email ? errors.email.message : ''}
             {...field}
