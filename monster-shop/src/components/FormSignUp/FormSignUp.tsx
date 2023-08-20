@@ -1,3 +1,4 @@
+import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import {
   TextField,
@@ -7,11 +8,14 @@ import {
   Switch,
   FormControlLabel,
   styled,
+  IconButton,
+  InputAdornment,
 } from '@mui/material';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 // import { MyCustomerDraft } from '@commercetools/platform-sdk';
 
 import validatePassword from '../../helper/validatePassword';
@@ -47,10 +51,19 @@ const ColorButton = styled(Button)<ButtonProps>(() => ({
 }));
 
 export default function FormSignUp() {
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
   const {
+    register,
     handleSubmit,
     formState: { errors, isValid },
-    // reset,
+    reset,
     control,
   } = useForm<FormValues>({
     mode: 'onBlur',
@@ -60,8 +73,8 @@ export default function FormSignUp() {
   const onSubmit = (data: FormValues) => {
     console.log('birthDate: ', dayjs(data.dateOfBirth).format('DD/MM/YYYY'));
     console.log(data);
-
-    // reset();
+    // TODO!! Проверка регистрации
+    reset();
   };
 
   return (
@@ -95,25 +108,40 @@ export default function FormSignUp() {
         name="password"
         control={control}
         defaultValue=""
-        rules={{
-          required: 'Password is required',
-          minLength: {
-            value: 8,
-            message: 'Password must have at least 8 characters',
-          },
-          validate: validatePassword,
-        }}
         render={({ field }) => (
           <TextField
+            {...field}
             margin="dense"
+            label="Password"
             size="small"
             fullWidth
             required
-            type="password"
-            label="Password"
-            error={!!errors.password}
-            helperText={errors.password ? errors.password.message : ''}
-            {...field}
+            type={showPassword ? 'text' : 'password'}
+            {...register('password', {
+              required: 'Enter your password, required field',
+              minLength: {
+                value: 8,
+                message: 'Password must have at least 8 characters',
+              },
+              validate: validatePassword,
+            })}
+            error={errors?.password !== undefined}
+            helperText={errors?.password?.message}
+            {...register('password')}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         )}
       />
