@@ -45,6 +45,7 @@ export default function FormSignIn() {
           <TextField
             {...field}
             margin="dense"
+            size="small"
             type="email"
             label="E-mail"
             fullWidth
@@ -70,6 +71,7 @@ export default function FormSignIn() {
           <TextField
             {...field}
             margin="dense"
+            size="small"
             type="password"
             label="Password"
             fullWidth

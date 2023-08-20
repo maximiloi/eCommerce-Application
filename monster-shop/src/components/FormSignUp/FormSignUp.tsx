@@ -80,6 +80,7 @@ export default function FormSignUp() {
         render={({ field }) => (
           <TextField
             margin="dense"
+            size="small"
             fullWidth
             required
             label="Email"
@@ -105,6 +106,7 @@ export default function FormSignUp() {
         render={({ field }) => (
           <TextField
             margin="dense"
+            size="small"
             fullWidth
             required
             type="password"
@@ -130,6 +132,7 @@ export default function FormSignUp() {
         render={({ field }) => (
           <TextField
             margin="dense"
+            size="small"
             fullWidth
             required
             label="First Name"
@@ -154,6 +157,7 @@ export default function FormSignUp() {
         render={({ field }) => (
           <TextField
             margin="dense"
+            size="small"
             fullWidth
             required
             label="Last Name"
@@ -176,6 +180,7 @@ export default function FormSignUp() {
           render={({ field }) => (
             <DateField
               margin="dense"
+              size="small"
               fullWidth
               required
               label="Date of Birth"
@@ -211,6 +216,7 @@ export default function FormSignUp() {
             render={({ field }) => (
               <TextField
                 margin="dense"
+                size="small"
                 fullWidth
                 required
                 label="Street"
@@ -239,6 +245,7 @@ export default function FormSignUp() {
               <TextField
                 label="City"
                 margin="dense"
+                size="small"
                 fullWidth
                 required
                 autoComplete="address-level2"
@@ -266,6 +273,7 @@ export default function FormSignUp() {
               <TextField
                 label="Postal code"
                 margin="dense"
+                size="small"
                 fullWidth
                 required
                 autoComplete="postal-code"
@@ -299,6 +307,7 @@ export default function FormSignUp() {
               <TextField
                 label="Country"
                 margin="dense"
+                size="small"
                 fullWidth
                 required
                 autoComplete="country-name"
@@ -353,6 +362,7 @@ export default function FormSignUp() {
               render={({ field }) => (
                 <TextField
                   margin="dense"
+                  size="small"
                   fullWidth
                   required
                   label="Street"
@@ -381,6 +391,7 @@ export default function FormSignUp() {
                 <TextField
                   label="City"
                   margin="dense"
+                  size="small"
                   fullWidth
                   required
                   autoComplete="address-level2"
@@ -408,6 +419,7 @@ export default function FormSignUp() {
                 <TextField
                   label="Postal code"
                   margin="dense"
+                  size="small"
                   fullWidth
                   required
                   autoComplete="postal-code"
@@ -441,6 +453,7 @@ export default function FormSignUp() {
                 <TextField
                   label="Country"
                   margin="dense"
+                  size="small"
                   fullWidth
                   required
                   autoComplete="country-name"
