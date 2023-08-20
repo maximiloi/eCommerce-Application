@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function App() {
+export default function Toast() {
   const myPromise = new Promise((resolve) =>
     // eslint-disable-next-line no-promise-executor-return
     fetch('https://jsonplaceholder.typicode.com/todos/1')
@@ -20,7 +20,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="Toast">
       <ToastContainer
         position="bottom-center"
         autoClose={5000}
