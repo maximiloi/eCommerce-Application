@@ -4,6 +4,7 @@ import {
   Button,
   ButtonProps,
   Checkbox,
+  Switch,
   FormControlLabel,
   styled,
 } from '@mui/material';
@@ -23,12 +24,18 @@ type FormValues = {
   firstName: string;
   lastName: string;
   password: string;
-  street: string;
-  city: string;
-  postalCode: string;
-  country: string;
   dateOfBirth: string | null;
-  defaultAddress: boolean;
+  shippingStreet: string;
+  shippingCity: string;
+  shippingPostalCode: string;
+  shippingCountry: string;
+  shippingDefaultAddress: boolean;
+  addressMatches: boolean;
+  billingStreet: string;
+  billingCity: string;
+  billingPostalCode: string;
+  billingCountry: string;
+  billingDefaultAddress: boolean;
 };
 
 const ColorButton = styled(Button)<ButtonProps>(() => ({
@@ -51,10 +58,6 @@ export default function FormSignUp() {
   });
 
   const onSubmit = (data: FormValues) => {
-    const { street, city, postalCode, country } = data;
-    const addressArray: string[] = [street, city, postalCode, country];
-
-    console.log('addressArray: ', addressArray);
     console.log('birthDate: ', dayjs(data.dateOfBirth).format('DD/MM/YYYY'));
     console.log(data);
 
@@ -195,7 +198,7 @@ export default function FormSignUp() {
         <summary>Shipping Address</summary>
         <div>
           <Controller
-            name="street"
+            name="shippingStreet"
             control={control}
             defaultValue=""
             rules={{
@@ -213,14 +216,16 @@ export default function FormSignUp() {
                 label="Street"
                 autoComplete="address-line1"
                 {...field}
-                error={!!errors.street}
-                helperText={errors.street ? errors.street.message : ''}
+                error={!!errors.shippingStreet}
+                helperText={
+                  errors.shippingStreet ? errors.shippingStreet.message : ''
+                }
               />
             )}
           />
 
           <Controller
-            name="city"
+            name="shippingCity"
             control={control}
             defaultValue=""
             rules={{
@@ -238,14 +243,16 @@ export default function FormSignUp() {
                 required
                 autoComplete="address-level2"
                 {...field}
-                error={!!errors.city}
-                helperText={errors.city ? errors.city.message : ''}
+                error={!!errors.shippingCity}
+                helperText={
+                  errors.shippingCity ? errors.shippingCity.message : ''
+                }
               />
             )}
           />
 
           <Controller
-            name="postalCode"
+            name="shippingPostalCode"
             control={control}
             defaultValue=""
             rules={{
@@ -263,14 +270,18 @@ export default function FormSignUp() {
                 required
                 autoComplete="postal-code"
                 {...field}
-                error={!!errors.postalCode}
-                helperText={errors.postalCode ? errors.postalCode.message : ''}
+                error={!!errors.shippingPostalCode}
+                helperText={
+                  errors.shippingPostalCode
+                    ? errors.shippingPostalCode.message
+                    : ''
+                }
               />
             )}
           />
 
           <Controller
-            name="country"
+            name="shippingCountry"
             control={control}
             defaultValue=""
             rules={{
@@ -292,14 +303,16 @@ export default function FormSignUp() {
                 required
                 autoComplete="country-name"
                 {...field}
-                error={!!errors.country}
-                helperText={errors.country ? errors.country.message : ''}
+                error={!!errors.shippingCountry}
+                helperText={
+                  errors.shippingCountry ? errors.shippingCountry.message : ''
+                }
               />
             )}
           />
 
           <Controller
-            name="defaultAddress"
+            name="shippingDefaultAddress"
             control={control}
             render={({ field }) => (
               <FormControlLabel
@@ -309,7 +322,150 @@ export default function FormSignUp() {
               />
             )}
           />
+
+          <Controller
+            name="addressMatches"
+            control={control}
+            render={({ field }) => (
+              <FormControlLabel
+                control={<Switch />}
+                label="Billing address matches the Shipping"
+                {...field}
+              />
+            )}
+          />
         </div>
+
+        <details>
+          <summary>Billing Address</summary>
+          <div>
+            <Controller
+              name="billingStreet"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: 'Street is required',
+                minLength: {
+                  value: 1,
+                  message: 'Street must contain at least one character',
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  margin="dense"
+                  fullWidth
+                  required
+                  label="Street"
+                  autoComplete="address-line1"
+                  {...field}
+                  error={!!errors.billingStreet}
+                  helperText={
+                    errors.billingStreet ? errors.billingStreet.message : ''
+                  }
+                />
+              )}
+            />
+
+            <Controller
+              name="billingCity"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: 'City is required',
+                minLength: {
+                  value: 1,
+                  message: 'City must contain at least one character',
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  label="City"
+                  margin="dense"
+                  fullWidth
+                  required
+                  autoComplete="address-level2"
+                  {...field}
+                  error={!!errors.billingCity}
+                  helperText={
+                    errors.billingCity ? errors.billingCity.message : ''
+                  }
+                />
+              )}
+            />
+
+            <Controller
+              name="billingPostalCode"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: 'Postal code is required',
+                minLength: {
+                  value: 1,
+                  message: 'Postal code must contain at least one character',
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  label="Postal code"
+                  margin="dense"
+                  fullWidth
+                  required
+                  autoComplete="postal-code"
+                  {...field}
+                  error={!!errors.billingPostalCode}
+                  helperText={
+                    errors.billingPostalCode
+                      ? errors.billingPostalCode.message
+                      : ''
+                  }
+                />
+              )}
+            />
+
+            <Controller
+              name="billingCountry"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: 'Country is required',
+                minLength: {
+                  value: 1,
+                  message: 'Country must contain at least one character',
+                },
+                pattern: {
+                  value: /^[a-zA-Zа-яА-ЯёЁґҐєЄіІїЇщЩЬьЫыъЪэЭ-]+$/u,
+                  message: 'Enter valid Country',
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  label="Country"
+                  margin="dense"
+                  fullWidth
+                  required
+                  autoComplete="country-name"
+                  {...field}
+                  error={!!errors.billingCountry}
+                  helperText={
+                    errors.billingCountry ? errors.billingCountry.message : ''
+                  }
+                />
+              )}
+            />
+
+            <Controller
+              name="billingDefaultAddress"
+              control={control}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={<Checkbox />}
+                  label="Make it a default address"
+                  {...field}
+                />
+              )}
+            />
+          </div>
+        </details>
       </details>
 
       <ColorButton
