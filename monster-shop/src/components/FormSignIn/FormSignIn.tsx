@@ -1,6 +1,7 @@
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, styled } from '@mui/material';
 import { CustomerSignin } from '@commercetools/platform-sdk';
+import { useNavigate } from 'react-router-dom';
 import validatePassword from '../../helper/validatePassword';
 import './FormSignIn.scss';
 import { login } from '../../api/AuthorizedUser/requests';
@@ -14,6 +15,8 @@ const ColorButton = styled(Button)(() => ({
 }));
 
 export default function FormSignIn() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -28,6 +31,7 @@ export default function FormSignIn() {
     // TODO: тут надо дождаться ответа от сервера, если ошибка 400 вывести поп ап
     // "Incorrect e-mail or password"
     // Если все окей то сделать резет, и изменить название кнопки
+    navigate('/');
     reset();
   };
 
