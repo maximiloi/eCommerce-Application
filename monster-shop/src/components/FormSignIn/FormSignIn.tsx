@@ -1,10 +1,20 @@
+import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { TextField, Button, styled } from '@mui/material';
+import {
+  TextField,
+  Button,
+  styled,
+  IconButton,
+  InputAdornment,
+} from '@mui/material';
 import { CustomerSignin } from '@commercetools/platform-sdk';
 import { useNavigate } from 'react-router-dom';
-import validatePassword from '../../helper/validatePassword';
-import './FormSignIn.scss';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { login } from '../../api/AuthorizedUser/requests';
+
+import validatePassword from '../../helper/validatePassword';
+
+import './FormSignIn.scss';
 
 const ColorButton = styled(Button)(() => ({
   color: '#000',
@@ -17,6 +27,14 @@ const ColorButton = styled(Button)(() => ({
 export default function FormSignIn() {
   const navigate = useNavigate();
 
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
   const {
     register,
     handleSubmit,
@@ -28,6 +46,9 @@ export default function FormSignIn() {
   const onSubmit = (data: CustomerSignin) => {
     console.log(data);
     login(data);
+    // TODO: тут надо дождаться ответа от сервера, если ошибка 400 вывести поп ап
+    // "Incorrect e-mail or password"
+    // Если все окей то сделать резет, и изменить название кнопки
     navigate('/');
     reset();
   };
@@ -37,13 +58,16 @@ export default function FormSignIn() {
       <Controller
         name="email"
         control={control}
+        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}
             margin="dense"
+            size="small"
             type="email"
             label="E-mail"
             fullWidth
+            required
             autoComplete="email"
             {...register('email', {
               required: 'Enter your e-mail, required field',
@@ -61,13 +85,16 @@ export default function FormSignIn() {
       <Controller
         name="password"
         control={control}
+        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}
             margin="dense"
-            type="password"
             label="Password"
+            size="small"
             fullWidth
+            required
+            type={showPassword ? 'text' : 'password'}
             {...register('password', {
               required: 'Enter your password, required field',
               minLength: {
@@ -78,6 +105,21 @@ export default function FormSignIn() {
             })}
             error={errors?.password !== undefined}
             helperText={errors?.password?.message}
+            {...register('password')}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         )}
       />

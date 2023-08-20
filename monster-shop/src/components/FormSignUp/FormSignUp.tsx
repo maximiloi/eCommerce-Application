@@ -1,19 +1,45 @@
+import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { TextField, Button, ButtonProps, styled } from '@mui/material';
+import {
+  TextField,
+  Button,
+  ButtonProps,
+  Checkbox,
+  Switch,
+  FormControlLabel,
+  styled,
+  IconButton,
+  InputAdornment,
+} from '@mui/material';
+import { DateField } from '@mui/x-date-pickers/DateField';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+// import { MyCustomerDraft } from '@commercetools/platform-sdk';
+
 import validatePassword from '../../helper/validatePassword';
+import validateDateBirth from '../../helper/validateDateBirth';
 
 import './FormSignUp.scss';
 
 type FormValues = {
-  eMail: string;
+  email: string;
   firstName: string;
   lastName: string;
   password: string;
-  street: string;
-  city: string;
-  postalCode: string;
-  country: string;
-  TextField: string;
+  dateOfBirth: string | null;
+  shippingStreet: string;
+  shippingCity: string;
+  shippingPostalCode: string;
+  shippingCountry: string;
+  shippingDefaultAddress: boolean;
+  addressMatches: boolean;
+  billingStreet: string;
+  billingCity: string;
+  billingPostalCode: string;
+  billingCountry: string;
+  billingDefaultAddress: boolean;
 };
 
 const ColorButton = styled(Button)<ButtonProps>(() => ({
@@ -25,53 +51,72 @@ const ColorButton = styled(Button)<ButtonProps>(() => ({
 }));
 
 export default function FormSignUp() {
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     reset,
     control,
-  } = useForm<FormValues>({ mode: 'onBlur' });
+  } = useForm<FormValues>({
+    mode: 'onBlur',
+    defaultValues: { dateOfBirth: null },
+  });
 
   const onSubmit = (data: FormValues) => {
+    console.log('birthDate: ', dayjs(data.dateOfBirth).format('DD/MM/YYYY'));
     console.log(data);
+    // TODO!! Проверка регистрации
     reset();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Controller
+        name="email"
+        control={control}
+        defaultValue=""
+        rules={{
+          required: 'Email is required',
+          pattern: {
+            value: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
+            message: 'Enter valid email address',
+          },
+        }}
         render={({ field }) => (
           <TextField
-            {...field}
             margin="dense"
-            type="email"
-            label="E-mail"
+            size="small"
             fullWidth
-            autoComplete="email"
-            {...register('eMail', {
-              required: 'Enter your e-mail, required field',
-              pattern: {
-                value: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
-                message: 'Enter valid e-mail',
-              },
-            })}
-            error={errors?.eMail !== undefined}
-            helperText={errors?.eMail?.message}
+            required
+            label="E-mail"
+            error={!!errors.email}
+            helperText={errors.email ? errors.email.message : ''}
+            {...field}
           />
         )}
-        name="eMail"
-        control={control}
       />
 
       <Controller
+        name="password"
+        control={control}
+        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}
             margin="dense"
-            type="password"
             label="Password"
+            size="small"
             fullWidth
+            required
+            type={showPassword ? 'text' : 'password'}
             {...register('password', {
               required: 'Enter your password, required field',
               minLength: {
@@ -82,161 +127,387 @@ export default function FormSignUp() {
             })}
             error={errors?.password !== undefined}
             helperText={errors?.password?.message}
+            {...register('password')}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         )}
-        name="password"
-        control={control}
       />
 
       <Controller
-        render={({ field }) => (
-          <TextField
-            {...field}
-            margin="dense"
-            type="text"
-            label="First Name"
-            fullWidth
-            autoComplete="given-name"
-            {...register('firstName', {
-              required: 'Enter your First Name, required field',
-              minLength: { value: 1, message: 'Minimum 1 symbols' },
-              pattern: {
-                value: /^[a-zA-Z\u0400-\u04FFҐґЁёІіЇїЎў]+$/u,
-                message: 'Enter valid First Name',
-              },
-            })}
-            error={errors?.firstName !== undefined}
-            helperText={errors?.firstName?.message}
-          />
-        )}
         name="firstName"
         control={control}
+        defaultValue=""
+        rules={{
+          required: 'First name is required',
+          pattern: {
+            value: /^[a-zA-Z\u0400-\u04FFҐґЁёІіЇїЎў]+$/u,
+            message: 'Invalid first name',
+          },
+        }}
+        render={({ field }) => (
+          <TextField
+            margin="dense"
+            size="small"
+            fullWidth
+            required
+            label="First Name"
+            error={!!errors.firstName}
+            helperText={errors.firstName ? errors.firstName.message : ''}
+            {...field}
+          />
+        )}
       />
 
       <Controller
-        render={({ field }) => (
-          <TextField
-            {...field}
-            margin="dense"
-            type="text"
-            label="Last Name"
-            fullWidth
-            autoComplete="family-name"
-            {...register('lastName', {
-              required: 'Enter your Last Name, required field',
-              minLength: { value: 1, message: 'Minimum 1 symbols' },
-              pattern: {
-                value: /^[a-zA-Z\u0400-\u04FFҐґЁёІіЇїЎў]+$/u,
-                message: 'Enter valid Last Name',
-              },
-            })}
-            error={errors?.lastName !== undefined}
-            helperText={errors?.lastName?.message}
-          />
-        )}
         name="lastName"
         control={control}
-      />
-
-      <Controller
+        defaultValue=""
+        rules={{
+          required: 'Last name is required',
+          pattern: {
+            value: /^[a-zA-Z\u0400-\u04FFҐґЁёІіЇїЎў]+$/u,
+            message: 'Invalid last name',
+          },
+        }}
         render={({ field }) => (
           <TextField
-            {...field}
             margin="dense"
-            type="text"
-            label="Street"
+            size="small"
             fullWidth
-            autoComplete="address-line1"
-            {...register('street', {
-              required: 'Enter your Street, required field',
-              minLength: { value: 1, message: 'Minimum 1 symbols' },
-              pattern: {
-                value: /^[a-zA-Zа-яА-ЯёЁґҐєЄіІїЇщЩЬьЫыъЪэЭ-]+$/u,
-                message: 'Enter valid Street',
-              },
-            })}
-            error={errors?.street !== undefined}
-            helperText={errors?.street?.message}
+            required
+            label="Last Name"
+            error={!!errors.lastName}
+            helperText={errors.lastName ? errors.lastName.message : ''}
+            {...field}
           />
         )}
-        name="street"
-        control={control}
       />
 
-      <Controller
-        render={({ field }) => (
-          <TextField
-            {...field}
-            margin="dense"
-            type="text"
-            label="City"
-            fullWidth
-            autoComplete="address-level2"
-            {...register('city', {
-              required: 'Enter your City, required field',
-              minLength: { value: 1, message: 'Minimum 1 symbols' },
-              pattern: {
-                value: /^[a-zA-Zа-яА-ЯёЁґҐєЄіІїЇщЩЬьЫыъЪэЭ-]+$/u,
-                message: 'Enter valid City',
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Controller
+          name="dateOfBirth"
+          control={control}
+          defaultValue={null}
+          rules={{
+            required: 'Date of Birth is required',
+            validate: validateDateBirth,
+          }}
+          render={({ field }) => (
+            <DateField
+              margin="dense"
+              size="small"
+              fullWidth
+              required
+              label="Date of Birth"
+              format="DD/MM/YYYY"
+              slotProps={{
+                textField: {
+                  error: !!errors.dateOfBirth,
+                  helperText: errors.dateOfBirth
+                    ? errors.dateOfBirth.message
+                    : '',
+                },
+              }}
+              {...field}
+            />
+          )}
+        />
+      </LocalizationProvider>
+
+      <details>
+        <summary>Shipping Address</summary>
+        <div>
+          <Controller
+            name="shippingStreet"
+            control={control}
+            defaultValue=""
+            rules={{
+              required: 'Street is required',
+              minLength: {
+                value: 1,
+                message: 'Street must contain at least one character',
               },
-            })}
-            error={errors?.city !== undefined}
-            helperText={errors?.city?.message}
+            }}
+            render={({ field }) => (
+              <TextField
+                margin="dense"
+                size="small"
+                fullWidth
+                required
+                label="Street"
+                autoComplete="address-line1"
+                {...field}
+                error={!!errors.shippingStreet}
+                helperText={
+                  errors.shippingStreet ? errors.shippingStreet.message : ''
+                }
+              />
+            )}
           />
-        )}
-        name="TextField"
-        control={control}
-      />
 
-      <Controller
-        render={({ field }) => (
-          <TextField
-            {...field}
-            margin="dense"
-            type="text"
-            label="Postal code"
-            fullWidth
-            autoComplete="postal-code"
-            {...register('postalCode', {
-              required: 'Enter your Postal code, required field',
-              minLength: { value: 1, message: 'Minimum 1 symbols' },
-              pattern: {
-                value: /^[0-9]+$/u,
-                message: 'Enter valid Postal code',
+          <Controller
+            name="shippingCity"
+            control={control}
+            defaultValue=""
+            rules={{
+              required: 'City is required',
+              minLength: {
+                value: 1,
+                message: 'City must contain at least one character',
               },
-            })}
-            error={errors?.postalCode !== undefined}
-            helperText={errors?.postalCode?.message}
+            }}
+            render={({ field }) => (
+              <TextField
+                label="City"
+                margin="dense"
+                size="small"
+                fullWidth
+                required
+                autoComplete="address-level2"
+                {...field}
+                error={!!errors.shippingCity}
+                helperText={
+                  errors.shippingCity ? errors.shippingCity.message : ''
+                }
+              />
+            )}
           />
-        )}
-        name="TextField"
-        control={control}
-      />
 
-      <Controller
-        render={({ field }) => (
-          <TextField
-            {...field}
-            margin="dense"
-            type="text"
-            label="Country"
-            fullWidth
-            autoComplete="country-name"
-            {...register('country', {
-              required: 'Enter your Country, required field',
-              minLength: { value: 1, message: 'Minimum 1 symbols' },
+          <Controller
+            name="shippingPostalCode"
+            control={control}
+            defaultValue=""
+            rules={{
+              required: 'Postal code is required',
+              minLength: {
+                value: 1,
+                message: 'Postal code must contain at least one character',
+              },
+            }}
+            render={({ field }) => (
+              <TextField
+                label="Postal code"
+                margin="dense"
+                size="small"
+                fullWidth
+                required
+                autoComplete="postal-code"
+                {...field}
+                error={!!errors.shippingPostalCode}
+                helperText={
+                  errors.shippingPostalCode
+                    ? errors.shippingPostalCode.message
+                    : ''
+                }
+              />
+            )}
+          />
+
+          <Controller
+            name="shippingCountry"
+            control={control}
+            defaultValue=""
+            rules={{
+              required: 'Country is required',
+              minLength: {
+                value: 1,
+                message: 'Country must contain at least one character',
+              },
               pattern: {
                 value: /^[a-zA-Zа-яА-ЯёЁґҐєЄіІїЇщЩЬьЫыъЪэЭ-]+$/u,
                 message: 'Enter valid Country',
               },
-            })}
-            error={errors?.country !== undefined}
-            helperText={errors?.country?.message}
+            }}
+            render={({ field }) => (
+              <TextField
+                label="Country"
+                margin="dense"
+                size="small"
+                fullWidth
+                required
+                autoComplete="country-name"
+                {...field}
+                error={!!errors.shippingCountry}
+                helperText={
+                  errors.shippingCountry ? errors.shippingCountry.message : ''
+                }
+              />
+            )}
           />
-        )}
-        name="TextField"
-        control={control}
-      />
+
+          <Controller
+            name="shippingDefaultAddress"
+            control={control}
+            render={({ field }) => (
+              <FormControlLabel
+                control={<Checkbox />}
+                label="Make it a default address"
+                {...field}
+              />
+            )}
+          />
+
+          <Controller
+            name="addressMatches"
+            control={control}
+            render={({ field }) => (
+              <FormControlLabel
+                control={<Switch />}
+                label="Billing address matches the Shipping"
+                {...field}
+              />
+            )}
+          />
+        </div>
+
+        <details>
+          <summary>Billing Address</summary>
+          <div>
+            <Controller
+              name="billingStreet"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: 'Street is required',
+                minLength: {
+                  value: 1,
+                  message: 'Street must contain at least one character',
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  margin="dense"
+                  size="small"
+                  fullWidth
+                  required
+                  label="Street"
+                  autoComplete="address-line1"
+                  {...field}
+                  error={!!errors.billingStreet}
+                  helperText={
+                    errors.billingStreet ? errors.billingStreet.message : ''
+                  }
+                />
+              )}
+            />
+
+            <Controller
+              name="billingCity"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: 'City is required',
+                minLength: {
+                  value: 1,
+                  message: 'City must contain at least one character',
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  label="City"
+                  margin="dense"
+                  size="small"
+                  fullWidth
+                  required
+                  autoComplete="address-level2"
+                  {...field}
+                  error={!!errors.billingCity}
+                  helperText={
+                    errors.billingCity ? errors.billingCity.message : ''
+                  }
+                />
+              )}
+            />
+
+            <Controller
+              name="billingPostalCode"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: 'Postal code is required',
+                minLength: {
+                  value: 1,
+                  message: 'Postal code must contain at least one character',
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  label="Postal code"
+                  margin="dense"
+                  size="small"
+                  fullWidth
+                  required
+                  autoComplete="postal-code"
+                  {...field}
+                  error={!!errors.billingPostalCode}
+                  helperText={
+                    errors.billingPostalCode
+                      ? errors.billingPostalCode.message
+                      : ''
+                  }
+                />
+              )}
+            />
+
+            <Controller
+              name="billingCountry"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: 'Country is required',
+                minLength: {
+                  value: 1,
+                  message: 'Country must contain at least one character',
+                },
+                pattern: {
+                  value: /^[a-zA-Zа-яА-ЯёЁґҐєЄіІїЇщЩЬьЫыъЪэЭ-]+$/u,
+                  message: 'Enter valid Country',
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  label="Country"
+                  margin="dense"
+                  size="small"
+                  fullWidth
+                  required
+                  autoComplete="country-name"
+                  {...field}
+                  error={!!errors.billingCountry}
+                  helperText={
+                    errors.billingCountry ? errors.billingCountry.message : ''
+                  }
+                />
+              )}
+            />
+
+            <Controller
+              name="billingDefaultAddress"
+              control={control}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={<Checkbox />}
+                  label="Make it a default address"
+                  {...field}
+                />
+              )}
+            />
+          </div>
+        </details>
+      </details>
 
       <ColorButton
         className="btn"
