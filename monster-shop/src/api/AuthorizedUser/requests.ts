@@ -20,7 +20,6 @@ export function login(customerSignin: CustomerSignin) {
     .execute()
     .then((response) => {
       User.newUser(response.body.customer);
-      console.log('User logined successfully:', User.data);
     })
     .catch((error) => {
       console.error('Error registering user:', error);
@@ -37,7 +36,10 @@ export function signup(myCustomerDraft: MyCustomerDraft) {
     .execute()
     .then((response) => {
       User.newUser(response.body.customer);
-      console.log('User registered successfully:', User.data);
+      login({
+        email: myCustomerDraft.email,
+        password: myCustomerDraft.password,
+      });
     })
     .catch((error) => {
       console.error('Error registering user:', error);
