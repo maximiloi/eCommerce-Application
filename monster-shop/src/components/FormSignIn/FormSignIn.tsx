@@ -7,11 +7,14 @@ import {
   IconButton,
   InputAdornment,
 } from '@mui/material';
-import { CustomerSignin } from '@commercetools/platform-sdk';
+import {
+  ClientResponse,
+  CustomerSignInResult,
+  CustomerSignin,
+} from '@commercetools/platform-sdk';
 import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { login } from '../../api/AuthorizedUser/requests';
-import User from '../../api/user';
 
 import validatePassword from '../../helper/validatePassword';
 
@@ -44,14 +47,18 @@ export default function FormSignIn() {
     control,
   } = useForm<CustomerSignin>({ mode: 'onChange' });
 
-  const onSubmit = async (data: CustomerSignin) => {
+  const onSubmit = (data: CustomerSignin) => {
     console.log(data);
-    await login(data);
-
-    if (User.created) {
-      navigate('/');
-      reset();
-    }
+    login(data)
+      .then((response: ClientResponse<CustomerSignInResult>) => {
+        if (response.statusCode === 200) {
+          navigate('/');
+          reset();
+        }
+      })
+      .catch((error: Error) => {
+        console.error('Произошла ошибка:', error);
+      });
   };
 
   return (
