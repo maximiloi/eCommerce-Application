@@ -1,7 +1,7 @@
-import { ToastContainer } from 'react-toastify';
+import { Flip, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Toast() {
+export default function Toast(): JSX.Element {
   return (
     <div className="Toast">
       <ToastContainer
@@ -15,6 +15,8 @@ export default function Toast() {
         draggable
         pauseOnHover
         theme="dark"
+        transition={Flip}
+        limit={3}
       />
     </div>
   );
