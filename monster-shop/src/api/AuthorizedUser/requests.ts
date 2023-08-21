@@ -26,7 +26,7 @@ export function login(customerSignin: CustomerSignin) {
     });
 }
 
-export function signup(myCustomerDraft: MyCustomerDraft) {
+export async function signup(myCustomerDraft: MyCustomerDraft) {
   apiRoot
     .me()
     .signup()
