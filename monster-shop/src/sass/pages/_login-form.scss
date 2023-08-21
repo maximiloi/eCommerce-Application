@@ -1,0 +1,26 @@
+.login-form {
+  &__container {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  &__wrapper {
+    padding: 15px 30px 30px 30px;
+
+    color: $color-dark-s;
+
+    border: 1px solid $color-dark-s;
+    border-top: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+    background-color: rgba(246, 246, 246, 0.9);
+
+    box-shadow: 10px 10px 25px -5px rgba(0, 0, 0, 0.75);
+  }
+
+  &__link {
+    display: inline-block;
+    margin-top: 10px;
+  }
+}

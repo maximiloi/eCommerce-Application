@@ -2,6 +2,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    jest: true,
   },
   extends: [
     'airbnb',
@@ -37,6 +38,9 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react', 'prettier'],
   rules: {
     'react/react-in-jsx-scope': 0,
+    'import/no-extraneous-dependencies': 0,
+    'react/jsx-props-no-spreading': 0,
+    'no-console': 0,
   },
   settings: {
     react: {

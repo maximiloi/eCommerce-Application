@@ -1,0 +1,7 @@
+@import '../../sass/abstracts/variables';
+
+summary {
+  cursor: pointer;
+  color: $color-dark-m;
+  margin: 5px 0;
+}
