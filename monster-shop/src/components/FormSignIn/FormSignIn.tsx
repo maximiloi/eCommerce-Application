@@ -7,7 +7,11 @@ import {
   IconButton,
   InputAdornment,
 } from '@mui/material';
-import { CustomerSignin } from '@commercetools/platform-sdk';
+import {
+  ClientResponse,
+  CustomerSignInResult,
+  CustomerSignin,
+} from '@commercetools/platform-sdk';
 import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { login } from '../../api/AuthorizedUser/requests';
@@ -41,16 +45,20 @@ export default function FormSignIn() {
     formState: { errors, isValid },
     reset,
     control,
-  } = useForm<CustomerSignin>({ mode: 'onBlur' });
+  } = useForm<CustomerSignin>({ mode: 'onChange' });
 
   const onSubmit = (data: CustomerSignin) => {
     console.log(data);
-    login(data);
-    // TODO: тут надо дождаться ответа от сервера, если ошибка 400 вывести поп ап
-    // "Incorrect e-mail or password"
-    // Если все окей то сделать резет, и изменить название кнопки
-    navigate('/');
-    reset();
+    login(data)
+      .then((response: ClientResponse<CustomerSignInResult>) => {
+        if (response.statusCode === 200) {
+          navigate('/');
+          reset();
+        }
+      })
+      .catch((error: Error) => {
+        console.error('Произошла ошибка:', error);
+      });
   };
 
   return (
