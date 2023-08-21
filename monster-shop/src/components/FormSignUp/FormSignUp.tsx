@@ -19,12 +19,12 @@ import validateDateBirth from '../../helper/validateDateBirth';
 
 import './FormSignUp.scss';
 
-type FormValues = {
+export interface FormValues {
   email: string;
   firstName: string;
   lastName: string;
   password: string;
-  dateOfBirth: string | null;
+  dateOfBirth: string | undefined;
   shippingStreet: string;
   shippingCity: string;
   shippingPostalCode: string;
@@ -36,7 +36,7 @@ type FormValues = {
   billingPostalCode: string;
   billingCountry: string;
   billingDefaultAddress: boolean;
-};
+}
 
 const ColorButton = styled(Button)<ButtonProps>(() => ({
   color: '#000',
@@ -54,7 +54,7 @@ export default function FormSignUp() {
     control,
   } = useForm<FormValues>({
     mode: 'onBlur',
-    defaultValues: { dateOfBirth: null },
+    defaultValues: { dateOfBirth: undefined },
   });
 
   const onSubmit = (data: FormValues) => {
@@ -168,7 +168,7 @@ export default function FormSignUp() {
         <Controller
           name="dateOfBirth"
           control={control}
-          defaultValue={null}
+          defaultValue={undefined}
           rules={{
             required: 'Date of Birth is required',
             validate: validateDateBirth,

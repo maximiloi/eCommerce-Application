@@ -1,10 +1,10 @@
-const validateDateBirth: (value: string | null) => string | true = (
-  value: string | null
+const validateDateBirth: (value: string | undefined) => string | true = (
+  value: string | undefined
 ): string | true => {
   const ageConsent = 13;
   const bigAge = 150;
 
-  if (value !== null) {
+  if (value) {
     const today = new Date();
     const birthDate = new Date(value.toString());
     const age: number = today.getFullYear() - birthDate.getFullYear();
