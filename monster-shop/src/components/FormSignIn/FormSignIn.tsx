@@ -41,7 +41,7 @@ export default function FormSignIn() {
     formState: { errors, isValid },
     reset,
     control,
-  } = useForm<CustomerSignin>({ mode: 'onBlur' });
+  } = useForm<CustomerSignin>({ mode: 'onChange' });
 
   const onSubmit = (data: CustomerSignin) => {
     console.log(data);
