@@ -1,3 +1,4 @@
+@use '../../sass/abstracts/mixins';
 @import '../../sass/abstracts/variables';
 
 .logo {
@@ -35,6 +36,36 @@
         font-size: 52px;
         margin-top: -12px;
         margin-bottom: -6px;
+      }
+    }
+  }
+
+  @include mixins.media-mobile {
+    &__header {
+      & .logo__img {
+        margin-left: 5px;
+
+        & img {
+          width: 28px;
+          height: 22px;
+        }
+      }
+
+      & .logo__wrapper {
+        padding: 0 2px;
+
+        display: flex;
+        flex-direction: column;
+
+        & :nth-child(1) {
+          font-size: 20px;
+        }
+
+        & :nth-child(2) {
+          font-size: 30px;
+          margin-top: -2px;
+          margin-bottom: -1px;
+        }
       }
     }
   }

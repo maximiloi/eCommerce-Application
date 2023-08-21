@@ -1,3 +1,5 @@
+@use '../abstracts/variables';
+
 @mixin typography($weight, $size, $height, $spacing: null) {
   font-style: normal;
   font-weight: $weight;
@@ -5,5 +7,11 @@
   line-height: $height;
   @if ($spacing) {
     letter-spacing: $spacing;
+  }
+}
+
+@mixin media-mobile {
+  @media (max-width: variables.$mobile-width) {
+    @content;
   }
 }
