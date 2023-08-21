@@ -1,5 +1,6 @@
 import { MyCustomerDraft } from '@commercetools/platform-sdk';
-import { FormValues } from '../components/FormSignUp/FormSignUp';
+import dayjs from 'dayjs';
+import FormValues from '../types/signupFormValues';
 
 export default function dataFromat(data: FormValues): MyCustomerDraft {
   const draft = {
@@ -7,7 +8,7 @@ export default function dataFromat(data: FormValues): MyCustomerDraft {
     password: data.password,
     firstName: data.firstName,
     lastName: data.lastName,
-    dateOfBirth: data.dateOfBirth,
+    dateOfBirth: dayjs(data.dateOfBirth).format('DDMMYYYY'),
     addresses: [
       {
         country: data.shippingCountry,
