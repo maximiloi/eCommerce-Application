@@ -11,6 +11,7 @@ import { CustomerSignin } from '@commercetools/platform-sdk';
 import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { login } from '../../api/AuthorizedUser/requests';
+import User from '../../api/user';
 
 import validatePassword from '../../helper/validatePassword';
 
@@ -43,14 +44,14 @@ export default function FormSignIn() {
     control,
   } = useForm<CustomerSignin>({ mode: 'onChange' });
 
-  const onSubmit = (data: CustomerSignin) => {
+  const onSubmit = async (data: CustomerSignin) => {
     console.log(data);
-    login(data);
-    // TODO: тут надо дождаться ответа от сервера, если ошибка 400 вывести поп ап
-    // "Incorrect e-mail or password"
-    // Если все окей то сделать резет, и изменить название кнопки
-    navigate('/');
-    reset();
+    await login(data);
+
+    if (User.created) {
+      navigate('/');
+      reset();
+    }
   };
 
   return (

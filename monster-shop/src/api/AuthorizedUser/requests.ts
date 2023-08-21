@@ -11,7 +11,7 @@ const apiRoot = createApiBuilderFromCtpClient(authClient).withProjectKey({
   projectKey: 'monster-shop',
 });
 
-export function login(customerSignin: CustomerSignin) {
+export async function login(customerSignin: CustomerSignin) {
   apiRoot
     .me()
     .login()
