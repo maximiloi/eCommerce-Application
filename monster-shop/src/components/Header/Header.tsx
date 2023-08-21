@@ -23,7 +23,8 @@ const pages = [
   { name: 'Home', path: '/' },
   { name: 'Catalog', path: '/catalog' },
   { name: 'About us', path: '/about' },
-  { name: 'Log In Now', path: '/auth' },
+  { name: 'Sign In', path: '/auth' },
+  { name: 'Sign Up', path: '/register' },
 ];
 const settings = ['Profile', 'Logout'];
 
