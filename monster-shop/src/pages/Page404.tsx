@@ -26,9 +26,9 @@ function Page404() {
 
         <div className="shadow" />
       </div>
-      <div className="ghost__link">
-        <NavLink to="/">Back to Start Page</NavLink>
-      </div>
+      <NavLink className="ghost__link" to="/">
+        Back to Start Page
+      </NavLink>
     </>
   );
 }

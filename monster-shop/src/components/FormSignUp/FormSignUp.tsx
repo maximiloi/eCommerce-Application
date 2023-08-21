@@ -1,3 +1,4 @@
+import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import {
   TextField,
@@ -7,12 +8,15 @@ import {
   Switch,
   FormControlLabel,
   styled,
+  IconButton,
+  InputAdornment,
 } from '@mui/material';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useNavigate } from 'react-router-dom';
 import dataFromat from '../../helper/registrationDataFormat';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import validatePassword from '../../helper/validatePassword';
 import validateDateBirth from '../../helper/validateDateBirth';
@@ -31,13 +35,23 @@ const ColorButton = styled(Button)<ButtonProps>(() => ({
 
 export default function FormSignUp() {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+    
   const {
+    register,
     handleSubmit,
     formState: { errors, isValid },
+    reset,
     control,
     reset,
   } = useForm<FormValues>({
-    mode: 'onBlur',
+    mode: 'onChange',
     defaultValues: { dateOfBirth: undefined },
   });
 
@@ -64,9 +78,10 @@ export default function FormSignUp() {
         render={({ field }) => (
           <TextField
             margin="dense"
+            size="small"
             fullWidth
             required
-            label="Email"
+            label="E-mail"
             error={!!errors.email}
             helperText={errors.email ? errors.email.message : ''}
             {...field}
@@ -78,24 +93,40 @@ export default function FormSignUp() {
         name="password"
         control={control}
         defaultValue=""
-        rules={{
-          required: 'Password is required',
-          minLength: {
-            value: 8,
-            message: 'Password must have at least 8 characters',
-          },
-          validate: validatePassword,
-        }}
         render={({ field }) => (
           <TextField
+            {...field}
             margin="dense"
+            label="Password"
+            size="small"
             fullWidth
             required
-            type="password"
-            label="Password"
-            error={!!errors.password}
-            helperText={errors.password ? errors.password.message : ''}
-            {...field}
+            type={showPassword ? 'text' : 'password'}
+            {...register('password', {
+              required: 'Enter your password, required field',
+              minLength: {
+                value: 8,
+                message: 'Password must have at least 8 characters',
+              },
+              validate: validatePassword,
+            })}
+            error={errors?.password !== undefined}
+            helperText={errors?.password?.message}
+            {...register('password')}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         )}
       />
@@ -114,6 +145,7 @@ export default function FormSignUp() {
         render={({ field }) => (
           <TextField
             margin="dense"
+            size="small"
             fullWidth
             required
             label="First Name"
@@ -138,6 +170,7 @@ export default function FormSignUp() {
         render={({ field }) => (
           <TextField
             margin="dense"
+            size="small"
             fullWidth
             required
             label="Last Name"
@@ -160,6 +193,7 @@ export default function FormSignUp() {
           render={({ field }) => (
             <DateField
               margin="dense"
+              size="small"
               fullWidth
               required
               label="Date of Birth"
@@ -195,6 +229,7 @@ export default function FormSignUp() {
             render={({ field }) => (
               <TextField
                 margin="dense"
+                size="small"
                 fullWidth
                 required
                 label="Street"
@@ -223,6 +258,7 @@ export default function FormSignUp() {
               <TextField
                 label="City"
                 margin="dense"
+                size="small"
                 fullWidth
                 required
                 autoComplete="address-level2"
@@ -250,6 +286,7 @@ export default function FormSignUp() {
               <TextField
                 label="Postal code"
                 margin="dense"
+                size="small"
                 fullWidth
                 required
                 autoComplete="postal-code"
@@ -283,6 +320,7 @@ export default function FormSignUp() {
               <TextField
                 label="Country"
                 margin="dense"
+                size="small"
                 fullWidth
                 required
                 autoComplete="country-name"
@@ -337,6 +375,7 @@ export default function FormSignUp() {
               render={({ field }) => (
                 <TextField
                   margin="dense"
+                  size="small"
                   fullWidth
                   required
                   label="Street"
@@ -365,6 +404,7 @@ export default function FormSignUp() {
                 <TextField
                   label="City"
                   margin="dense"
+                  size="small"
                   fullWidth
                   required
                   autoComplete="address-level2"
@@ -392,6 +432,7 @@ export default function FormSignUp() {
                 <TextField
                   label="Postal code"
                   margin="dense"
+                  size="small"
                   fullWidth
                   required
                   autoComplete="postal-code"
@@ -425,6 +466,7 @@ export default function FormSignUp() {
                 <TextField
                   label="Country"
                   margin="dense"
+                  size="small"
                   fullWidth
                   required
                   autoComplete="country-name"

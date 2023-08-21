@@ -4,6 +4,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Page404 from './pages/Page404';
 import Header from './components/Header/Header';
+import Toast from './components/Toast/Toast';
 
 import './App.scss';
 import User from './api/user';
@@ -30,6 +31,7 @@ function App() {
           </Routes>
         </div>
       </main>
+      <Toast />
     </>
   );
 }
