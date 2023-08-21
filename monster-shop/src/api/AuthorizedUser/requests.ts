@@ -13,6 +13,7 @@ const apiRoot = createApiBuilderFromCtpClient(authClient).withProjectKey({
   projectKey: 'monster-shop',
 });
 
+
 export function login(
   customerSignin: CustomerSignin
 ): Promise<ClientResponse<CustomerSignInResult>> {
@@ -38,7 +39,7 @@ export function login(
   });
 }
 
-export function signup(myCustomerDraft: MyCustomerDraft) {
+export async function signup(myCustomerDraft: MyCustomerDraft) {
   apiRoot
     .me()
     .signup()
@@ -48,7 +49,10 @@ export function signup(myCustomerDraft: MyCustomerDraft) {
     .execute()
     .then((response) => {
       User.newUser(response.body.customer);
-      console.log('User registered successfully:', User.data);
+      login({
+        email: myCustomerDraft.email,
+        password: myCustomerDraft.password,
+      });
     })
     .catch((error) => {
       console.error('Error registering user:', error);

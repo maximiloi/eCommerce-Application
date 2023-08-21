@@ -14,33 +14,16 @@ import {
 import { DateField } from '@mui/x-date-pickers/DateField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
+import dataFromat from '../../helper/registrationDataFormat';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-// import { MyCustomerDraft } from '@commercetools/platform-sdk';
 
 import validatePassword from '../../helper/validatePassword';
 import validateDateBirth from '../../helper/validateDateBirth';
 
 import './FormSignUp.scss';
-
-type FormValues = {
-  email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-  dateOfBirth: string | null;
-  shippingStreet: string;
-  shippingCity: string;
-  shippingPostalCode: string;
-  shippingCountry: string;
-  shippingDefaultAddress: boolean;
-  addressMatches: boolean;
-  billingStreet: string;
-  billingCity: string;
-  billingPostalCode: string;
-  billingCountry: string;
-  billingDefaultAddress: boolean;
-};
+import { signup } from '../../api/AuthorizedUser/requests';
+import FormValues from '../../types/signupFormValues';
 
 const ColorButton = styled(Button)<ButtonProps>(() => ({
   color: '#000',
@@ -51,6 +34,7 @@ const ColorButton = styled(Button)<ButtonProps>(() => ({
 }));
 
 export default function FormSignUp() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
@@ -58,23 +42,24 @@ export default function FormSignUp() {
   ) => {
     event.preventDefault();
   };
-
+    
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     reset,
     control,
+    reset,
   } = useForm<FormValues>({
-    mode: 'onBlur',
-    defaultValues: { dateOfBirth: null },
+    mode: 'onChange',
+    defaultValues: { dateOfBirth: undefined },
   });
 
   const onSubmit = (data: FormValues) => {
-    console.log('birthDate: ', dayjs(data.dateOfBirth).format('DD/MM/YYYY'));
-    console.log(data);
-    // TODO!! Проверка регистрации
-    reset();
+    signup(dataFromat(data)).then(() => {
+      navigate('/');
+      reset();
+    });
   };
 
   return (
@@ -200,7 +185,7 @@ export default function FormSignUp() {
         <Controller
           name="dateOfBirth"
           control={control}
-          defaultValue={null}
+          defaultValue={undefined}
           rules={{
             required: 'Date of Birth is required',
             validate: validateDateBirth,
