@@ -3,17 +3,11 @@
 .header {
   font-size: $font-desktop;
 
-  &__container {
-    margin: 0 auto;
-    padding: 20px 30px;
-    max-width: $content-width;
+  a {
+    color: $color-text;
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  &__link {
-    text-decoration: none;
+    &:hover {
+      color: darken($color-text, 10%);
+    }
   }
 }
