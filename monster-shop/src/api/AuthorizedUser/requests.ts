@@ -22,12 +22,7 @@ export async function login(customerSignin: CustomerSignin) {
     .then((response) => {
       User.newUser(response.body.customer);
       console.log('User logined successfully:', User.data);
-      const message: string | undefined =
-        User.data?.firstName === undefined
-          ? User.data?.firstName
-          : User.data?.email;
-      if (!message) return;
-      toastify(`Hello, ${message}`, 'success');
+      toastify(`Hello, ${User.data?.firstName}`, 'success');
     })
     .catch((error) => {
       console.error('Error registering user:', error);
