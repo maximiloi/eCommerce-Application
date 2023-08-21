@@ -15,8 +15,8 @@ import { DateField } from '@mui/x-date-pickers/DateField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useNavigate } from 'react-router-dom';
-import dataFromat from '../../helper/registrationDataFormat';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import dataFromat from '../../helper/registrationDataFormat';
 
 import validatePassword from '../../helper/validatePassword';
 import validateDateBirth from '../../helper/validateDateBirth';
@@ -42,14 +42,13 @@ export default function FormSignUp() {
   ) => {
     event.preventDefault();
   };
-    
+
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     reset,
     control,
-    reset,
   } = useForm<FormValues>({
     mode: 'onChange',
     defaultValues: { dateOfBirth: undefined },
