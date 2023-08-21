@@ -1,0 +1,13 @@
+@import '../../sass/abstracts/variables';
+
+.header {
+  font-size: $font-desktop;
+
+  a {
+    color: $color-text;
+
+    &:hover {
+      color: darken($color-text, 10%);
+    }
+  }
+}

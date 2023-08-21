@@ -5,3 +5,17 @@
 
 /* base */
 @import './sass/base/typography';
+
+/* components */
+@import './sass/components/buttons';
+
+/* pages */
+@import './sass/pages/login-form';
+
+.main {
+  &__container {
+    margin: 0 auto;
+    padding: 30px;
+    max-width: $content-width;
+  }
+}
