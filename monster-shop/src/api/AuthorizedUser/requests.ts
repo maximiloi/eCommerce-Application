@@ -5,6 +5,7 @@ import {
 } from '@commercetools/platform-sdk';
 import authClient from './auth';
 import User from '../user';
+import toastify from '../../helper/toastify';
 
 const apiRoot = createApiBuilderFromCtpClient(authClient).withProjectKey({
   projectKey: 'monster-shop',
@@ -21,9 +22,16 @@ export function login(customerSignin: CustomerSignin) {
     .then((response) => {
       User.newUser(response.body.customer);
       console.log('User logined successfully:', User.data);
+      const message: string | undefined =
+        User.data?.firstName === undefined
+          ? User.data?.firstName
+          : User.data?.email;
+      if (!message) return;
+      toastify(`Hello, ${message}`, 'success');
     })
     .catch((error) => {
       console.error('Error registering user:', error);
+      toastify(error.message, 'error');
     });
 }
 
