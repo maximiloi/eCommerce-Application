@@ -10,6 +10,7 @@ import {
   styled,
   IconButton,
   InputAdornment,
+  MenuItem,
 } from '@mui/material';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -32,6 +33,13 @@ const ColorButton = styled(Button)<ButtonProps>(() => ({
     backgroundColor: '#f0c349',
   },
 }));
+
+const countries = [
+  { value: 'BY', label: 'Belarus' },
+  { value: 'LT', label: 'Lithuania' },
+  { value: 'PL', label: 'Poland' },
+  { value: 'RU', label: 'Russia' },
+];
 
 export default function FormSignUp() {
   const navigate = useNavigate();
@@ -306,12 +314,8 @@ export default function FormSignUp() {
             defaultValue=""
             rules={{
               required: 'Country is required',
-              minLength: {
-                value: 1,
-                message: 'Country must contain at least one character',
-              },
               pattern: {
-                value: /^[a-zA-Zа-яА-ЯёЁґҐєЄіІїЇщЩЬьЫыъЪэЭ-]+$/u,
+                value: /^[A-Z]{2}$/,
                 message: 'Enter valid Country',
               },
             }}
@@ -320,15 +324,21 @@ export default function FormSignUp() {
                 label="Country"
                 margin="dense"
                 size="small"
+                select
                 fullWidth
                 required
-                autoComplete="country-name"
                 {...field}
                 error={!!errors.shippingCountry}
                 helperText={
                   errors.shippingCountry ? errors.shippingCountry.message : ''
                 }
-              />
+              >
+                {countries.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
             )}
           />
 
@@ -456,12 +466,8 @@ export default function FormSignUp() {
               control={control}
               defaultValue=""
               rules={{
-                minLength: {
-                  value: 1,
-                  message: 'Country must contain at least one character',
-                },
                 pattern: {
-                  value: /^[a-zA-Zа-яА-ЯёЁґҐєЄіІїЇщЩЬьЫыъЪэЭ-]+$/u,
+                  value: /^[A-Z]{2}$/,
                   message: 'Enter valid Country',
                 },
               }}
@@ -470,14 +476,20 @@ export default function FormSignUp() {
                   label="Country"
                   margin="dense"
                   size="small"
+                  select
                   fullWidth
-                  autoComplete="country-name"
                   {...field}
                   error={!!errors.billingCountry}
                   helperText={
                     errors.billingCountry ? errors.billingCountry.message : ''
                   }
-                />
+                >
+                  {countries.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
               )}
             />
 
