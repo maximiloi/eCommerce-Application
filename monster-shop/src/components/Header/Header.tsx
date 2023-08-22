@@ -33,6 +33,7 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
+  let userTitle = User.created ? User.data?.firstName : 'Log in now';
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -40,14 +41,20 @@ function Header() {
     if (User.created) setAnchorElUser(event.currentTarget);
     else navigate('/auth');
   };
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    const target = event.target as HTMLParagraphElement;
+    if (target.textContent === 'Logout') {
+      User.created = false;
+      userTitle = 'Log in now';
+      navigate('/');
+    }
     setAnchorElUser(null);
   };
+
   return (
     <AppBar position="static" color="transparent" className="header">
       <Container maxWidth="xl">
@@ -109,7 +116,7 @@ function Header() {
             ))}
           </Box>
           <Box sx={{ flexGrow: 0, ml: 3 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title={userTitle}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <AccountCircleIcon fontSize="large" color="warning" />
               </IconButton>
