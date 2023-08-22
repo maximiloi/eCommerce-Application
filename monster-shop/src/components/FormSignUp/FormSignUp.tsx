@@ -45,7 +45,7 @@ export default function FormSignUp() {
   const navigate = useNavigate();
   const [addressMatches, setAddressMatches] = React.useState(false);
   const handleAddressMatchesChange = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const targetElement = event.target as HTMLInputElement;
     setAddressMatches(!!targetElement.value);
@@ -368,7 +368,7 @@ export default function FormSignUp() {
               <FormControlLabel
                 control={
                   <Switch
-                    onClick={(event) => {
+                    onChange={(event) => {
                       const billing = document.querySelector(
                         '.billing'
                       ) as HTMLElement;
@@ -377,6 +377,7 @@ export default function FormSignUp() {
                         handleAddressMatchesChange(event);
                       } else {
                         billing.style.display = 'block';
+                        handleAddressMatchesChange(event);
                       }
                     }}
                   />
