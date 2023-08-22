@@ -43,6 +43,13 @@ const countries = [
 
 export default function FormSignUp() {
   const navigate = useNavigate();
+  const [addressMatches, setAddressMatches] = React.useState(false);
+  const handleAddressMatchesChange = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const targetElement = event.target as HTMLInputElement;
+    setAddressMatches(!!targetElement.value);
+  };
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
@@ -361,13 +368,16 @@ export default function FormSignUp() {
               <FormControlLabel
                 control={
                   <Switch
-                    onClick={() => {
+                    onClick={(event) => {
                       const billing = document.querySelector(
                         '.billing'
                       ) as HTMLElement;
-                      if (billing.style.display !== 'none')
+                      if (billing.style.display !== 'none') {
                         billing.style.display = 'none';
-                      else billing.style.display = 'block';
+                        handleAddressMatchesChange(event);
+                      } else {
+                        billing.style.display = 'block';
+                      }
                     }}
                   />
                 }
@@ -386,6 +396,7 @@ export default function FormSignUp() {
               control={control}
               defaultValue=""
               rules={{
+                required: !addressMatches ? 'Street is required' : false,
                 minLength: {
                   value: 1,
                   message: 'Street must contain at least one character',
@@ -393,6 +404,7 @@ export default function FormSignUp() {
               }}
               render={({ field }) => (
                 <TextField
+                  required={!addressMatches}
                   margin="dense"
                   size="small"
                   fullWidth
@@ -412,6 +424,7 @@ export default function FormSignUp() {
               control={control}
               defaultValue=""
               rules={{
+                required: !addressMatches ? 'City is required' : false,
                 minLength: {
                   value: 1,
                   message: 'City must contain at least one character',
@@ -419,6 +432,7 @@ export default function FormSignUp() {
               }}
               render={({ field }) => (
                 <TextField
+                  required={!addressMatches}
                   label="City"
                   margin="dense"
                   size="small"
@@ -438,6 +452,7 @@ export default function FormSignUp() {
               control={control}
               defaultValue=""
               rules={{
+                required: !addressMatches ? 'Postal code is required' : false,
                 minLength: {
                   value: 1,
                   message: 'Postal code must contain at least one character',
@@ -445,6 +460,7 @@ export default function FormSignUp() {
               }}
               render={({ field }) => (
                 <TextField
+                  required={!addressMatches}
                   label="Postal code"
                   margin="dense"
                   size="small"
@@ -466,6 +482,7 @@ export default function FormSignUp() {
               control={control}
               defaultValue=""
               rules={{
+                required: !addressMatches ? 'Country is required' : false,
                 pattern: {
                   value: /^[A-Z]{2}$/,
                   message: 'Enter valid Country',
@@ -473,6 +490,7 @@ export default function FormSignUp() {
               }}
               render={({ field }) => (
                 <TextField
+                  required={!addressMatches}
                   label="Country"
                   margin="dense"
                   size="small"
