@@ -1,0 +1,22 @@
+/* abstracts */
+@import './sass/abstracts/variables';
+@import './sass/abstracts/mixins';
+@import './sass/abstracts/placeholders';
+
+/* base */
+@import './sass/base/typography';
+@import './sass/base/normalize';
+
+/* components */
+@import './sass/components/buttons';
+
+/* pages */
+@import './sass/pages/login-form';
+
+.main {
+  &__container {
+    margin: 0 auto;
+    padding: 30px;
+    max-width: $content-width;
+  }
+}
