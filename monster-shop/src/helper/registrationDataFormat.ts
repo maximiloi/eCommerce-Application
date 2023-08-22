@@ -27,12 +27,11 @@ export default function dataFromat(data: FormValues): MyCustomerDraft {
       postalCode: data.billingPostalCode,
     });
     if (data.billingDefaultAddress)
-      Object.defineProperty(draft, 'defaultbillingAddress', 1);
+      Object.assign(draft, { defaultbillingAddress: 1 });
   }
   if (data.shippingDefaultAddress) {
-    Object.defineProperty(draft, 'defaultShippingAddress', 0);
-    if (data.addressMatches)
-      Object.defineProperty(draft, 'defaultBillingAddress', 0);
+    Object.assign(draft, { defaultShippingAddress: 0 });
+    if (data.addressMatches) Object.assign(draft, { defaultBillingAddress: 0 });
   }
   return draft;
 }
