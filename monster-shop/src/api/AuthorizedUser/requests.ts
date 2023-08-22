@@ -53,6 +53,6 @@ export async function signup(myCustomerDraft: MyCustomerDraft) {
       });
     })
     .catch((error) => {
-      console.error('Error registering user:', error);
+      toastify(error.message, 'error');
     });
 }

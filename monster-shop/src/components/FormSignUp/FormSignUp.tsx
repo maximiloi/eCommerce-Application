@@ -349,7 +349,18 @@ export default function FormSignUp() {
             control={control}
             render={({ field }) => (
               <FormControlLabel
-                control={<Switch />}
+                control={
+                  <Switch
+                    onClick={() => {
+                      const billing = document.querySelector(
+                        '.billing'
+                      ) as HTMLElement;
+                      if (billing.style.display !== 'none')
+                        billing.style.display = 'none';
+                      else billing.style.display = 'block';
+                    }}
+                  />
+                }
                 label="Billing address matches the Shipping"
                 {...field}
               />
@@ -357,7 +368,7 @@ export default function FormSignUp() {
           />
         </div>
 
-        <details>
+        <details className="billing">
           <summary>Billing Address</summary>
           <div>
             <Controller
@@ -365,7 +376,6 @@ export default function FormSignUp() {
               control={control}
               defaultValue=""
               rules={{
-                required: 'Street is required',
                 minLength: {
                   value: 1,
                   message: 'Street must contain at least one character',
@@ -376,7 +386,6 @@ export default function FormSignUp() {
                   margin="dense"
                   size="small"
                   fullWidth
-                  required
                   label="Street"
                   autoComplete="address-line1"
                   {...field}
@@ -393,7 +402,6 @@ export default function FormSignUp() {
               control={control}
               defaultValue=""
               rules={{
-                required: 'City is required',
                 minLength: {
                   value: 1,
                   message: 'City must contain at least one character',
@@ -405,7 +413,6 @@ export default function FormSignUp() {
                   margin="dense"
                   size="small"
                   fullWidth
-                  required
                   autoComplete="address-level2"
                   {...field}
                   error={!!errors.billingCity}
@@ -421,7 +428,6 @@ export default function FormSignUp() {
               control={control}
               defaultValue=""
               rules={{
-                required: 'Postal code is required',
                 minLength: {
                   value: 1,
                   message: 'Postal code must contain at least one character',
@@ -433,7 +439,6 @@ export default function FormSignUp() {
                   margin="dense"
                   size="small"
                   fullWidth
-                  required
                   autoComplete="postal-code"
                   {...field}
                   error={!!errors.billingPostalCode}
@@ -451,7 +456,6 @@ export default function FormSignUp() {
               control={control}
               defaultValue=""
               rules={{
-                required: 'Country is required',
                 minLength: {
                   value: 1,
                   message: 'Country must contain at least one character',
@@ -467,7 +471,6 @@ export default function FormSignUp() {
                   margin="dense"
                   size="small"
                   fullWidth
-                  required
                   autoComplete="country-name"
                   {...field}
                   error={!!errors.billingCountry}
