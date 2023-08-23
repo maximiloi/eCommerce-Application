@@ -397,7 +397,7 @@ export default function FormSignUp() {
                     onChange={(event) => handleAddressMatchesChange(event)}
                   />
                 }
-                label="Billing address matches the Shipping"
+                label="Billing address matches the Shipping address"
                 {...field}
               />
             )}
