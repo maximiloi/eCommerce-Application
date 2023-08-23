@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import {
   TextField,
@@ -15,20 +16,18 @@ import {
 import { DateField } from '@mui/x-date-pickers/DateField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   ClientResponse,
   CustomerSignInResult,
 } from '@commercetools/platform-sdk';
-import dataFromat from '../../helper/registrationDataFormat';
-
+import dataFormat from '../../helper/registrationDataFormat';
 import validatePassword from '../../helper/validatePassword';
 import validateDateBirth from '../../helper/validateDateBirth';
-
-import './FormSignUp.scss';
 import { signup } from '../../api/AuthorizedUser/requests';
 import { FormValues, KeySignUp } from '../../types/signupFormValues';
+
+import './FormSignUp.scss';
 
 const ColorButton = styled(Button)<ButtonProps>(() => ({
   color: '#000',
@@ -92,7 +91,7 @@ export default function FormSignUp() {
   };
 
   const onSubmit = async (data: FormValues) => {
-    await signup(dataFromat(data)).then(
+    await signup(dataFormat(data)).then(
       (response: ClientResponse<CustomerSignInResult>) => {
         if (response.statusCode === 201) {
           navigate('/');

@@ -1,6 +1,6 @@
 import { MyCustomerDraft } from '@commercetools/platform-sdk';
 import dayjs from 'dayjs';
-import FormValues from '../types/signupFormValues';
+import { FormValues } from '../types/signupFormValues';
 
 export default function dataFromat(data: FormValues): MyCustomerDraft {
   const draft = {
