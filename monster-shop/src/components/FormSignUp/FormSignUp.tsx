@@ -17,6 +17,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import {
+  ClientResponse,
+  CustomerSignInResult,
+} from '@commercetools/platform-sdk';
 import dataFromat from '../../helper/registrationDataFormat';
 
 import validatePassword from '../../helper/validatePassword';
@@ -87,11 +91,15 @@ export default function FormSignUp() {
     event.preventDefault();
   };
 
-  const onSubmit = (data: FormValues) => {
-    signup(dataFromat(data)).then(() => {
-      navigate('/');
-      reset();
-    });
+  const onSubmit = async (data: FormValues) => {
+    await signup(dataFromat(data)).then(
+      (response: ClientResponse<CustomerSignInResult>) => {
+        if (response.statusCode === 201) {
+          navigate('/');
+          reset();
+        }
+      }
+    );
   };
 
   return (
