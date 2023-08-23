@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import {
   TextField,
@@ -15,20 +16,18 @@ import {
 import { DateField } from '@mui/x-date-pickers/DateField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   ClientResponse,
   CustomerSignInResult,
 } from '@commercetools/platform-sdk';
-import dataFromat from '../../helper/registrationDataFormat';
-
+import dataFormat from '../../helper/registrationDataFormat';
 import validatePassword from '../../helper/validatePassword';
 import validateDateBirth from '../../helper/validateDateBirth';
+import { signup } from '../../api/AuthorizedUser/requests';
+import { FormValues, KeySignUp } from '../../types/signupFormValues';
 
 import './FormSignUp.scss';
-import { signup } from '../../api/AuthorizedUser/requests';
-import FormValues from '../../types/signupFormValues';
 
 const ColorButton = styled(Button)<ButtonProps>(() => ({
   color: '#000',
@@ -46,13 +45,42 @@ const countries = [
 ];
 
 export default function FormSignUp() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset,
+    control,
+    setValue,
+  } = useForm<FormValues>({
+    mode: 'onChange',
+    defaultValues: { dateOfBirth: undefined },
+  });
   const navigate = useNavigate();
-  const [addressMatches, setAddressMatches] = React.useState(false);
   const handleAddressMatchesChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const targetElement = event.target as HTMLInputElement;
-    setAddressMatches(!!targetElement.value);
+    const billing = document.querySelector('.billing');
+    const form = document.forms[0];
+    const address = [
+      'shippingStreet',
+      'shippingCity',
+      'shippingPostalCode',
+      'shippingCountry',
+    ];
+    const addressBill: Array<Partial<KeySignUp>> = [
+      'billingStreet',
+      'billingCity',
+      'billingPostalCode',
+      'billingCountry',
+    ];
+    const addressData = address.map(
+      (el) => (form.elements.namedItem(el) as HTMLInputElement).value
+    );
+
+    billing?.classList.toggle('hidden');
+    if (event.target.checked)
+      addressBill.map((el, index) => setValue(el, addressData[index]));
   };
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -62,19 +90,8 @@ export default function FormSignUp() {
     event.preventDefault();
   };
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-    reset,
-    control,
-  } = useForm<FormValues>({
-    mode: 'onChange',
-    defaultValues: { dateOfBirth: undefined },
-  });
-
   const onSubmit = async (data: FormValues) => {
-    await signup(dataFromat(data)).then(
+    await signup(dataFormat(data)).then(
       (response: ClientResponse<CustomerSignInResult>) => {
         if (response.statusCode === 201) {
           navigate('/');
@@ -376,21 +393,10 @@ export default function FormSignUp() {
               <FormControlLabel
                 control={
                   <Switch
-                    onChange={(event) => {
-                      const billing = document.querySelector(
-                        '.billing'
-                      ) as HTMLElement;
-                      if (billing.style.display !== 'none') {
-                        billing.style.display = 'none';
-                        handleAddressMatchesChange(event);
-                      } else {
-                        billing.style.display = 'block';
-                        handleAddressMatchesChange(event);
-                      }
-                    }}
+                    onChange={(event) => handleAddressMatchesChange(event)}
                   />
                 }
-                label="Billing address matches the Shipping"
+                label="Billing address matches the Shipping address"
                 {...field}
               />
             )}
@@ -405,7 +411,7 @@ export default function FormSignUp() {
               control={control}
               defaultValue=""
               rules={{
-                required: !addressMatches ? 'Street is required' : false,
+                required: 'Street is required',
                 minLength: {
                   value: 1,
                   message: 'Street must contain at least one character',
@@ -413,7 +419,7 @@ export default function FormSignUp() {
               }}
               render={({ field }) => (
                 <TextField
-                  required={!addressMatches}
+                  required
                   margin="dense"
                   size="small"
                   fullWidth
@@ -433,7 +439,7 @@ export default function FormSignUp() {
               control={control}
               defaultValue=""
               rules={{
-                required: !addressMatches ? 'City is required' : false,
+                required: 'City is required',
                 minLength: {
                   value: 1,
                   message: 'City must contain at least one character',
@@ -441,7 +447,7 @@ export default function FormSignUp() {
               }}
               render={({ field }) => (
                 <TextField
-                  required={!addressMatches}
+                  required
                   label="City"
                   margin="dense"
                   size="small"
@@ -461,7 +467,7 @@ export default function FormSignUp() {
               control={control}
               defaultValue=""
               rules={{
-                required: !addressMatches ? 'Postal code is required' : false,
+                required: 'Postal code is required',
                 minLength: {
                   value: 1,
                   message: 'Postal code must contain at least one character',
@@ -469,7 +475,7 @@ export default function FormSignUp() {
               }}
               render={({ field }) => (
                 <TextField
-                  required={!addressMatches}
+                  required
                   label="Postal code"
                   margin="dense"
                   size="small"
@@ -491,7 +497,7 @@ export default function FormSignUp() {
               control={control}
               defaultValue=""
               rules={{
-                required: !addressMatches ? 'Country is required' : false,
+                required: 'Country is required',
                 pattern: {
                   value: /^[A-Z]{2}$/,
                   message: 'Enter valid Country',
@@ -499,7 +505,7 @@ export default function FormSignUp() {
               }}
               render={({ field }) => (
                 <TextField
-                  required={!addressMatches}
+                  required
                   label="Country"
                   margin="dense"
                   size="small"

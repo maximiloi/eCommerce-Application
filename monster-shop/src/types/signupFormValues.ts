@@ -1,4 +1,4 @@
-export default interface FormValues {
+export interface FormValues {
   email: string;
   firstName: string;
   lastName: string;
@@ -16,3 +16,5 @@ export default interface FormValues {
   billingCountry: string;
   billingDefaultAddress: boolean;
 }
+
+export type KeySignUp = keyof FormValues;
