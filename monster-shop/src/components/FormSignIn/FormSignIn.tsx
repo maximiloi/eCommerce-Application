@@ -48,16 +48,12 @@ export default function FormSignIn() {
   } = useForm<CustomerSignin>({ mode: 'onChange' });
 
   const onSubmit = (data: CustomerSignin) => {
-    login(data)
-      .then((response: ClientResponse<CustomerSignInResult>) => {
-        if (response.statusCode === 200) {
-          navigate('/');
-          reset();
-        }
-      })
-      .catch((error: Error) => {
-        console.error('Произошла ошибка:', error);
-      });
+    login(data).then((response: ClientResponse<CustomerSignInResult>) => {
+      if (response.statusCode === 200) {
+        navigate('/');
+        reset();
+      }
+    });
   };
 
   return (

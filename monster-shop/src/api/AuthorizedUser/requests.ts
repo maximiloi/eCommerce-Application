@@ -30,29 +30,36 @@ export function login(
         resolve(response);
       })
       .catch((error) => {
-        console.error('Error registering user:', error);
+        console.error('Error login user:', error);
         toastify(error.message, 'error');
         reject(error);
       });
   });
 }
 
-export async function signup(myCustomerDraft: MyCustomerDraft) {
-  apiRoot
-    .me()
-    .signup()
-    .post({
-      body: myCustomerDraft,
-    })
-    .execute()
-    .then((response) => {
-      User.newUser(response.body.customer);
-      login({
-        email: myCustomerDraft.email,
-        password: myCustomerDraft.password,
+export async function signup(
+  myCustomerDraft: MyCustomerDraft
+): Promise<ClientResponse<CustomerSignInResult>> {
+  return new Promise((resolve, reject) => {
+    apiRoot
+      .me()
+      .signup()
+      .post({
+        body: myCustomerDraft,
+      })
+      .execute()
+      .then((response) => {
+        User.newUser(response.body.customer);
+        login({
+          email: myCustomerDraft.email,
+          password: myCustomerDraft.password,
+        });
+        resolve(response);
+      })
+      .catch((error) => {
+        console.error('Error registering user:', error);
+        toastify(error.message, 'error');
+        reject(error);
       });
-    })
-    .catch((error) => {
-      toastify(error.message, 'error');
-    });
+  });
 }
