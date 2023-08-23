@@ -76,7 +76,6 @@ export default function FormSignUp() {
   const onSubmit = async (data: FormValues) => {
     await signup(dataFromat(data)).then(
       (response: ClientResponse<CustomerSignInResult>) => {
-        console.log('response: ', response);
         if (response.statusCode === 201) {
           navigate('/');
           reset();
