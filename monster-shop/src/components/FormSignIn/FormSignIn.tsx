@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import './FormSignIn.scss';
 import {
   ClientResponse,
@@ -13,12 +13,17 @@ import ColoredBtn from '../ColoredBtn/ColoredBtn';
 
 function FormSignIn() {
   const {
-    register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { isValid },
     reset,
     control,
-  } = useForm<CustomerSignin>({ mode: 'onChange' });
+  } = useForm<CustomerSignin>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    mode: 'onChange',
+  });
   const navigate = useNavigate();
 
   const onSubmit = (data: CustomerSignin) => {
@@ -31,48 +36,30 @@ function FormSignIn() {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Controller
+      <TextFieldInput
+        control={control}
         name="email"
-        control={control}
-        defaultValue=""
-        render={({ field }) => (
-          <TextFieldInput
-            {...field}
-            label="E-mail"
-            register={register}
-            required
-            rules={{
-              required: 'Enter your e-mail, required field',
-              pattern: {
-                value: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
-                message: 'Enter valid e-mail',
-              },
-            }}
-            error={errors?.email?.message}
-          />
-        )}
+        label="E-mail"
+        rules={{
+          required: 'Enter your e-mail, required field',
+          pattern: {
+            value: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
+            message: 'Enter valid e-mail',
+          },
+        }}
       />
-      <Controller
-        name="password"
+      <TextFieldInput
         control={control}
-        defaultValue=""
-        render={({ field }) => (
-          <TextFieldInput
-            {...field}
-            label="Password"
-            register={register}
-            required
-            rules={{
-              required: 'Enter your password, required field',
-              minLength: {
-                value: 8,
-                message: 'Password must have at least 8 characters',
-              },
-              validate: validatePassword,
-            }}
-            error={errors?.password?.message}
-          />
-        )}
+        name="password"
+        label="Password"
+        rules={{
+          required: 'Enter your password, required field',
+          minLength: {
+            value: 8,
+            message: 'Password must have at least 8 characters',
+          },
+          validate: validatePassword,
+        }}
       />
       <ColoredBtn
         className="btn"

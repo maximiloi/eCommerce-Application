@@ -1,26 +1,32 @@
-const validatePassword = (value: string) => {
-  if (value.trim() !== value) {
-    return 'Password must not contain leading or trailing whitespace.';
-  }
+import { CartResourceIdentifier } from '@commercetools/platform-sdk';
 
-  if (value.length < 8) {
-    return 'Password must be at least 8 characters long.';
-  }
+type ValueType = string | boolean | undefined | CartResourceIdentifier;
 
-  if (!/[A-Z]/.test(value)) {
-    return 'Password must contain at least one uppercase letter (A-Z).';
-  }
+const validatePassword = (value: ValueType) => {
+  if (typeof value === 'string') {
+    if (value.trim() !== value) {
+      return 'Password must not contain leading or trailing whitespace.';
+    }
 
-  if (!/[a-z]/.test(value)) {
-    return 'Password must contain at least one lowercase letter (a-z).';
-  }
+    if (value.length < 8) {
+      return 'Password must be at least 8 characters long.';
+    }
 
-  if (!/\d/.test(value)) {
-    return 'Password must contain at least one digit (0-9).';
-  }
+    if (!/[A-Z]/.test(value)) {
+      return 'Password must contain at least one uppercase letter (A-Z).';
+    }
 
-  if (!/[!@#$%^&*]/.test(value)) {
-    return 'Password must contain at least one special character (!@#$%^&*).';
+    if (!/[a-z]/.test(value)) {
+      return 'Password must contain at least one lowercase letter (a-z).';
+    }
+
+    if (!/\d/.test(value)) {
+      return 'Password must contain at least one digit (0-9).';
+    }
+
+    if (!/[!@#$%^&*]/.test(value)) {
+      return 'Password must contain at least one special character (!@#$%^&*).';
+    }
   }
 
   return true;
