@@ -6,7 +6,6 @@ const ColoredBtn = styled(Button)<ButtonProps>(() => ({
   '&:hover': {
     backgroundColor: '#f0c349',
   },
-  // variant: "contained",
 }));
 
 export default ColoredBtn;

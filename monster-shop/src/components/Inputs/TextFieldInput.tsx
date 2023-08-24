@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { InputPropsType } from '../../types/inputProps';
+import { UseControllerProps, useController } from 'react-hook-form';
+import { CustomerSignin } from '@commercetools/platform-sdk';
+import { FormValues } from '../../types/signupFormValues';
 
-function TextFieldInput({
-  label,
-  name,
-  register,
-  required,
-  rules,
-  error,
-}: InputPropsType) {
+function TextFieldInput(
+  props: { label: string } & UseControllerProps<CustomerSignin | FormValues>
+) {
+  const { field, fieldState } = useController(props);
+  const { name, label } = props;
   const [showPassword, setShowPassword] = useState(false);
   const handleInputType = () => {
     let type = 'text';
@@ -27,15 +26,14 @@ function TextFieldInput({
   };
   return (
     <TextField
+      {...field}
       margin="dense"
       size="small"
       type={handleInputType()}
       fullWidth
-      required={required}
       label={label}
-      {...register(name, rules)}
-      error={!!error}
-      helperText={error || ''}
+      error={!!fieldState.error}
+      helperText={fieldState.error?.message || ''}
       InputProps={
         name === 'password'
           ? {
