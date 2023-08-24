@@ -10,3 +10,8 @@ export type InputPropsType = {
   rules?: RegisterOptions;
   error?: string;
 };
+
+export type SelectOption = {
+  value: string;
+  label: string;
+}
