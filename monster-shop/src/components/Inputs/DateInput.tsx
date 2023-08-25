@@ -7,10 +7,11 @@ import { FormValues } from '../../types/signupFormValues';
 function DateInput(
   props: {
     label: string;
+    required: boolean;
   } & UseControllerProps<FormValues>
 ) {
   const { field, fieldState } = useController(props);
-  const { label } = props;
+  const { label, required } = props;
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -20,6 +21,7 @@ function DateInput(
         size="small"
         format="DD/MM/YYYY"
         fullWidth
+        required={required}
         label={label}
         slotProps={{
           textField: {

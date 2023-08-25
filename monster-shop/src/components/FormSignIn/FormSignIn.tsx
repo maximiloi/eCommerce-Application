@@ -40,6 +40,7 @@ function FormSignIn() {
         control={control}
         name="email"
         label="E-mail"
+        required
         rules={{
           required: 'Enter your e-mail, required field',
           pattern: {
@@ -52,6 +53,7 @@ function FormSignIn() {
         control={control}
         name="password"
         label="Password"
+        required
         rules={{
           required: 'Enter your password, required field',
           minLength: {

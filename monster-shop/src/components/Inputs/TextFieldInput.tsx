@@ -6,10 +6,12 @@ import { CustomerSignin } from '@commercetools/platform-sdk';
 import { FormValues } from '../../types/signupFormValues';
 
 function TextFieldInput(
-  props: { label: string } & UseControllerProps<CustomerSignin | FormValues>
+  props: { label: string; required: boolean } & UseControllerProps<
+    FormValues | CustomerSignin
+  >
 ) {
   const { field, fieldState } = useController(props);
-  const { name, label } = props;
+  const { name, label, required } = props;
   const [showPassword, setShowPassword] = useState(false);
   const handleInputType = () => {
     let type = 'text';
@@ -31,6 +33,7 @@ function TextFieldInput(
       size="small"
       type={handleInputType()}
       fullWidth
+      required={required}
       label={label}
       error={!!fieldState.error}
       helperText={fieldState.error?.message || ''}
