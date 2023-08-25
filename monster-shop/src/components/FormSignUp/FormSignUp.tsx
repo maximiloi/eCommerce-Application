@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import {
   ClientResponse,
   CustomerSignInResult,
+  CustomerSignin,
 } from '@commercetools/platform-sdk';
 import dataFormat from '../../helper/registrationDataFormat';
 import validatePassword from '../../helper/validatePassword';
@@ -31,7 +32,7 @@ export default function FormSignUp() {
     reset,
     control,
     setValue,
-  } = useForm<FormValues>({
+  } = useForm<FormValues | CustomerSignin>({
     defaultValues: SignUpDefaultValues,
     mode: 'onChange',
   });
@@ -52,8 +53,8 @@ export default function FormSignUp() {
       );
   };
 
-  const onSubmit = async (data: FormValues) => {
-    await signup(dataFormat(data)).then(
+  const onSubmit = async (data: FormValues | CustomerSignin) => {
+    await signup(dataFormat(data as FormValues)).then(
       (response: ClientResponse<CustomerSignInResult>) => {
         if (response.statusCode === 201) {
           navigate('/');

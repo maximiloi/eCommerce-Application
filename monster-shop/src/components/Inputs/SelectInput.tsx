@@ -1,5 +1,6 @@
 import { TextField, MenuItem } from '@mui/material';
 import { UseControllerProps, useController } from 'react-hook-form';
+import { CustomerSignin } from '@commercetools/platform-sdk';
 import { FormValues } from '../../types/signupFormValues';
 import { SelectOption } from '../../types/inputProps';
 
@@ -8,7 +9,7 @@ function SelectInput(
     label: string;
     required: boolean;
     options: Array<SelectOption>;
-  } & UseControllerProps<FormValues>
+  } & UseControllerProps<FormValues | CustomerSignin>
 ) {
   const { field, fieldState } = useController(props);
   const { label, required, options } = props;
