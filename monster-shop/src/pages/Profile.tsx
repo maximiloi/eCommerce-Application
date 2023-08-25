@@ -9,7 +9,7 @@ function Profile() {
     <Box sx={{ flexGrow: 1 }}>
       <h2>User Profile</h2>
       <Grid container spacing={2} className="profile__wrapper">
-        <Grid item>
+        <Grid>
           <h4>Personal info</h4>
           <PersonalInfo />
           <Grid container spacing={2}>
@@ -19,7 +19,6 @@ function Profile() {
             </Grid>
             <Grid item xs={12} md={6}>
               <h4>Billing address</h4>
-              <ShippingAddress />
             </Grid>
           </Grid>
         </Grid>
