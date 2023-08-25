@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import './FormSignIn.scss';
 import {
   ClientResponse,
   CustomerSignInResult,
@@ -10,6 +9,7 @@ import { login } from '../../api/AuthorizedUser/requests';
 import TextFieldInput from '../Inputs/TextFieldInput';
 import validatePassword from '../../helper/validatePassword';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
+import './FormSignIn.scss';
 
 function FormSignIn() {
   const {
