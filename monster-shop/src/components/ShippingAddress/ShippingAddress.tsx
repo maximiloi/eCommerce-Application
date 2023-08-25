@@ -1,11 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { CustomerSignin } from '@commercetools/platform-sdk';
 import { Grid, Paper, styled } from '@mui/material';
-import dayjs from 'dayjs';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 import TextFieldInput from '../Inputs/TextFieldInput';
 // import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import User from '../../api/user';
-import validatePassword from '../../helper/validatePassword';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -15,21 +16,23 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-function PersonalInfo() {
+function ShippingAddress() {
   const { data } = User;
+  console.log('data: ', data);
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+  const spacing = isSmallScreen ? 0 : 2;
 
   const { control } = useForm<CustomerSignin>({
-    defaultValues: {
-      email: data?.email,
-      password: '',
-    },
     mode: 'onChange',
   });
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} md={8}>
-        <Item>
+    <Item>
+      <Grid container spacing={spacing}>
+        <Grid item xs={12} md={6}>
           <TextFieldInput
             name="firstName"
             control={control}
@@ -42,34 +45,24 @@ function PersonalInfo() {
             label="Last Name"
             defaultValue={data?.lastName}
           />
+        </Grid>
+        <Grid item xs={12} md={6}>
           <TextFieldInput
-            name="dateOfBirth"
+            name="firstName"
             control={control}
-            label="Date of birth"
-            defaultValue={dayjs(data?.dateOfBirth).format('DD/MM/YYYY')}
+            label="First Name"
+            defaultValue={data?.firstName}
           />
-        </Item>
-      </Grid>
-      <Grid item xs={12} md={4}>
-        <Item>
-          <TextFieldInput name="email" control={control} label="E-mail" />
           <TextFieldInput
-            name="password"
+            name="lastName"
             control={control}
-            label="Password"
-            rules={{
-              required: 'Enter your password, required field',
-              minLength: {
-                value: 8,
-                message: 'Password must have at least 8 characters',
-              },
-              validate: validatePassword,
-            }}
+            label="Last Name"
+            defaultValue={data?.lastName}
           />
-        </Item>
+        </Grid>
       </Grid>
-    </Grid>
+    </Item>
   );
 }
 
-export default PersonalInfo;
+export default ShippingAddress;
