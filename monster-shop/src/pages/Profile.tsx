@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { Box, Grid } from '@mui/material';
 import User from '../api/user';
 
 import '../sass/pages/Profile.scss';
@@ -8,10 +8,14 @@ function Profile() {
   console.log('email: ', data?.email);
 
   return (
-    <>
+    <Box sx={{ flexGrow: 1 }}>
       <h2>User Profile</h2>
-      <NavLink to="/">Back to Start Page</NavLink>
-    </>
+      <Grid container spacing={2} className="profile__wrapper">
+        <Grid item>
+          <h4>Personal info</h4>
+        </Grid>
+      </Grid>
+    </Box>
   );
 }
 
