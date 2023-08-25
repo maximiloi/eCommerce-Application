@@ -3,6 +3,7 @@ import MainPage from './pages/MainPage';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Page404 from './pages/Page404';
+import Profile from './pages/Profile';
 import Header from './components/Header/Header';
 import Toast from './components/Toast/Toast';
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/auth" element={<RedirectSignIn />} />
             <Route path="register" element={<RedirectSignUp />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/*" element={<Page404 />} />
           </Routes>
         </div>
