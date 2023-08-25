@@ -13,6 +13,8 @@ function Profile() {
       <Grid container spacing={2} className="profile__wrapper">
         <Grid item>
           <h4>Personal info</h4>
+          <h4>Shipping address</h4>
+          <h4>Billing address</h4>
         </Grid>
       </Grid>
     </Box>
