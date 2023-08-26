@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Address, CustomerSignin } from '@commercetools/platform-sdk';
+import { CustomerSignin } from '@commercetools/platform-sdk';
 import { Grid, IconButton, Button, Paper, styled } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -20,22 +20,18 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function ShippingAddress() {
   const { data } = User;
-  const addressArray: Address[] | undefined = data?.addresses;
+  const addressArray = data?.addresses;
   const shippingIdArray: string[] | undefined = data?.shippingAddressIds;
+  console.log('shippingIdArray: ', shippingIdArray);
 
   const shippingAddressArray = shippingIdArray?.map((id) => {
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    const shippingAddressArray = addressArray?.find((obj) => obj.id === id);
-    return shippingAddressArray ? { id, ...shippingAddressArray } : null;
+    const shippingAddressObj = addressArray?.find((obj) => obj.id === id);
+    return shippingAddressObj ? { id, ...shippingAddressObj } : null;
   });
-
   console.log('shippingAddressArray: ', shippingAddressArray);
-
-  // const { id, city, country, postalCode, streetName } = shippingAddressArray;
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
-
   const spacing = isSmallScreen ? 0 : 2;
 
   const { control } = useForm<CustomerSignin>({
@@ -44,47 +40,50 @@ function ShippingAddress() {
 
   return (
     <>
-      <Item>
-        <Grid container spacing={spacing}>
-          <Grid
-            item
-            xs={12}
-            sx={{ display: 'flex', justifyContent: 'flex-end' }}
-          >
-            <IconButton aria-label="delete">
-              <DeleteIcon />
-            </IconButton>
+      {shippingAddressArray?.map(({ shippingAddress }) => (
+        <Item key={shippingAddress?.id}>
+          <Grid container spacing={spacing}>
+            <Grid
+              item
+              xs={12}
+              sx={{ display: 'flex', justifyContent: 'flex-end' }}
+            >
+              <IconButton aria-label="delete">
+                <DeleteIcon />
+              </IconButton>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextFieldInput
+                name="streetName"
+                control={control}
+                label="Street"
+                defaultValue={shippingAddress?.streetName}
+              />
+              <TextFieldInput
+                name="city"
+                control={control}
+                label="City"
+                defaultValue={shippingAddress?.city}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextFieldInput
+                name="postalCode"
+                control={control}
+                label="Postal Code"
+                defaultValue={shippingAddress?.postalCode}
+              />
+              <TextFieldInput
+                name="country"
+                control={control}
+                label="Country"
+                defaultValue={shippingAddress?.country}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <TextFieldInput
-              name="firstName"
-              control={control}
-              label="First Name"
-              defaultValue={data?.firstName}
-            />
-            <TextFieldInput
-              name="lastName"
-              control={control}
-              label="Last Name"
-              defaultValue={data?.lastName}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextFieldInput
-              name="firstName"
-              control={control}
-              label="First Name"
-              defaultValue={data?.firstName}
-            />
-            <TextFieldInput
-              name="lastName"
-              control={control}
-              label="Last Name"
-              defaultValue={data?.lastName}
-            />
-          </Grid>
-        </Grid>
-      </Item>
+        </Item>
+      ))}
+
       <Grid container spacing={spacing}>
         <Grid
           item
