@@ -10,6 +10,12 @@
   }
 }
 
+@mixin media-tablet {
+  @media (max-width: variables.$tablet-width) {
+    @content;
+  }
+}
+
 @mixin media-mobile {
   @media (max-width: variables.$mobile-width) {
     @content;

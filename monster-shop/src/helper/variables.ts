@@ -37,3 +37,17 @@ export const addressBill = [
   'billingPostalCode',
   'billingCountry',
 ];
+
+export const promo = [
+  { img: 'src/assets/images/slide.png', text: 'Order Now' },
+  { img: 'src/assets/images/carlos-nunez.jpg', text: 'Order Now' },
+  { img: 'src/assets/images/patrick-tomasso.jpg', text: 'Order Now' },
+  { img: 'src/assets/images/samuel-berner.jpg', text: 'Order Now' },
+];
+
+export const navBtns = [
+  { name: 'Sign In / Sign Up', path: '/auth' },
+  { name: 'Catalog', path: '/catalog' },
+  { name: 'Customer Profile', path: '/profile' },
+  { name: 'About us', path: '/about' },
+];

@@ -1,0 +1,11 @@
+.main {
+  &__wrap {
+    a {
+      color: $color-dark-m;
+    }
+    @include media-tablet {
+      flex-direction: column-reverse;
+      align-items: center;
+    }
+  }
+}
