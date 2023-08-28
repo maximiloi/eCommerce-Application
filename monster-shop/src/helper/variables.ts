@@ -39,10 +39,10 @@ export const addressBill = [
 ];
 
 export const promo = [
-  { img: 'public/assets/images/slide.png', text: 'Order Now' },
-  { img: 'public/assets/images/carlos-nunez.jpg', text: 'Order Now' },
-  { img: 'public/assets/images/patrick-tomasso.jpg', text: 'Order Now' },
-  { img: 'public/assets/images/samuel-berner.jpg', text: 'Order Now' },
+  { img: '/images/slide.png', text: 'Order Now' },
+  { img: '/images/carlos-nunez.jpg', text: 'Order Now' },
+  { img: '/images/patrick-tomasso.jpg', text: 'Order Now' },
+  { img: '/images/samuel-berner.jpg', text: 'Order Now' },
 ];
 
 export const navBtns = [
