@@ -35,24 +35,32 @@ function PersonalInfo() {
             control={control}
             label="First Name"
             defaultValue={data?.firstName}
+            required={false}
           />
           <TextFieldInput
             name="lastName"
             control={control}
             label="Last Name"
             defaultValue={data?.lastName}
+            required={false}
           />
           <TextFieldInput
             name="dateOfBirth"
             control={control}
             label="Date of birth"
             defaultValue={dayjs(data?.dateOfBirth).format('DD/MM/YYYY')}
+            required={false}
           />
         </Item>
       </Grid>
       <Grid item xs={12} md={4}>
         <Item>
-          <TextFieldInput name="email" control={control} label="E-mail" />
+          <TextFieldInput
+            name="email"
+            control={control}
+            label="E-mail"
+            required={false}
+          />
           <TextFieldInput
             name="password"
             control={control}

@@ -107,11 +107,13 @@ function ShippingAddress() {
                   name={`shipping.shippingStreet_${shippingAddress.id}`}
                   control={control}
                   label="Street"
+                  required={false}
                 />
                 <TextFieldInput
                   name={`shipping.shippingCity_${shippingAddress.id}`}
                   control={control}
                   label="City"
+                  required={false}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
@@ -119,11 +121,13 @@ function ShippingAddress() {
                   name={`shipping.shippingPostalCode_${shippingAddress.id}`}
                   control={control}
                   label="Postal Code"
+                  required={false}
                 />
                 <TextFieldInput
                   name={`shipping.shippingCountry_${shippingAddress.id}`}
                   control={control}
                   label="Country"
+                  required={false}
                 />
               </Grid>
             </Grid>
