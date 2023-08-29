@@ -1,3 +1,7 @@
+export type ShippingFields = {
+  [key: string]: string;
+};
+
 export interface FormValues {
   email: string;
   firstName: string;
@@ -9,6 +13,7 @@ export interface FormValues {
   shippingPostalCode: string;
   shippingCountry: string;
   shippingDefaultAddress: boolean;
+  shipping: ShippingFields;
   addressMatches: boolean;
   billingStreet: string;
   billingCity: string;
