@@ -45,6 +45,16 @@ export const promo = [
   { id: 3, img: 'public/assets/images/samuel-berner.jpg', text: 'Order Now' },
 ];
 
+export const pages = [
+  { name: 'Home', path: '/' },
+  { name: 'Catalog', path: '/catalog' },
+  { name: 'About us', path: '/about' },
+  { name: 'Sign In', path: '/auth' },
+  { name: 'Sign Up', path: '/register' },
+];
+
+export const settings = ['Profile', 'Logout'];
+
 export const navBtns = [
   { name: 'Sign In / Sign Up', path: '/auth' },
   { name: 'Catalog', path: '/catalog' },
