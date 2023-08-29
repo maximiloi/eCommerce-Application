@@ -33,6 +33,7 @@ function TextFieldInput(
       size="small"
       type={handleInputType()}
       fullWidth
+      required={required}
       label={label}
       error={!!fieldState.error}
       helperText={fieldState.error?.message || ''}
