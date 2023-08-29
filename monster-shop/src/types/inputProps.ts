@@ -14,4 +14,4 @@ export type InputPropsType = {
 export type SelectOption = {
   value: string;
   label: string;
-}
+};

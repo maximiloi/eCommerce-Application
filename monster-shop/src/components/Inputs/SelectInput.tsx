@@ -1,16 +1,18 @@
 import { TextField, MenuItem } from '@mui/material';
 import { UseControllerProps, useController } from 'react-hook-form';
+import { CustomerSignin } from '@commercetools/platform-sdk';
 import { FormValues } from '../../types/signupFormValues';
 import { SelectOption } from '../../types/inputProps';
 
 function SelectInput(
   props: {
     label: string;
+    required: boolean;
     options: Array<SelectOption>;
-  } & UseControllerProps<FormValues>
+  } & UseControllerProps<FormValues | CustomerSignin>
 ) {
   const { field, fieldState } = useController(props);
-  const { label, options } = props;
+  const { label, required, options } = props;
 
   return (
     <TextField
@@ -19,6 +21,7 @@ function SelectInput(
       size="small"
       select
       fullWidth
+      required={required}
       label={label}
       error={!!fieldState.error}
       helperText={fieldState.error?.message || ''}
