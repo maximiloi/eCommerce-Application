@@ -44,7 +44,6 @@
 
   &_active {
     opacity: 1;
-    transform: scale(1.08);
   }
 
   & img {
@@ -56,7 +55,7 @@
 
   & button {
     position: absolute;
-    top: 3rem;
-    left: 4rem;
+    top: 2rem;
+    left: 3rem;
   }
 }
