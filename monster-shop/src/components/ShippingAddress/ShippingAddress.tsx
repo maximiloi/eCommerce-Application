@@ -19,17 +19,51 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-function ShippingAddress() {
-  const { data: userData } = User;
-  const addressArray = userData?.addresses;
-  const shippingIdArray = userData?.shippingAddressIds;
+interface ShippingAddressType {
+  id: string;
+  streetName: string;
+  city: string;
+  postalCode: string;
+  country: string;
+}
 
+function convertToDefaultValues(
+  shippingAddresses: ShippingAddressType[]
+): Record<string, string> {
+  return shippingAddresses.reduce((defaultValues, address) => {
+    return {
+      ...defaultValues,
+      [`shippingStreet_${address.id}`]: address.streetName,
+      [`shippingCity_${address.id}`]: address.city,
+      [`shippingPostalCode_${address.id}`]: address.postalCode,
+      [`shippingCountry_${address.id}`]: address.country,
+    };
+  }, {});
+}
+
+function ShippingAddress() {
   const [editMode, setEditMode] = useState(false);
 
-  const shippingAddressArray = shippingIdArray?.map((id) => {
-    const shippingAddressObj = addressArray?.find((obj) => obj.id === id);
-    return shippingAddressObj ? { id, ...shippingAddressObj } : null;
-  });
+  const userData = User.data;
+  const addressArray = userData?.addresses; // all address
+  const shippingIdArray = userData?.shippingAddressIds; // arr ids shipping address
+
+  const shippingAddressArray = shippingIdArray
+    ? addressArray
+        ?.filter((obj) => obj.id && shippingIdArray.includes(obj.id))
+        .map(
+          (obj): ShippingAddressType => ({
+            id: obj.id!,
+            streetName: obj.streetName!,
+            city: obj.city!,
+            postalCode: obj.postalCode!,
+            country: obj.country!,
+          })
+        )
+    : [];
+  const defaultValues = convertToDefaultValues(shippingAddressArray || []);
+
+  console.log('shippingAddressArray: ', shippingAddressArray);
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -41,6 +75,7 @@ function ShippingAddress() {
     control,
   } = useForm<FormValues | CustomerSignin>({
     mode: 'onChange',
+    defaultValues: { shipping: defaultValues },
   });
 
   const onSubmit = async (data: FormValues | CustomerSignin) => {
@@ -50,53 +85,51 @@ function ShippingAddress() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {shippingAddressArray?.map((shippingAddress) => (
-        <Item key={shippingAddress?.id}>
-          <Grid container spacing={spacing}>
-            <Grid
-              item
-              xs={12}
-              sx={{ display: 'flex', justifyContent: 'flex-end' }}
-            >
-              <IconButton aria-label="delete">
-                <DeleteIcon />
-              </IconButton>
+      {shippingAddressArray?.map((shippingAddress) => {
+        if (!shippingAddress) {
+          return null;
+        }
+
+        return (
+          <Item key={shippingAddress.id}>
+            <Grid container spacing={spacing}>
+              <Grid
+                item
+                xs={12}
+                sx={{ display: 'flex', justifyContent: 'flex-end' }}
+              >
+                <IconButton aria-label="delete">
+                  <DeleteIcon />
+                </IconButton>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextFieldInput
+                  name={`shipping.shippingStreet_${shippingAddress.id}`}
+                  control={control}
+                  label="Street"
+                />
+                <TextFieldInput
+                  name={`shipping.shippingCity_${shippingAddress.id}`}
+                  control={control}
+                  label="City"
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextFieldInput
+                  name={`shipping.shippingPostalCode_${shippingAddress.id}`}
+                  control={control}
+                  label="Postal Code"
+                />
+                <TextFieldInput
+                  name={`shipping.shippingCountry_${shippingAddress.id}`}
+                  control={control}
+                  label="Country"
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12} md={6}>
-              <TextFieldInput
-                name="shippingStreet"
-                control={control}
-                label="Street"
-                defaultValue={shippingAddress?.streetName}
-                // readOnly={!editMode}
-              />
-              <TextFieldInput
-                name="shippingCity"
-                control={control}
-                label="City"
-                defaultValue={shippingAddress?.city}
-                // readOnly={!editMode}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextFieldInput
-                name="shippingPostalCode"
-                control={control}
-                label="Postal Code"
-                defaultValue={shippingAddress?.postalCode}
-                // readOnly={!editMode}
-              />
-              <TextFieldInput
-                name="shippingCountry"
-                control={control}
-                label="Country"
-                defaultValue={shippingAddress?.country}
-                // readOnly={!editMode}
-              />
-            </Grid>
-          </Grid>
-        </Item>
-      ))}
+          </Item>
+        );
+      })}
 
       <Grid container spacing={spacing}>
         <Grid
