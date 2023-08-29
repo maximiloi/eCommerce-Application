@@ -30,19 +30,22 @@
 .slides {
   width: 100%;
   height: 100%;
-  padding: 0;
-  margin: 0;
-  left: 0;
-  position: relative;
+  display: flex;
 }
 
 .slide {
   width: 100%;
   height: 100%;
-  padding: 0;
-  position: relative;
-  display: inline-block;
-  transition: all 0.3s linear;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: all 0.5s linear;
+
+  &_active {
+    opacity: 1;
+    transform: scale(1.08);
+  }
 
   & img {
     width: 100%;
@@ -53,7 +56,7 @@
 
   & button {
     position: absolute;
-    top: 1rem;
-    left: 2rem;
+    top: 3rem;
+    left: 4rem;
   }
 }

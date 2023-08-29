@@ -11,18 +11,10 @@ function PromoSlides() {
   const [count, setCount] = useState(0);
 
   const prevSlide = useCallback(() => {
-    if (count > 0) {
-      setCount(count - 1);
-    } else if (count === 0) {
-      setCount(promo.length - 1);
-    }
+    setCount(count === 0 ? promo.length - 1 : count - 1);
   }, [count]);
   const nextSlide = useCallback(() => {
-    if (count < promo.length - 1) {
-      setCount(count + 1);
-    } else if (count === promo.length - 1) {
-      setCount(0);
-    }
+    setCount(count === promo.length - 1 ? 0 : count + 1);
   }, [count]);
 
   useEffect(() => {
@@ -30,12 +22,12 @@ function PromoSlides() {
       setSliderWidth((window.innerWidth / 3) * 2);
     };
     window.addEventListener('resize', changeSlideWidth);
-    const autoSlide = setInterval(() => nextSlide, 3000);
+    const autoSlide = setInterval(nextSlide, 3500);
     return () => {
       window.removeEventListener('resize', changeSlideWidth);
       clearInterval(autoSlide);
     };
-  }, [count, nextSlide]);
+  }, [nextSlide]);
 
   return (
     <Box
@@ -43,11 +35,15 @@ function PromoSlides() {
       sx={{ width: sliderWidth, boxShadow: 3, borderRadius: 3 }}
     >
       <List className="slides" sx={{ p: 0 }}>
-        <Slide
-          sliderWidth={sliderWidth}
-          slideImg={promo[count].img}
-          slideText={promo[count].text}
-        />
+        {promo.map((slide, index) => (
+          <Slide
+            className={index === count ? 'slide slide_active' : 'slide'}
+            key={slide.id}
+            sliderWidth={sliderWidth}
+            slideImg={slide.img}
+            slideText={slide.text}
+          />
+        ))}
       </List>
       <IconButton className="prev" onClick={prevSlide}>
         <KeyboardArrowLeft fontSize="large" />

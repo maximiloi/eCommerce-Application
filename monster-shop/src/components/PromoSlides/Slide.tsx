@@ -1,22 +1,16 @@
-import { ListItem } from '@mui/material';
+import { SlideProps } from '../../types/slideProps';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
 
-type SlideProps = {
-  sliderWidth: number;
-  slideImg: string;
-  slideText: string;
-};
-
 function Slide(props: SlideProps) {
-  const { sliderWidth, slideImg, slideText } = props;
+  const { className, sliderWidth, slideImg, slideText } = props;
 
   return (
-    <ListItem className="slide" sx={{ width: sliderWidth, p: 0 }}>
-      <img src={slideImg} alt="" />
+    <li className={className}>
+      <img src={slideImg} style={{ width: sliderWidth }} alt="" />
       <ColoredBtn type="button" variant="contained">
         {slideText}
       </ColoredBtn>
-    </ListItem>
+    </li>
   );
 }
 
