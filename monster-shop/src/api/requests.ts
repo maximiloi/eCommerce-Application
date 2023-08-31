@@ -43,3 +43,19 @@ export async function signup(myCustomerDraft: MyCustomerDraft) {
       });
   });
 }
+
+export function getProducts() {
+  return new Promise((resolve) => {
+    User.getApi()
+      .productProjections()
+      .get()
+      .execute()
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        console.error('Error registering user:', error);
+        toastify(error.message, 'error');
+      });
+  });
+}
