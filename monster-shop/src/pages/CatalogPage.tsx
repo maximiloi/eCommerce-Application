@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { catalogMenuList } from '../helper/variables';
+import SearchBar from '../components/Searchbar/Searchbar';
 import '../sass/pages/_catalogePage.scss';
 
 function CatalogPage() {
@@ -29,11 +30,11 @@ function CatalogPage() {
     console.log((event.target as HTMLElement).innerText);
   };
   return (
-    <Box className="main__wrap" sx={{ display: 'flex' }}>
+    <Box className="catalog__wrap" sx={{ display: 'flex' }}>
       <Box
         component="aside"
         className="aside aside_mobile"
-        sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+        sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' } }}
       >
         <IconButton size="large" onClick={handleOpenMenu} color="warning">
           <AutoStoriesIcon />
@@ -99,7 +100,9 @@ function CatalogPage() {
           <Divider />
         </List>
       </Box>
-      <Box sx={{ flexGrow: 1, width: { sm: 'calc(100% - 200px)' } }} />
+      <Box sx={{ flexGrow: 1, width: { sm: 'calc(100% - 200px)' }, p: 1 }}>
+        <SearchBar />
+      </Box>
     </Box>
   );
 }
