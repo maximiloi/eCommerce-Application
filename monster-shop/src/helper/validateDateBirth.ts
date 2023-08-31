@@ -1,12 +1,13 @@
 import { CartResourceIdentifier } from '@commercetools/platform-sdk';
-import { FormValues } from '../types/signupFormValues';
+import { FormValues, ShippingFields } from '../types/signupFormValues';
 
 type ValueType =
   | string
   | boolean
   | undefined
   | FormValues
-  | CartResourceIdentifier;
+  | CartResourceIdentifier
+  | ShippingFields;
 
 const validateDateBirth: (value: ValueType) => string | true = (
   value: ValueType

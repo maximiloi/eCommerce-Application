@@ -13,7 +13,7 @@ export interface FormValues {
   shippingPostalCode: string;
   shippingCountry: string;
   shippingDefaultAddress: boolean;
-  shipping: ShippingFields;
+  shipping?: ShippingFields;
   addressMatches: boolean;
   billingStreet: string;
   billingCity: string;

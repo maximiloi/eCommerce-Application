@@ -65,6 +65,7 @@ function PersonalInfo() {
             name="password"
             control={control}
             label="Password"
+            required={false}
             rules={{
               required: 'Enter your password, required field',
               minLength: {
