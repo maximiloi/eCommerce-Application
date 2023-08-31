@@ -11,6 +11,7 @@
 @import './sass/components/buttons';
 
 /* pages */
+@import './sass/pages/catalogePage';
 @import './sass/pages/login-form';
 @import './sass/pages/mainPage';
 
@@ -19,5 +20,9 @@
     margin: 0 auto;
     padding: 30px;
     max-width: $content-width;
+
+    @include media-tablet {
+      padding: 10px;
+    }
   }
 }

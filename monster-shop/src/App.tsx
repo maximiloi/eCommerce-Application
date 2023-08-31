@@ -6,7 +6,7 @@ import Page404 from './pages/Page404';
 import Profile from './pages/Profile';
 import Header from './components/Header/Header';
 import Toast from './components/Toast/Toast';
-
+import CatalogPage from './pages/CatalogPage';
 import './App.scss';
 import User from './api/user';
 
@@ -29,6 +29,7 @@ function App() {
             <Route path="/auth" element={<RedirectSignIn />} />
             <Route path="register" element={<RedirectSignUp />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/catalog" element={<CatalogPage />} />
             <Route path="/*" element={<Page404 />} />
           </Routes>
         </div>

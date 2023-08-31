@@ -61,3 +61,5 @@ export const navBtns = [
   { name: 'Customer Profile', path: '/profile' },
   { name: 'About us', path: '/about' },
 ];
+
+export const catalogMenuList = ['Funny Monsters', 'Cute Monsters', 'Scary Monsters', 'Real Monsters'];
