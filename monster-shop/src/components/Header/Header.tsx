@@ -43,6 +43,9 @@ function Header() {
       userTitle = 'Log in now';
       navigate('/');
     }
+    if (target.textContent === 'Profile') {
+      navigate('/profile');
+    }
     setAnchorElUser(null);
   };
 
