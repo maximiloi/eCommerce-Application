@@ -48,7 +48,7 @@ function Header() {
   const handleCloseUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     const target = event.target as HTMLParagraphElement;
     if (target.textContent === 'Logout') {
-      User.created = false;
+      User.logout();
       userTitle = 'Log in now';
       navigate('/');
     }

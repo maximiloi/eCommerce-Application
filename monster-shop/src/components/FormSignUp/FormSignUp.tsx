@@ -1,15 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import {
-  ClientResponse,
-  CustomerSignInResult,
-  CustomerSignin,
-} from '@commercetools/platform-sdk';
+import { CustomerSignin } from '@commercetools/platform-sdk';
 import dataFormat from '../../helper/registrationDataFormat';
 import validatePassword from '../../helper/validatePassword';
 import validateDateBirth from '../../helper/validateDateBirth';
-import { signup } from '../../api/AuthorizedUser/requests';
+import { signup } from '../../api/requests';
 import { FormValues, KeySignUp } from '../../types/signupFormValues';
 import {
   SignUpDefaultValues,
@@ -54,14 +50,12 @@ export default function FormSignUp() {
   };
 
   const onSubmit = async (data: FormValues | CustomerSignin) => {
-    await signup(dataFormat(data as FormValues)).then(
-      (response: ClientResponse<CustomerSignInResult>) => {
-        if (response.statusCode === 201) {
-          navigate('/');
-          reset();
-        }
-      }
-    );
+    await signup(dataFormat(data as FormValues))
+      .catch((err) => console.log(err))
+      .then(() => {
+        navigate('/');
+        reset();
+      });
   };
 
   return (

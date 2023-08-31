@@ -1,11 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import {
-  ClientResponse,
-  CustomerSignInResult,
-  CustomerSignin,
-} from '@commercetools/platform-sdk';
-import { login } from '../../api/AuthorizedUser/requests';
+import { CustomerSignin } from '@commercetools/platform-sdk';
+import { login } from '../../api/requests';
 import TextFieldInput from '../Inputs/TextFieldInput';
 import validatePassword from '../../helper/validatePassword';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
@@ -27,12 +23,12 @@ function FormSignIn() {
   const navigate = useNavigate();
 
   const onSubmit = (data: CustomerSignin) => {
-    login(data).then((response: ClientResponse<CustomerSignInResult>) => {
-      if (response.statusCode === 200) {
+    login(data)
+      .catch((err) => console.log(err))
+      .then(() => {
         navigate('/');
         reset();
-      }
-    });
+      });
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
