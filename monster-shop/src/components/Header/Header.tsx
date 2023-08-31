@@ -16,18 +16,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Logo from '../Logo/Logo';
-
-import './Header.scss';
+import { pages, settings } from '../../helper/variables';
 import User from '../../api/user';
-
-const pages = [
-  { name: 'Home', path: '/' },
-  { name: 'Catalog', path: '/catalog' },
-  { name: 'About us', path: '/about' },
-  { name: 'Sign In', path: '/auth' },
-  { name: 'Sign Up', path: '/register' },
-];
-const settings = ['Profile', 'Logout'];
+import './Header.scss';
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
