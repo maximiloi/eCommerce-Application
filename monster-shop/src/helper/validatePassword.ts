@@ -1,12 +1,12 @@
 import { CartResourceIdentifier } from '@commercetools/platform-sdk';
-import { ShippingFields } from '../types/signupFormValues';
+import { AddressFields } from '../types/signupFormValues';
 
 type ValueType =
   | string
   | boolean
   | undefined
   | CartResourceIdentifier
-  | ShippingFields;
+  | AddressFields;
 
 const validatePassword = (value: ValueType) => {
   if (typeof value === 'string') {
