@@ -46,15 +46,7 @@ export default class User {
     }
   }
 
-  public static getApi() {
-    return createApiBuilderFromCtpClient(User.authClient).withProjectKey({
-      projectKey: 'monster-shop',
-    });
-  }
-
-  public static signin(data: Customer) {
-    User.created = true;
-    User.data = data;
+  public static setClient(username: string, password: string) {
     User.authClient = new ClientBuilder()
       .withPasswordFlow({
         host: 'https://auth.europe-west1.gcp.commercetools.com',
@@ -63,8 +55,8 @@ export default class User {
           clientId: 'U3r-kTd1NEne2aM80jVfjo-A',
           clientSecret: 'H2Te7OZIuweQGswC612kuzWJVWvEuwsP',
           user: {
-            username: User.data.email as string,
-            password: User.data.password as string,
+            username,
+            password,
           },
         },
         scopes: [
@@ -74,6 +66,17 @@ export default class User {
       })
       .withHttpMiddleware(httpMiddlewareOptions)
       .build();
+  }
+
+  public static getApi() {
+    return createApiBuilderFromCtpClient(User.authClient).withProjectKey({
+      projectKey: 'monster-shop',
+    });
+  }
+
+  public static signin(data: Customer) {
+    User.created = true;
+    User.data = data;
   }
 
   public static logout() {
