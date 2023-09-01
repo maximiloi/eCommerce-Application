@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Divider,
@@ -18,6 +18,7 @@ import '../sass/pages/_catalogPage.scss';
 function CatalogPage() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -31,6 +32,9 @@ function CatalogPage() {
     setSelectedIndex(index);
     console.log((event.target as HTMLElement).innerText);
   };
+  useEffect(() => {
+    console.log(`Make request with query - ${searchQuery}`);
+  }, [searchQuery]);
   return (
     <Box className="catalog" sx={{ display: 'flex' }}>
       <Box
@@ -106,7 +110,7 @@ function CatalogPage() {
         className="catalog__content"
         sx={{ flexGrow: 1, width: { sm: 'calc(100% - 200px)' }, p: 1 }}
       >
-        <SearchBar />
+        <SearchBar setSearchQuery={setSearchQuery} />
         <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
           {dummyProducts.map((card) => (
             <CardItem key={card.id} {...card} />

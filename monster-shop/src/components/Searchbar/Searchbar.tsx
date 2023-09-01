@@ -7,7 +7,11 @@ type SearchInputType = {
   searchQuery: string;
 };
 
-function SearchBar() {
+type SearchProps = {
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+};
+
+function SearchBar({ setSearchQuery }: SearchProps) {
   const {
     control,
     handleSubmit,
@@ -23,7 +27,7 @@ function SearchBar() {
     reset();
   };
   const onSubmit: SubmitHandler<SearchInputType> = (data) => {
-    console.log(data);
+    setSearchQuery(data.searchQuery);
   };
   return (
     <form className="search-input" onSubmit={handleSubmit(onSubmit)}>
