@@ -38,10 +38,10 @@ function CardItem(props: CardProps) {
             <span
               className={discount ? 'discount discount_active' : 'discount'}
             >
-              {discount}
+              {discount}&#x1FA78;
             </span>
             <span className={discount ? 'price price_discounted' : 'price'}>
-              {price}
+              {price}&#x1FA78;
             </span>
           </div>
         </CardContent>
