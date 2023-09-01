@@ -1,8 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import { Card, CardActions, CardContent, CardMedia, Grid } from '@mui/material';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import './_cardItem.scss';
 
 type CardProps = {
+  id: string;
   img: string;
   title: string;
   tags: Array<string>;
@@ -11,7 +13,11 @@ type CardProps = {
 };
 
 function CardItem(props: CardProps) {
-  const { img, title, tags, discount, price } = props;
+  const { id, img, title, tags, discount, price } = props;
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/product/${id}`);
+  };
   return (
     <Grid item xs={9} sm={4} md={4}>
       <Card
@@ -46,7 +52,7 @@ function CardItem(props: CardProps) {
           </div>
         </CardContent>
         <CardActions sx={{ pb: 2, pt: 0 }}>
-          <ColoredBtn size="small" variant="contained">
+          <ColoredBtn size="small" variant="contained" onClick={handleClick}>
             View details
           </ColoredBtn>
         </CardActions>

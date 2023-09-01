@@ -72,7 +72,7 @@ export const catalogMenuList = [
 
 export const dummyProducts = [
   {
-    id: 1,
+    id: '1',
     title: 'Babadook',
     img: '/images/photo_1.jpg',
     price: 300,
@@ -80,7 +80,7 @@ export const dummyProducts = [
     tags: ['bestseller'],
   },
   {
-    id: 2,
+    id: '2',
     title: 'Jkjsdghsf',
     img: '/images/photo_2.jpg',
     price: 200,
@@ -88,7 +88,7 @@ export const dummyProducts = [
     tags: [],
   },
   {
-    id: 3,
+    id: '3',
     title: 'Jkfslfjdlg',
     img: '/images/photo_3.jpg',
     price: 500,
@@ -96,7 +96,7 @@ export const dummyProducts = [
     tags: ['new'],
   },
   {
-    id: 4,
+    id: '4',
     title: 'Hkfjf ndkfhk',
     img: '/images/photo_4.jpg',
     price: 1000,
@@ -104,7 +104,7 @@ export const dummyProducts = [
     tags: ['bestseller', 'sale'],
   },
   {
-    id: 5,
+    id: '5',
     title: 'Gslfafs cjmvg',
     img: '/images/slide.png',
     price: 3150,
@@ -112,7 +112,7 @@ export const dummyProducts = [
     tags: ['bestseller', 'sale'],
   },
   {
-    id: 6,
+    id: '6',
     title: 'Gkkkfdglsh jshd',
     img: '/images/patrick-tomasso.jpg',
     price: 3630,
@@ -120,7 +120,7 @@ export const dummyProducts = [
     tags: ['bestseller'],
   },
   {
-    id: 7,
+    id: '7',
     title: 'Hkfbncbv fdkf',
     img: '/images/samuel-berner.jpg',
     price: 1300,
@@ -128,7 +128,7 @@ export const dummyProducts = [
     tags: ['new'],
   },
   {
-    id: 8,
+    id: '8',
     title: 'Hkdsjkd jfdh',
     img: '/images/carlos-nunez.jpg',
     price: 350,
@@ -136,7 +136,7 @@ export const dummyProducts = [
     tags: ['new'],
   },
   {
-    id: 9,
+    id: '9',
     title: 'Hkl kfjkdfhd',
     img: '/images/slide.png',
     price: 200,
@@ -144,7 +144,7 @@ export const dummyProducts = [
     tags: ['bestseller'],
   },
   {
-    id: 10,
+    id: '10',
     title: 'Hfldkoeu fdfh',
     img: '/images/patrick-tomasso.jpg',
     price: 2200,
@@ -152,7 +152,7 @@ export const dummyProducts = [
     tags: ['bestseller', 'sale'],
   },
   {
-    id: 11,
+    id: '11',
     title: 'IIndsbfjhf',
     img: '/images/samuel-berner.jpg',
     price: 100,
