@@ -24,8 +24,6 @@
   }
 
   &__content {
-    height: 80vh;
-    overflow-y: auto;
     background: variables.$color-logo-bg;
     background: rgba(variables.$color-background, $alpha: 0.5);
     .search-input {
@@ -38,5 +36,10 @@
         color: variables.$color-text;
       }
     }
+  }
+
+  &__pagination {
+    background: variables.$color-background;
+    border-radius: 1rem;
   }
 }

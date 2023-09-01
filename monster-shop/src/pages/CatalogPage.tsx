@@ -8,6 +8,7 @@ import {
   ListItemButton,
   ListItemText,
   Menu,
+  Pagination,
 } from '@mui/material';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { catalogMenuList, dummyProducts } from '../helper/variables';
@@ -16,9 +17,12 @@ import CardItem from '../components/Card/CardItem';
 import '../sass/pages/_catalogPage.scss';
 
 function CatalogPage() {
+  const initTotalPages: number = Math.ceil(dummyProducts.length / 6); // TEMP
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [totalPages, setTotalPages] = useState(initTotalPages);
+  const [page, setPage] = useState(1);
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -32,9 +36,24 @@ function CatalogPage() {
     setSelectedIndex(index);
     console.log((event.target as HTMLElement).innerText);
   };
+
+  /* TEMPORARY */
+  const indexOfLastCard = page * 6;
+  const indexOfFirstCard = indexOfLastCard - 6;
+  const dataToShow = dummyProducts.slice(indexOfFirstCard, indexOfLastCard);
+  /*------------------*/
+
+  const handleChangePage = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+    console.log(event.type);
+  };
   useEffect(() => {
     console.log(`Make request with query - ${searchQuery}`);
-  }, [searchQuery]);
+    setTotalPages(initTotalPages); // initTotalPages need to go
+  }, [searchQuery, initTotalPages]);
   return (
     <Box className="catalog" sx={{ display: 'flex' }}>
       <Box
@@ -111,11 +130,25 @@ function CatalogPage() {
         sx={{ flexGrow: 1, width: { sm: 'calc(100% - 200px)' }, p: 1 }}
       >
         <SearchBar setSearchQuery={setSearchQuery} />
-        <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
-          {dummyProducts.map((card) => (
+        <Grid
+          container
+          spacing={2}
+          sx={{ justifyContent: ['center', 'flex-start'] }}
+        >
+          {dataToShow.map((card) => (
             <CardItem key={card.id} {...card} />
           ))}
         </Grid>
+        <Box
+          className="catalog__pagination"
+          sx={{ p: 1, display: 'flex', justifyContent: 'center' }}
+        >
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handleChangePage}
+          />
+        </Box>
       </Box>
     </Box>
   );
