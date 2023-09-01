@@ -60,7 +60,11 @@
     "*.scss": [
       "npx prettier --write"
     ],
-    "*.{tsx, ts}": [
+    "*.tsx": [
+      "npx prettier --write",
+      "npx eslint --fix"
+    ],
+    "*.ts": [
       "npx prettier --write",
       "npx eslint --fix"
     ]
