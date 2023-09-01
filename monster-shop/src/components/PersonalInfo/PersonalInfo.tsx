@@ -36,6 +36,7 @@ function PersonalInfo() {
             label="First Name"
             defaultValue={data?.firstName}
             required={false}
+            disabled={false}
           />
           <TextFieldInput
             name="lastName"
@@ -43,6 +44,7 @@ function PersonalInfo() {
             label="Last Name"
             defaultValue={data?.lastName}
             required={false}
+            disabled={false}
           />
           <TextFieldInput
             name="dateOfBirth"
@@ -50,6 +52,7 @@ function PersonalInfo() {
             label="Date of birth"
             defaultValue={dayjs(data?.dateOfBirth).format('DD/MM/YYYY')}
             required={false}
+            disabled={false}
           />
         </Item>
       </Grid>
@@ -60,12 +63,14 @@ function PersonalInfo() {
             control={control}
             label="E-mail"
             required={false}
+            disabled={false}
           />
           <TextFieldInput
             name="password"
             control={control}
             label="Password"
             required={false}
+            disabled={false}
             rules={{
               required: 'Enter your password, required field',
               minLength: {
