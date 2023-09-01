@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
   Box,
   Divider,
+  Grid,
   IconButton,
   List,
   ListItemButton,
@@ -9,9 +10,10 @@ import {
   Menu,
 } from '@mui/material';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import { catalogMenuList } from '../helper/variables';
+import { catalogMenuList, dummyProducts } from '../helper/variables';
 import SearchBar from '../components/Searchbar/Searchbar';
-import '../sass/pages/_catalogePage.scss';
+import CardItem from '../components/Card/CardItem';
+import '../sass/pages/_catalogPage.scss';
 
 function CatalogPage() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -30,10 +32,10 @@ function CatalogPage() {
     console.log((event.target as HTMLElement).innerText);
   };
   return (
-    <Box className="catalog__wrap" sx={{ display: 'flex' }}>
+    <Box className="catalog" sx={{ display: 'flex' }}>
       <Box
         component="aside"
-        className="aside aside_mobile"
+        className="catalog__aside catalog__aside_mobile"
         sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' } }}
       >
         <IconButton size="large" onClick={handleOpenMenu} color="warning">
@@ -73,7 +75,7 @@ function CatalogPage() {
       </Box>
       <Box
         component="aside"
-        className="aside aside_desktop"
+        className="catalog__aside catalog__aside_desktop"
         sx={{
           flexGrow: 1,
           display: { xs: 'none', md: 'flex', justifyContent: 'center' },
@@ -100,8 +102,16 @@ function CatalogPage() {
           <Divider />
         </List>
       </Box>
-      <Box sx={{ flexGrow: 1, width: { sm: 'calc(100% - 200px)' }, p: 1 }}>
+      <Box
+        className="catalog__content"
+        sx={{ flexGrow: 1, width: { sm: 'calc(100% - 200px)' }, p: 1 }}
+      >
         <SearchBar />
+        <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
+          {dummyProducts.map((card) => (
+            <CardItem key={card.id} {...card} />
+          ))}
+        </Grid>
       </Box>
     </Box>
   );

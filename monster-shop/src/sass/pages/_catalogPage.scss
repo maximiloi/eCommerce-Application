@@ -1,0 +1,42 @@
+@use '../abstracts/variables';
+
+.catalog {
+  & > * {
+    border-radius: 1rem;
+  }
+  &__aside {
+    align-self: flex-start;
+
+    &_desktop {
+      background-color: variables.$color-logo-bg;
+      color: variables.$color-dark-m;
+
+      .category {
+        font-family: variables.$font-base;
+        &_selected {
+          color: variables.$color-background;
+        }
+        & span {
+          font-family: variables.$font-base;
+        }
+      }
+    }
+  }
+
+  &__content {
+    height: 80vh;
+    overflow-y: auto;
+    background: variables.$color-logo-bg;
+    background: rgba(variables.$color-background, $alpha: 0.5);
+    .search-input {
+      background: variables.$color-background;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+      border-radius: 1rem;
+      input {
+        color: variables.$color-text;
+      }
+    }
+  }
+}

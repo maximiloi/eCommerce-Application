@@ -26,18 +26,18 @@ function SearchBar() {
     console.log(data);
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form className="search-input" onSubmit={handleSubmit(onSubmit)}>
       <Controller
         name="searchQuery"
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            className="search-input"
             variant="outlined"
             placeholder="Search..."
             size="small"
             color="warning"
+            sx={{ width: [0.8, 0.6, 0.5] }}
             InputProps={{
               endAdornment: (
                 <InputAdornment
