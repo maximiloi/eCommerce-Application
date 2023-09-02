@@ -63,7 +63,7 @@ function ShippingAddress() {
     : [];
   const defaultValues = convertToDefaultValues(shippingAddressArray || []);
 
-  console.log('shippingAddressArray: ', shippingAddressArray);
+  // console.log('shippingAddressArray: ', shippingAddressArray);
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
