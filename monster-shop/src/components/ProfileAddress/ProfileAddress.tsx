@@ -77,7 +77,7 @@ function ProfileAddress({ addressType }: AddressProps) {
 
   const {
     handleSubmit,
-    formState: { isValid },
+    // formState: { isValid },
     control,
   } = useForm<FormValues | CustomerSignin>({
     mode: 'onChange',
@@ -170,7 +170,7 @@ function ProfileAddress({ addressType }: AddressProps) {
             Edit Addresses
           </Button>
 
-          <ColoredBtn type="submit" variant="contained" disabled={!isValid}>
+          <ColoredBtn type="submit" variant="contained" disabled={!editMode}>
             Save Changes
           </ColoredBtn>
         </Grid>
