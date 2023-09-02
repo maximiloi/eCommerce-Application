@@ -19,7 +19,11 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-interface ShippingAddressType {
+interface AddressProps {
+  addressType: 'billing' | 'shipping';
+}
+
+interface AddressValueType {
   id: string;
   streetName: string;
   city: string;
@@ -28,31 +32,35 @@ interface ShippingAddressType {
 }
 
 function convertToDefaultValues(
-  shippingAddresses: ShippingAddressType[]
+  typeAddressArray: AddressValueType[]
 ): Record<string, string> {
-  return shippingAddresses.reduce((defaultValues, address) => {
+  console.log('typeAddressArray: ', typeAddressArray);
+  return typeAddressArray.reduce((defaultValues, address) => {
     return {
       ...defaultValues,
-      [`shippingStreet_${address.id}`]: address.streetName,
-      [`shippingCity_${address.id}`]: address.city,
-      [`shippingPostalCode_${address.id}`]: address.postalCode,
-      [`shippingCountry_${address.id}`]: address.country,
+      [`addressStreet_${address.id}`]: address.streetName,
+      [`addressCity_${address.id}`]: address.city,
+      [`addressPostalCode_${address.id}`]: address.postalCode,
+      [`addressCountry_${address.id}`]: address.country,
     };
   }, {});
 }
 
-function ShippingAddress() {
+function ProfileAddress({ addressType }: AddressProps) {
   const [editMode, setEditMode] = useState(false);
 
   const userData = User.data;
   const addressArray = userData?.addresses; // all address
-  const shippingIdArray = userData?.shippingAddressIds; // arr ids shipping address
+  const AddressIdArray =
+    addressType === 'shipping'
+      ? userData?.shippingAddressIds
+      : userData?.billingAddressIds; // arr ids address
 
-  const shippingAddressArray = shippingIdArray
+  const typeAddressArray = AddressIdArray
     ? addressArray
-        ?.filter((obj) => obj.id && shippingIdArray.includes(obj.id))
+        ?.filter((obj) => obj.id && AddressIdArray.includes(obj.id))
         .map(
-          (obj): ShippingAddressType => ({
+          (obj): AddressValueType => ({
             id: obj.id!,
             streetName: obj.streetName!,
             city: obj.city!,
@@ -61,9 +69,7 @@ function ShippingAddress() {
           })
         )
     : [];
-  const defaultValues = convertToDefaultValues(shippingAddressArray || []);
-
-  // console.log('shippingAddressArray: ', shippingAddressArray);
+  const defaultValues = convertToDefaultValues(typeAddressArray || []);
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -71,11 +77,11 @@ function ShippingAddress() {
 
   const {
     handleSubmit,
-    formState: { isValid },
+    // formState: { isValid },
     control,
   } = useForm<FormValues | CustomerSignin>({
     mode: 'onChange',
-    defaultValues: { shipping: defaultValues },
+    defaultValues: { address: defaultValues },
   });
 
   const onSubmit = async (data: FormValues | CustomerSignin) => {
@@ -85,13 +91,13 @@ function ShippingAddress() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {shippingAddressArray?.map((shippingAddress) => {
-        if (!shippingAddress) {
+      {typeAddressArray?.map((address) => {
+        if (!address) {
           return null;
         }
 
         return (
-          <Item key={shippingAddress.id}>
+          <Item key={address.id}>
             <Grid container spacing={spacing}>
               <Grid
                 item
@@ -104,30 +110,34 @@ function ShippingAddress() {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextFieldInput
-                  name={`shipping.shippingStreet_${shippingAddress.id}`}
+                  name={`address.addressStreet_${address.id}`}
                   control={control}
                   label="Street"
                   required={false}
+                  disabled={!editMode}
                 />
                 <TextFieldInput
-                  name={`shipping.shippingCity_${shippingAddress.id}`}
+                  name={`address.addressCity_${address.id}`}
                   control={control}
                   label="City"
                   required={false}
+                  disabled={!editMode}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextFieldInput
-                  name={`shipping.shippingPostalCode_${shippingAddress.id}`}
+                  name={`address.addressPostalCode_${address.id}`}
                   control={control}
                   label="Postal Code"
                   required={false}
+                  disabled={!editMode}
                 />
                 <TextFieldInput
-                  name={`shipping.shippingCountry_${shippingAddress.id}`}
+                  name={`address.addressCountry_${address.id}`}
                   control={control}
                   label="Country"
                   required={false}
+                  disabled={!editMode}
                 />
               </Grid>
             </Grid>
@@ -146,7 +156,7 @@ function ShippingAddress() {
           }}
         >
           <Button variant="text" startIcon={<AddCircleIcon />}>
-            Add Shipping Address
+            Add {addressType === 'shipping' ? 'shipping' : 'billing'} Address
           </Button>
 
           <Button
@@ -157,10 +167,10 @@ function ShippingAddress() {
             disabled={editMode}
             onClick={() => setEditMode(true)}
           >
-            Edit Profile
+            Edit Addresses
           </Button>
 
-          <ColoredBtn type="submit" variant="contained" disabled={!isValid}>
+          <ColoredBtn type="submit" variant="contained" disabled={!editMode}>
             Save Changes
           </ColoredBtn>
         </Grid>
@@ -169,4 +179,4 @@ function ShippingAddress() {
   );
 }
 
-export default ShippingAddress;
+export default ProfileAddress;

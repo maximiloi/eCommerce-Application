@@ -1,4 +1,4 @@
-export type ShippingFields = {
+export type AddressFields = {
   [key: string]: string;
 };
 
@@ -13,7 +13,7 @@ export interface FormValues {
   shippingPostalCode: string;
   shippingCountry: string;
   shippingDefaultAddress: boolean;
-  shipping?: ShippingFields;
+  address?: AddressFields;
   addressMatches: boolean;
   billingStreet: string;
   billingCity: string;

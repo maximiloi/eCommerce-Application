@@ -109,7 +109,7 @@ export const dummyProducts = [
     img: '/images/slide.png',
     price: 3150,
     discount: 3000,
-    tags: ['bestseller', 'sale'],
+    tags: ['bestseller', 'sales'],
   },
   {
     id: '6',

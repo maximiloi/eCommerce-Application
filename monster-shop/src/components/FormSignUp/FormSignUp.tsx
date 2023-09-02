@@ -65,6 +65,7 @@ export default function FormSignUp() {
         name="email"
         label="E-mail"
         required
+        disabled={false}
         rules={{
           required: 'Enter your e-mail, required field',
           pattern: {
@@ -78,6 +79,7 @@ export default function FormSignUp() {
         name="password"
         label="Password"
         required
+        disabled={false}
         rules={{
           required: 'Enter your password, required field',
           minLength: {
@@ -92,6 +94,7 @@ export default function FormSignUp() {
         name="firstName"
         label="First Name"
         required
+        disabled={false}
         rules={{
           required: 'First name is required',
           pattern: {
@@ -105,6 +108,7 @@ export default function FormSignUp() {
         name="lastName"
         label="Last Name"
         required
+        disabled={false}
         rules={{
           required: 'Last name is required',
           pattern: {
@@ -131,6 +135,7 @@ export default function FormSignUp() {
             name="shippingStreet"
             label="Street"
             required
+            disabled={false}
             rules={{
               required: 'Street is required',
               minLength: {
@@ -144,6 +149,7 @@ export default function FormSignUp() {
             name="shippingCity"
             label="City"
             required
+            disabled={false}
             rules={{
               required: 'City is required',
               minLength: {
@@ -157,6 +163,7 @@ export default function FormSignUp() {
             name="shippingPostalCode"
             label="Postal code"
             required
+            disabled={false}
             rules={{
               required: 'Postal code is required',
               minLength: {
@@ -200,6 +207,7 @@ export default function FormSignUp() {
               name="billingStreet"
               label="Street"
               required
+              disabled={false}
               rules={{
                 required: 'Street is required',
                 minLength: {
@@ -213,6 +221,7 @@ export default function FormSignUp() {
               name="billingCity"
               label="City"
               required
+              disabled={false}
               rules={{
                 required: 'City is required',
                 minLength: {
@@ -226,6 +235,7 @@ export default function FormSignUp() {
               name="billingPostalCode"
               label="Postal code"
               required
+              disabled={false}
               rules={{
                 required: 'Postal code is required',
                 minLength: {

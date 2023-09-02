@@ -1,8 +1,8 @@
 import { Box, Grid } from '@mui/material';
 import PersonalInfo from '../components/PersonalInfo/PersonalInfo';
-import ShippingAddress from '../components/ShippingAddress/ShippingAddress';
+import ProfileAddress from '../components/ProfileAddress/ProfileAddress';
 
-import '../sass/pages/Profile.scss';
+import '../sass/pages/_profile.scss';
 
 function Profile() {
   return (
@@ -15,10 +15,11 @@ function Profile() {
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <h4>Shipping address</h4>
-              <ShippingAddress />
+              <ProfileAddress addressType="shipping" />
             </Grid>
             <Grid item xs={12} md={6}>
               <h4>Billing address</h4>
+              <ProfileAddress addressType="billing" />
             </Grid>
           </Grid>
         </Grid>
