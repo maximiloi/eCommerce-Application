@@ -10,6 +10,7 @@
     box-shadow: 0px 15px 25px 0px variables.$color-dark-xs; //#42445a
     transition: all 0.2s ease;
   }
+
   &__title {
     color: variables.$color-background;
     margin: 0.5rem 0;
@@ -19,9 +20,11 @@
   &__tags {
     height: 1.5rem;
     text-align: end;
+
     & > *:not(:last-child) {
       margin-right: 0.3rem;
     }
+
     .tag {
       padding: 0 0.5rem;
       border-radius: 2rem;
@@ -37,6 +40,7 @@
 
 .discount {
   display: none;
+
   &_active {
     margin-right: 1rem;
     display: inline-block;
@@ -50,4 +54,15 @@
     opacity: 0.7;
     text-decoration: line-through;
   }
+}
+
+.price::after,
+.discount::after {
+  content: '';
+  margin-left: 3px;
+  background-image: url('../../../public/blood_drop.svg');
+  background-size: 14px 24px;
+  display: inline-block;
+  width: 14px;
+  height: 24px;
 }
