@@ -12,6 +12,7 @@ export async function login(customerSignin: CustomerSignin) {
       })
       .execute()
       .then((response) => {
+        User.setClient(customerSignin.email, customerSignin.password);
         User.signin(response.body.customer);
         toastify(`Hello, ${User.data?.firstName}`, 'success');
         resolve(response);
@@ -33,7 +34,7 @@ export async function signup(myCustomerDraft: MyCustomerDraft) {
       })
       .execute()
       .then((response) => {
-        User.setClient(myCustomerDraft.password, myCustomerDraft.email);
+        User.setClient(myCustomerDraft.email, myCustomerDraft.password);
         User.signin(response.body.customer);
         toastify(`Hello, ${User.data?.firstName}`, 'success');
         resolve(response);
@@ -46,6 +47,21 @@ export async function signup(myCustomerDraft: MyCustomerDraft) {
 }
 
 export function getProducts() {
+  return new Promise((resolve) => {
+    User.getApi()
+      .productProjections()
+      .get()
+      .execute()
+      .then((response) => {
+        resolve(response.body.results);
+      })
+      .catch((error) => {
+        toastify(error.message, 'error');
+      });
+  });
+}
+
+export function getProductsFilter(target) {
   return new Promise((resolve) => {
     User.getApi()
       .productProjections()
