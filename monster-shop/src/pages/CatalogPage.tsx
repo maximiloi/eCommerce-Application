@@ -11,13 +11,16 @@ import {
   Pagination,
 } from '@mui/material';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import { catalogMenuList, dummyProducts } from '../helper/variables';
+import { ProductProjection } from '@commercetools/platform-sdk';
+import { catalogMenuList } from '../helper/variables';
 import SearchBar from '../components/Searchbar/Searchbar';
 import CardItem from '../components/Card/CardItem';
 import '../sass/pages/_catalogPage.scss';
+import { getProducts, getProductsFilter } from '../api/requests';
 
 function CatalogPage() {
-  const initTotalPages: number = Math.ceil(dummyProducts.length / 6); // TEMP
+  const [products, setProducts] = useState([] as ProductProjection[]);
+  const initTotalPages: number = Math.ceil(products.length / 6); // TEMP
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -37,10 +40,26 @@ function CatalogPage() {
     console.log((event.target as HTMLElement).innerText);
   };
 
+  async function fetchProductsData() {
+    try {
+      const productsResponce = (await getProducts()) as ProductProjection[];
+      console.log(productsResponce);
+      setProducts(productsResponce);
+      const data = await getProductsFilter('asd');
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    fetchProductsData();
+  }, []);
+
   /* TEMPORARY */
   const indexOfLastCard = page * 6;
   const indexOfFirstCard = indexOfLastCard - 6;
-  const dataToShow = dummyProducts.slice(indexOfFirstCard, indexOfLastCard);
+  const dataToShow = products.slice(indexOfFirstCard, indexOfLastCard);
   /*------------------*/
 
   const handleChangePage = (
