@@ -4,6 +4,7 @@ import {
   Attribute,
   Image,
   ProductProjection,
+  Price,
 } from '@commercetools/platform-sdk';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import './_cardItem.scss';
@@ -12,8 +13,8 @@ function CardItem(props: ProductProjection) {
   const { id, masterVariant, name } = props;
   const tags = masterVariant.attributes as Attribute[];
   const img = (masterVariant.images as Image[])[0];
-  const discount = '';
-  const price = 100;
+  const discount = 0;
+  const price = (masterVariant.prices as Price[])[0];
   const navigate = useNavigate();
   const handleClick = () => {
     navigate(`/product/${id}`);
@@ -47,7 +48,7 @@ function CardItem(props: ProductProjection) {
               {discount}
             </span>
             <span className={discount ? 'price price_discounted' : 'price'}>
-              {price}
+              {price.value.centAmount / 10 ** price.value.fractionDigits}
             </span>
           </div>
         </CardContent>
