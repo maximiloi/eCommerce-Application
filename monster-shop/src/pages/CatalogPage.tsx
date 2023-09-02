@@ -16,7 +16,7 @@ import { catalogMenuList } from '../helper/variables';
 import SearchBar from '../components/Searchbar/Searchbar';
 import CardItem from '../components/Card/CardItem';
 import '../sass/pages/_catalogPage.scss';
-import { getProducts, getProductsFilter } from '../api/requests';
+import { getProducts } from '../api/requests';
 
 function CatalogPage() {
   const [products, setProducts] = useState([] as ProductProjection[]);
@@ -43,10 +43,7 @@ function CatalogPage() {
   async function fetchProductsData() {
     try {
       const productsResponce = (await getProducts()) as ProductProjection[];
-      console.log(productsResponce);
       setProducts(productsResponce);
-      const data = await getProductsFilter('asd');
-      console.log(data);
     } catch (err) {
       console.log(err);
     }
