@@ -15,7 +15,7 @@ import { ProductProjection } from '@commercetools/platform-sdk';
 import { catalogMenuList } from '../helper/variables';
 import SearchBar from '../components/Searchbar/Searchbar';
 import CardItem from '../components/Card/CardItem';
-import { getProducts } from '../api/requests';
+import { getProducts, getProductsFilter } from '../api/requests';
 import Loader from '../components/Loader/Loader';
 import '../sass/pages/_catalogPage.scss';
 
@@ -39,11 +39,11 @@ function CatalogPage() {
 
   async function fetchProductsData(category: string) {
     try {
-      let productsResponce = (await getProducts()) as ProductProjection[];
-      if (category)
-        productsResponce = productsResponce.filter(
-          (product) => product.categories[0].id === category
-        );
+      const productsResponce = (
+        category
+          ? await getProductsFilter(`categories.id:"${category}"`)
+          : ((await getProducts()) as ProductProjection[])
+      ) as ProductProjection[];
       const initTotalPages: number = Math.ceil(productsResponce.length / 6);
       setProducts(productsResponce);
       setTotalPages(initTotalPages);
