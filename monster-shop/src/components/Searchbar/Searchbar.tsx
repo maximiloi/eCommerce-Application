@@ -43,7 +43,10 @@ function SearchBar({ setSearchQuery }: SearchProps) {
               endAdornment: (
                 <InputAdornment
                   position="end"
-                  style={{ display: isDirty ? 'flex' : 'none' }}
+                  style={{
+                    display: isDirty ? 'flex' : 'none',
+                    cursor: 'pointer',
+                  }}
                   onClick={() => {
                     reset();
                     handleSubmit(onSubmit)();
