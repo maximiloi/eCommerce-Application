@@ -59,6 +59,7 @@ function CatalogPage() {
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
+    event.stopPropagation();
     setPage(value);
   };
   useEffect(() => {
