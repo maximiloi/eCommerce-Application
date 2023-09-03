@@ -15,9 +15,9 @@ import { ProductProjection } from '@commercetools/platform-sdk';
 import { catalogMenuList } from '../helper/variables';
 import SearchBar from '../components/Searchbar/Searchbar';
 import CardItem from '../components/Card/CardItem';
-import '../sass/pages/_catalogPage.scss';
 import { getProducts } from '../api/requests';
-import { Loader } from '../components/Loader/Loader';
+import Loader from '../components/Loader/Loader';
+import '../sass/pages/_catalogPage.scss';
 
 function CatalogPage() {
   const [products, setProducts] = useState([] as ProductProjection[]);
