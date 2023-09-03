@@ -16,7 +16,6 @@ function CardItem(props: ProductProjection) {
   const img = (masterVariant.images as Image[])[0];
   const price = (masterVariant.prices as Price[])[0];
   let discount = 0;
-  console.log(name, props);
   if (price.tiers) {
     const priceTiers = (price.tiers as PriceTier[])[0];
     discount =
