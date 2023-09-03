@@ -17,15 +17,16 @@ import SearchBar from '../components/Searchbar/Searchbar';
 import CardItem from '../components/Card/CardItem';
 import '../sass/pages/_catalogPage.scss';
 import { getProducts } from '../api/requests';
+import { Loader } from '../components/Loader/Loader';
 
 function CatalogPage() {
   const [products, setProducts] = useState([] as ProductProjection[]);
-  const initTotalPages: number = Math.ceil(products.length / 6); // TEMP
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState(0);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [totalPages, setTotalPages] = useState(initTotalPages);
+  const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
+  const isLoaded = !!products.length;
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -36,22 +37,20 @@ function CatalogPage() {
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: number
   ) => {
-    setSelectedIndex(index);
+    setSelectedCategory(index);
     console.log((event.target as HTMLElement).innerText);
   };
 
   async function fetchProductsData() {
     try {
       const productsResponce = (await getProducts()) as ProductProjection[];
+      const initTotalPages: number = Math.ceil(productsResponce.length / 6);
       setProducts(productsResponce);
+      setTotalPages(initTotalPages);
     } catch (err) {
       console.log(err);
     }
   }
-
-  useEffect(() => {
-    fetchProductsData();
-  }, []);
 
   /* TEMPORARY */
   const indexOfLastCard = page * 6;
@@ -68,8 +67,8 @@ function CatalogPage() {
   };
   useEffect(() => {
     console.log(`Make request with query - ${searchQuery}`);
-    setTotalPages(initTotalPages); // initTotalPages need to go
-  }, [searchQuery, initTotalPages]);
+    fetchProductsData();
+  }, [searchQuery]);
   return (
     <Box className="catalog" sx={{ display: 'flex' }}>
       <Box
@@ -102,7 +101,7 @@ function CatalogPage() {
             {catalogMenuList.map((item, index) => (
               <ListItemButton
                 key={item}
-                selected={selectedIndex === index}
+                selected={selectedCategory === index}
                 onClick={(event) => handleListItemClick(event, index)}
               >
                 <ListItemText primary={item} />
@@ -125,13 +124,13 @@ function CatalogPage() {
           {catalogMenuList.map((item, index) => (
             <ListItemButton
               key={item}
-              selected={selectedIndex === index}
+              selected={selectedCategory === index}
               onClick={(event) => handleListItemClick(event, index)}
             >
               <ListItemText
                 primary={item}
                 className={
-                  selectedIndex === index
+                  selectedCategory === index
                     ? 'category category_selected'
                     : 'category'
                 }
@@ -151,19 +150,21 @@ function CatalogPage() {
           spacing={2}
           sx={{ justifyContent: ['center', 'flex-start'] }}
         >
-          {dataToShow.map((card) => (
-            <CardItem key={card.id} {...card} />
-          ))}
+          {!isLoaded && <Loader />}
+          {isLoaded &&
+            dataToShow.map((card) => <CardItem key={card.id} {...card} />)}
         </Grid>
         <Box
           className="catalog__pagination"
           sx={{ p: 1, display: 'flex', justifyContent: 'center' }}
         >
-          <Pagination
-            count={totalPages}
-            page={page}
-            onChange={handleChangePage}
-          />
+          {isLoaded && (
+            <Pagination
+              count={totalPages}
+              page={page}
+              onChange={handleChangePage}
+            />
+          )}
         </Box>
       </Box>
     </Box>
