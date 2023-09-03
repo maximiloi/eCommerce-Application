@@ -71,7 +71,7 @@ function ProductPageCard() {
                 {discount}
               </span> */}
               <span className={price ? 'price' : 'price price_discounted'}>
-                {price}
+                {price / 100}
               </span>
             </div>
           </Box>
