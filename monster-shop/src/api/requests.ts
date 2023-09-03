@@ -61,7 +61,27 @@ export function getProducts() {
   });
 }
 
-export function getProductsId(ID: string) {
+export function getProductsFilter(filter: string) {
+  return new Promise((resolve) => {
+    User.getApi()
+      .productProjections()
+      .search()
+      .get({
+        queryArgs: {
+          filter,
+        },
+      })
+      .execute()
+      .then((response) => {
+        resolve(response.body.results);
+      })
+      .catch((error) => {
+        toastify(error.message, 'error');
+      });
+  });
+}
+
+export function getProductId(ID: string) {
   return new Promise((resolve) => {
     User.getApi()
       .productProjections()
