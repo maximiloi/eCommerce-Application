@@ -61,14 +61,16 @@ export function getProducts() {
   });
 }
 
-export function getProductsFilter(filter: string) {
+export function getProductsFilter(filter: string, text?: string) {
   return new Promise((resolve) => {
     User.getApi()
       .productProjections()
       .search()
       .get({
         queryArgs: {
+          fuzzy: true,
           filter,
+          'text.en': text,
         },
       })
       .execute()

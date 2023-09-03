@@ -15,7 +15,7 @@ import { ProductProjection } from '@commercetools/platform-sdk';
 import { catalogMenuList } from '../helper/variables';
 import SearchBar from '../components/Searchbar/Searchbar';
 import CardItem from '../components/Card/CardItem';
-import { getProducts, getProductsFilter } from '../api/requests';
+import { getProductsFilter } from '../api/requests';
 import Loader from '../components/Loader/Loader';
 import '../sass/pages/_catalogPage.scss';
 
@@ -37,13 +37,12 @@ function CatalogPage() {
     setSelectedCategory(index);
   };
 
-  async function fetchProductsData(category: string) {
+  async function fetchProductsData(category: string, search?: string) {
     try {
-      const productsResponce = (
-        category
-          ? await getProductsFilter(`categories.id:"${category}"`)
-          : ((await getProducts()) as ProductProjection[])
-      ) as ProductProjection[];
+      const productsResponce = (await getProductsFilter(
+        `categories${category ? `.id:"${category}"` : `:exists`}`,
+        search ? `"${search}"` : ''
+      )) as ProductProjection[];
       const initTotalPages: number = Math.ceil(productsResponce.length / 6);
       setProducts(productsResponce);
       setTotalPages(initTotalPages);
@@ -67,7 +66,7 @@ function CatalogPage() {
   };
   useEffect(() => {
     console.log(`Make request with query - ${searchQuery}`);
-    fetchProductsData(selectedCategory);
+    fetchProductsData(selectedCategory, searchQuery);
   }, [searchQuery, selectedCategory]);
   return (
     <Box className="catalog" sx={{ display: 'flex' }}>
