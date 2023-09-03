@@ -15,7 +15,7 @@ import { ProductProjection } from '@commercetools/platform-sdk';
 import { catalogMenuList } from '../helper/variables';
 import SearchBar from '../components/Searchbar/Searchbar';
 import CardItem from '../components/Card/CardItem';
-import { getCategory, getProducts } from '../api/requests';
+import { getProducts } from '../api/requests';
 import Loader from '../components/Loader/Loader';
 import '../sass/pages/_catalogPage.scss';
 
@@ -33,26 +33,19 @@ function CatalogPage() {
   const handleCloseMenu = () => {
     setAnchorEl(null);
   };
-  const handleListItemClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    index: string
-  ) => {
+  const handleListItemClick = (index: string) => {
     setSelectedCategory(index);
-    console.log(getCategory());
-    console.log((event.target as HTMLElement).innerText, index);
   };
 
   async function fetchProductsData(category: string) {
     try {
-      const productsResponce = (await getProducts()) as ProductProjection[];
+      let productsResponce = (await getProducts()) as ProductProjection[];
+      if (category)
+        productsResponce = productsResponce.filter(
+          (product) => product.categories[0].id === category
+        );
       const initTotalPages: number = Math.ceil(productsResponce.length / 6);
-      setProducts(
-        category
-          ? productsResponce.filter(
-              (product) => product.categories[0].id === category
-            )
-          : productsResponce
-      );
+      setProducts(productsResponce);
       setTotalPages(initTotalPages);
     } catch (error) {
       console.log(error);
@@ -112,9 +105,8 @@ function CatalogPage() {
                   selectedCategory ===
                   catalogMenuList[key as keyof typeof catalogMenuList]
                 }
-                onClick={(event) =>
+                onClick={() =>
                   handleListItemClick(
-                    event,
                     catalogMenuList[key as keyof typeof catalogMenuList]
                   )
                 }
@@ -143,9 +135,8 @@ function CatalogPage() {
                 selectedCategory ===
                 catalogMenuList[key as keyof typeof catalogMenuList]
               }
-              onClick={(event) =>
+              onClick={() =>
                 handleListItemClick(
-                  event,
                   catalogMenuList[key as keyof typeof catalogMenuList]
                 )
               }
