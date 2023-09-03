@@ -15,14 +15,14 @@ import { ProductProjection } from '@commercetools/platform-sdk';
 import { catalogMenuList } from '../helper/variables';
 import SearchBar from '../components/Searchbar/Searchbar';
 import CardItem from '../components/Card/CardItem';
-import { getProducts } from '../api/requests';
+import { getCategory, getProducts } from '../api/requests';
 import Loader from '../components/Loader/Loader';
 import '../sass/pages/_catalogPage.scss';
 
 function CatalogPage() {
   const [products, setProducts] = useState([] as ProductProjection[]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedCategory, setSelectedCategory] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
@@ -35,20 +35,27 @@ function CatalogPage() {
   };
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    index: number
+    index: string
   ) => {
     setSelectedCategory(index);
-    console.log((event.target as HTMLElement).innerText);
+    console.log(getCategory());
+    console.log((event.target as HTMLElement).innerText, index);
   };
 
-  async function fetchProductsData() {
+  async function fetchProductsData(category: string) {
     try {
       const productsResponce = (await getProducts()) as ProductProjection[];
       const initTotalPages: number = Math.ceil(productsResponce.length / 6);
-      setProducts(productsResponce);
+      setProducts(
+        category
+          ? productsResponce.filter(
+              (product) => product.categories[0].id === category
+            )
+          : productsResponce
+      );
       setTotalPages(initTotalPages);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -67,8 +74,8 @@ function CatalogPage() {
   };
   useEffect(() => {
     console.log(`Make request with query - ${searchQuery}`);
-    fetchProductsData();
-  }, [searchQuery]);
+    fetchProductsData(selectedCategory);
+  }, [searchQuery, selectedCategory]);
   return (
     <Box className="catalog" sx={{ display: 'flex' }}>
       <Box
@@ -98,13 +105,21 @@ function CatalogPage() {
         >
           <Divider />
           <List onClick={handleCloseMenu}>
-            {catalogMenuList.map((item, index) => (
+            {Object.keys(catalogMenuList).map((key) => (
               <ListItemButton
-                key={item}
-                selected={selectedCategory === index}
-                onClick={(event) => handleListItemClick(event, index)}
+                key={key}
+                selected={
+                  selectedCategory ===
+                  catalogMenuList[key as keyof typeof catalogMenuList]
+                }
+                onClick={(event) =>
+                  handleListItemClick(
+                    event,
+                    catalogMenuList[key as keyof typeof catalogMenuList]
+                  )
+                }
               >
-                <ListItemText primary={item} />
+                <ListItemText primary={key} />
               </ListItemButton>
             ))}
           </List>
@@ -121,16 +136,25 @@ function CatalogPage() {
       >
         <List>
           <Divider />
-          {catalogMenuList.map((item, index) => (
+          {Object.keys(catalogMenuList).map((key) => (
             <ListItemButton
-              key={item}
-              selected={selectedCategory === index}
-              onClick={(event) => handleListItemClick(event, index)}
+              key={key}
+              selected={
+                selectedCategory ===
+                catalogMenuList[key as keyof typeof catalogMenuList]
+              }
+              onClick={(event) =>
+                handleListItemClick(
+                  event,
+                  catalogMenuList[key as keyof typeof catalogMenuList]
+                )
+              }
             >
               <ListItemText
-                primary={item}
+                primary={key}
                 className={
-                  selectedCategory === index
+                  selectedCategory ===
+                  catalogMenuList[key as keyof typeof catalogMenuList]
                     ? 'category category_selected'
                     : 'category'
                 }
