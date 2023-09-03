@@ -1,32 +1,25 @@
-// import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Box, Card, CardMedia, CardContent, CardActions } from '@mui/material';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
+import { getProductsId } from '../../api/requests';
 
 import './ProductPageComp.scss';
 
-// type CardProps = {
-//   id: string;
-//   img: string;
-//   title: string;
-//   tags: Array<string>;
-//   discount: number;
-//   price: number;
-// };
-
-const product = {
-  id: '1',
-  title: 'Thunderfang',
-  img: '/images/photo_3.jpg',
-  price: 300,
-  discount: 0,
-  tags: ['bestseller'],
-  description:
-    'Thunderfang is a fierce and powerful warrior with razor-sharp teeth and lightning-fast reflexes. He is known for his bravery and loyalty to his pack, often risking his life to protect and defend them. Despite his intimidating appearance, Thunderfang has a gentle heart and is fiercely protective of those he loves.',
-};
-
 function ProductPageCard() {
-  const { id, img, title, tags, discount, price, description } = product;
-  // const { productId } = useParams();
+  const { productId } = useParams();
+
+  getProductsId(productId)
+    .then((response) => {
+      const productsResponse = response;
+      console.log('productsResponse: ', productsResponse);
+      // Ваш код, который использует productsResponse
+    })
+    .catch((error) => {
+      console.log('Ошибка при получении данных: ', error);
+    });
+
+  const { id, img, title, tags, discount, price, description } =
+    productsResponce;
 
   return (
     <div>
