@@ -1,6 +1,8 @@
 // import { useParams } from 'react-router-dom';
-import { Card, CardMedia, CardContent, CardActions } from '@mui/material';
-// import ColoredBtn from '../ColoredBtn/ColoredBtn';
+import { Box, Card, CardMedia, CardContent, CardActions } from '@mui/material';
+import ColoredBtn from '../ColoredBtn/ColoredBtn';
+
+import './ProductPageComp.scss';
 
 // type CardProps = {
 //   id: string;
@@ -31,7 +33,6 @@ function ProductPageCard() {
       <em>id: {id}</em>{' '}
       <Card
         sx={{
-          height: '100%',
           display: 'flex',
           flexDirection: 'row',
           bgcolor: '#f8e2a7',
@@ -44,33 +45,42 @@ function ProductPageCard() {
           image={img}
           alt={title}
         />
-        <CardContent className="card__content" sx={{ flexGrow: 1, p: 1 }}>
-          <p className="card__title">{title}</p>
-          <div className="card__price">
-            <span
-              className={discount ? 'discount discount_active' : 'discount'}
-            >
-              {discount}
-            </span>
-            <span className={discount ? 'price price_discounted' : 'price'}>
-              {price}
-            </span>
-          </div>
+        <CardContent className="product__content" sx={{ flexGrow: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <p className="product__title">{title}</p>
+            <div className="product__price">
+              <span
+                className={discount ? 'discount discount_active' : 'discount'}
+              >
+                {discount}
+              </span>
+              <span className={discount ? 'price price_discounted' : 'price'}>
+                {price}
+              </span>
+            </div>
+          </Box>
 
-          <div className="card__tags">
+          <p className="product__text">{description}</p>
+
+          <div className="product__tags">
             {tags.map((tag) => (
               <span key={tag} className="tag">
                 {tag}
               </span>
             ))}
           </div>
-          <p className="card__text">{description}</p>
+          <CardActions sx={{ pb: 2, pt: 0 }}>
+            <ColoredBtn size="small" variant="contained">
+              Add Cart
+            </ColoredBtn>
+          </CardActions>
         </CardContent>
-        <CardActions sx={{ pb: 2, pt: 0 }}>
-          {/* <ColoredBtn size="small" variant="contained" onClick={handleClick}>
-            View details
-          </ColoredBtn> */}
-        </CardActions>
       </Card>
     </div>
   );
