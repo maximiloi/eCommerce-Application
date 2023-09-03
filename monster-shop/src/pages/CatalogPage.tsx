@@ -27,6 +27,9 @@ function CatalogPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
   const isLoaded = !!products.length;
+  const indexOfLastCard = page * 6;
+  const indexOfFirstCard = indexOfLastCard - 6;
+  const dataToShow = products.slice(indexOfFirstCard, indexOfLastCard);
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -46,26 +49,19 @@ function CatalogPage() {
       const initTotalPages: number = Math.ceil(productsResponce.length / 6);
       setProducts(productsResponce);
       setTotalPages(initTotalPages);
+      setPage(1);
     } catch (error) {
       console.log(error);
     }
   }
-
-  /* TEMPORARY */
-  const indexOfLastCard = page * 6;
-  const indexOfFirstCard = indexOfLastCard - 6;
-  const dataToShow = products.slice(indexOfFirstCard, indexOfLastCard);
-  /*------------------*/
 
   const handleChangePage = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
     setPage(value);
-    console.log(event.type);
   };
   useEffect(() => {
-    console.log(`Make request with query - ${searchQuery}`);
     fetchProductsData(selectedCategory, searchQuery);
   }, [searchQuery, selectedCategory]);
   return (
