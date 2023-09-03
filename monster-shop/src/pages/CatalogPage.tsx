@@ -40,11 +40,17 @@ function CatalogPage() {
     setSelectedCategory(index);
   };
 
-  async function fetchProductsData(category: string, search?: string) {
+  async function fetchProductsData(
+    category: string,
+    search: string,
+    sort: { field: 'name.en' | 'price'; type: 'asc' | 'desc' }
+    // тут варинты сортировки  ^^
+  ) {
     try {
       const productsResponce = (await getProductsFilter(
         `categories${category ? `.id:"${category}"` : `:exists`}`,
-        search ? `"${search}"` : ''
+        search ? `"${search}"` : '',
+        `${sort.field} ${sort.type}`
       )) as ProductProjection[];
       const initTotalPages: number = Math.ceil(productsResponce.length / 6);
       setProducts(productsResponce);
@@ -63,7 +69,10 @@ function CatalogPage() {
     setPage(value);
   };
   useEffect(() => {
-    fetchProductsData(selectedCategory, searchQuery);
+    fetchProductsData(selectedCategory, searchQuery, {
+      field: 'name.en',
+      type: 'asc',
+    }); /* суда передавать переменные сортировки, пока заглушка с именем */
   }, [searchQuery, selectedCategory]);
   return (
     <Box className="catalog" sx={{ display: 'flex' }}>

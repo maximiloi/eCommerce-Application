@@ -61,7 +61,7 @@ export function getProducts() {
   });
 }
 
-export function getProductsFilter(filter: string, text?: string) {
+export function getProductsFilter(filter: string, text: string, sort: string) {
   return new Promise((resolve) => {
     User.getApi()
       .productProjections()
@@ -71,6 +71,7 @@ export function getProductsFilter(filter: string, text?: string) {
           fuzzy: true,
           filter,
           'text.en': text,
+          sort,
         },
       })
       .execute()
