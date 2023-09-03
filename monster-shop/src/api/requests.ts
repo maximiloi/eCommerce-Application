@@ -61,14 +61,15 @@ export function getProducts() {
   });
 }
 
-export function getProductsFilter(target) {
+export function getProductsId(ID: string) {
   return new Promise((resolve) => {
     User.getApi()
       .productProjections()
+      .withId({ ID })
       .get()
       .execute()
       .then((response) => {
-        resolve(response.body.results);
+        resolve(response.body);
       })
       .catch((error) => {
         toastify(error.message, 'error');
