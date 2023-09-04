@@ -12,7 +12,9 @@ function MainPage() {
           {navBtns.map((link) => (
             <MenuItem key={link.name}>
               <ColoredBtn type="button" variant="contained" fullWidth>
-                <NavLink to={link.path}>{link.name}</NavLink>
+                <NavLink className="menu-link" to={link.path}>
+                  {link.name}
+                </NavLink>
               </ColoredBtn>
             </MenuItem>
           ))}
