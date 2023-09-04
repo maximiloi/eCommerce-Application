@@ -8,7 +8,7 @@ import {
 } from '@commercetools/platform-sdk';
 import { Box, Card, CardMedia, CardContent, CardActions } from '@mui/material';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
-import { getProductsId } from '../../api/requests';
+import { getProductId } from '../../api/requests';
 
 import './ProductPageComp.scss';
 
@@ -22,7 +22,7 @@ function ProductPageCard() {
 
   async function fetchProductData(id: string) {
     try {
-      const productResponce = (await getProductsId(id)) as ProductProjection;
+      const productResponce = (await getProductId(id)) as ProductProjection;
       console.log('productResponce: ', productResponce);
       setTitle(productResponce.name.en);
       setImg((productResponce.masterVariant.images as Image[])[0].url);
