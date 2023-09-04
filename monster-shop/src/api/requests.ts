@@ -80,7 +80,7 @@ export function getProductsFilter(filter: string, text: string, sort: string) {
       })
       .execute()
       .then((response) => {
-        resolve(response.body);
+        resolve(response.body.results);
       })
       .catch((error) => {
         toastify(error.message, 'error');
