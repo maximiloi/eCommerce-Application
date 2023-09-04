@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { SortProps, SortOptionType } from '../../types/inputProps';
@@ -9,25 +9,39 @@ function Sort({ setSortOption }: SortProps) {
   const [type, setType] = useState<SortOptionType['type']>('asc');
   const [isNameAsc, setIsNameAsc] = useState('arrow');
   const [isPriceAsc, setIsPriceAsc] = useState('arrow');
+  const handleArrow = (target: string) => {
+    if (target === 'NAME') {
+      setIsNameAsc(isNameAsc === 'arrow' ? 'arrow arrow_desc' : 'arrow');
+    } else {
+      setIsPriceAsc(isPriceAsc === 'arrow' ? 'arrow arrow_desc' : 'arrow');
+    }
+  };
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,
     newValue: SortOptionType['field'] | null
   ) => {
     if (newValue !== null) {
       setField(newValue);
+      setType('asc');
+      setIsNameAsc('arrow');
+      setIsPriceAsc('arrow');
     } else {
       setType(type === 'asc' ? 'desc' : 'asc');
-      if ((event.target as HTMLButtonElement).innerText === 'NAME') {
-        setIsNameAsc(type === 'asc' ? 'arrow' : 'arrow arrow_desc');
-      } else {
-        setIsPriceAsc(type === 'asc' ? 'arrow' : 'arrow arrow_desc');
-      }
+      handleArrow((event.target as HTMLButtonElement).innerText);
     }
+  };
+  const Setter = useCallback(() => {
     setSortOption({
       field,
       type,
     });
-  };
+  }, [field, type, setSortOption]);
+  useEffect(() => {
+    Setter();
+    return () => {
+      Setter();
+    };
+  }, [Setter]);
   return (
     <ToggleButtonGroup
       className="sort"
