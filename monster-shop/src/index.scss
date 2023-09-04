@@ -8,11 +8,13 @@
 @import './sass/base/normalize';
 
 /* components */
+@import './sass/components/breadcrumb';
 @import './sass/components/buttons';
 
 /* pages */
 @import './sass/pages/catalogPage';
 @import './sass/pages/login-form';
+@import './sass/pages/productPage';
 @import './sass/pages/mainPage';
 
 .main {
