@@ -4,6 +4,7 @@ import {
   ProductProjection,
   Image,
   Price,
+  DiscountedPrice,
   LocalizedString,
 } from '@commercetools/platform-sdk';
 import { Box, Card, CardMedia, CardContent, CardActions } from '@mui/material';
@@ -19,6 +20,7 @@ function ProductPageCard() {
   const [img, setImg] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState(0);
+  const [discount, setDiscount] = useState(0);
 
   async function fetchProductData(id: string) {
     try {
@@ -29,6 +31,12 @@ function ProductPageCard() {
       setDescription((productResponce.description as LocalizedString).en);
       setPrice(
         (productResponce.masterVariant.prices as Price[])[0].value.centAmount
+      );
+      setDiscount(
+        (
+          (productResponce.masterVariant.prices as Price[])[0]
+            .discounted as DiscountedPrice
+        ).value.centAmount
       );
     } catch (err) {
       console.log(err);
@@ -65,12 +73,12 @@ function ProductPageCard() {
           >
             {title && <p className="product__title">{title}</p>}
             <div className="product__price">
-              {/* <span
+              <span
                 className={discount ? 'discount discount_active' : 'discount'}
               >
-                {discount}
-              </span> */}
-              <span className={price ? 'price' : 'price price_discounted'}>
+                {discount / 100}
+              </span>
+              <span className={discount ? 'price price_discounted' : 'price'}>
                 {price / 100}
               </span>
             </div>
