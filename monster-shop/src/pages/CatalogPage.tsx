@@ -15,61 +15,65 @@ import { ProductProjection } from '@commercetools/platform-sdk';
 import { catalogMenuList } from '../helper/variables';
 import SearchBar from '../components/Searchbar/Searchbar';
 import CardItem from '../components/Card/CardItem';
+import { getProductsFilter } from '../api/requests';
+import Loader from '../components/Loader/Loader';
 import '../sass/pages/_catalogPage.scss';
-import { getProducts } from '../api/requests';
 
 function CatalogPage() {
   const [products, setProducts] = useState([] as ProductProjection[]);
-  const initTotalPages: number = Math.ceil(products.length / 6); // TEMP
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [totalPages, setTotalPages] = useState(initTotalPages);
+  const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
+  const isLoaded = !!products.length;
+  const indexOfLastCard = page * 6;
+  const indexOfFirstCard = indexOfLastCard - 6;
+  const dataToShow = products.slice(indexOfFirstCard, indexOfLastCard);
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleCloseMenu = () => {
     setAnchorEl(null);
   };
-  const handleListItemClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    index: number
-  ) => {
-    setSelectedIndex(index);
-    console.log((event.target as HTMLElement).innerText);
+  const handleListItemClick = (index: string) => {
+    setSelectedCategory(index);
   };
 
-  async function fetchProductsData() {
+  async function fetchProductsData(
+    category: string,
+    search: string,
+    sort: { field: 'name.en' | 'price'; type: 'asc' | 'desc' }
+    // тут варинты сортировки  ^^
+  ) {
     try {
-      const productsResponce = (await getProducts()) as ProductProjection[];
+      const productsResponce = (await getProductsFilter(
+        `categories${category ? `.id:"${category}"` : `:exists`}`,
+        search ? `"${search}"` : '',
+        `${sort.field} ${sort.type}`
+      )) as ProductProjection[];
+      const initTotalPages: number = Math.ceil(productsResponce.length / 6);
       setProducts(productsResponce);
-    } catch (err) {
-      console.log(err);
+      setTotalPages(initTotalPages);
+      setPage(1);
+    } catch (error) {
+      console.log(error);
     }
   }
-
-  useEffect(() => {
-    fetchProductsData();
-  }, []);
-
-  /* TEMPORARY */
-  const indexOfLastCard = page * 6;
-  const indexOfFirstCard = indexOfLastCard - 6;
-  const dataToShow = products.slice(indexOfFirstCard, indexOfLastCard);
-  /*------------------*/
 
   const handleChangePage = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
+    event.stopPropagation();
     setPage(value);
-    console.log(event.type);
   };
   useEffect(() => {
-    console.log(`Make request with query - ${searchQuery}`);
-    setTotalPages(initTotalPages); // initTotalPages need to go
-  }, [searchQuery, initTotalPages]);
+    fetchProductsData(selectedCategory, searchQuery, {
+      field: 'name.en',
+      type: 'asc',
+    }); /* суда передавать переменные сортировки, пока заглушка с именем */
+  }, [searchQuery, selectedCategory]);
   return (
     <Box className="catalog" sx={{ display: 'flex' }}>
       <Box
@@ -99,13 +103,20 @@ function CatalogPage() {
         >
           <Divider />
           <List onClick={handleCloseMenu}>
-            {catalogMenuList.map((item, index) => (
+            {Object.keys(catalogMenuList).map((key) => (
               <ListItemButton
-                key={item}
-                selected={selectedIndex === index}
-                onClick={(event) => handleListItemClick(event, index)}
+                key={key}
+                selected={
+                  selectedCategory ===
+                  catalogMenuList[key as keyof typeof catalogMenuList]
+                }
+                onClick={() =>
+                  handleListItemClick(
+                    catalogMenuList[key as keyof typeof catalogMenuList]
+                  )
+                }
               >
-                <ListItemText primary={item} />
+                <ListItemText primary={key} />
               </ListItemButton>
             ))}
           </List>
@@ -122,16 +133,24 @@ function CatalogPage() {
       >
         <List>
           <Divider />
-          {catalogMenuList.map((item, index) => (
+          {Object.keys(catalogMenuList).map((key) => (
             <ListItemButton
-              key={item}
-              selected={selectedIndex === index}
-              onClick={(event) => handleListItemClick(event, index)}
+              key={key}
+              selected={
+                selectedCategory ===
+                catalogMenuList[key as keyof typeof catalogMenuList]
+              }
+              onClick={() =>
+                handleListItemClick(
+                  catalogMenuList[key as keyof typeof catalogMenuList]
+                )
+              }
             >
               <ListItemText
-                primary={item}
+                primary={key}
                 className={
-                  selectedIndex === index
+                  selectedCategory ===
+                  catalogMenuList[key as keyof typeof catalogMenuList]
                     ? 'category category_selected'
                     : 'category'
                 }
@@ -151,19 +170,21 @@ function CatalogPage() {
           spacing={2}
           sx={{ justifyContent: ['center', 'flex-start'] }}
         >
-          {dataToShow.map((card) => (
-            <CardItem key={card.id} {...card} />
-          ))}
+          {!isLoaded && <Loader />}
+          {isLoaded &&
+            dataToShow.map((card) => <CardItem key={card.id} {...card} />)}
         </Grid>
         <Box
           className="catalog__pagination"
           sx={{ p: 1, display: 'flex', justifyContent: 'center' }}
         >
-          <Pagination
-            count={totalPages}
-            page={page}
-            onChange={handleChangePage}
-          />
+          {isLoaded && (
+            <Pagination
+              count={totalPages}
+              page={page}
+              onChange={handleChangePage}
+            />
+          )}
         </Box>
       </Box>
     </Box>

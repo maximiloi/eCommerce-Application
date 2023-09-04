@@ -62,101 +62,10 @@ export const navBtns = [
   { name: 'About us', path: '/about' },
 ];
 
-export const catalogMenuList = [
-  'ALL',
-  'Funny Monsters',
-  'Cute Monsters',
-  'Scary Monsters',
-  'Real Monsters',
-];
-
-export const dummyProducts = [
-  {
-    id: '1',
-    title: 'Babadook',
-    img: '/images/photo_1.jpg',
-    price: 300,
-    discount: 0,
-    tags: ['bestseller'],
-  },
-  {
-    id: '2',
-    title: 'Jkjsdghsf',
-    img: '/images/photo_2.jpg',
-    price: 200,
-    discount: 0,
-    tags: [],
-  },
-  {
-    id: '3',
-    title: 'Jkfslfjdlg',
-    img: '/images/photo_3.jpg',
-    price: 500,
-    discount: 0,
-    tags: ['new'],
-  },
-  {
-    id: '4',
-    title: 'Hkfjf ndkfhk',
-    img: '/images/photo_4.jpg',
-    price: 1000,
-    discount: 990,
-    tags: ['bestseller', 'sale'],
-  },
-  {
-    id: '5',
-    title: 'Gslfafs cjmvg',
-    img: '/images/slide.png',
-    price: 3150,
-    discount: 3000,
-    tags: ['bestseller', 'sales'],
-  },
-  {
-    id: '6',
-    title: 'Gkkkfdglsh jshd',
-    img: '/images/patrick-tomasso.jpg',
-    price: 3630,
-    discount: 0,
-    tags: ['bestseller'],
-  },
-  {
-    id: '7',
-    title: 'Hkfbncbv fdkf',
-    img: '/images/samuel-berner.jpg',
-    price: 1300,
-    discount: 0,
-    tags: ['new'],
-  },
-  {
-    id: '8',
-    title: 'Hkdsjkd jfdh',
-    img: '/images/carlos-nunez.jpg',
-    price: 350,
-    discount: 0,
-    tags: ['new'],
-  },
-  {
-    id: '9',
-    title: 'Hkl kfjkdfhd',
-    img: '/images/slide.png',
-    price: 200,
-    discount: 0,
-    tags: ['bestseller'],
-  },
-  {
-    id: '10',
-    title: 'Hfldkoeu fdfh',
-    img: '/images/patrick-tomasso.jpg',
-    price: 2200,
-    discount: 2000,
-    tags: ['bestseller', 'sale'],
-  },
-  {
-    id: '11',
-    title: 'IIndsbfjhf',
-    img: '/images/samuel-berner.jpg',
-    price: 100,
-    discount: 0,
-    tags: ['bestseller'],
-  },
-];
+export const catalogMenuList = {
+  ALL: '',
+  'Funny Monsters': '470126d4-b800-4c84-8a58-16d1dcfe5f42',
+  'Cute Monsters': '822afbb3-711c-4fd5-8336-7b2147c1d174',
+  'Scary Monsters': '3bb278f1-4669-46a6-b158-a97edb6d77a2',
+  'Real Monsters': 'a69edcea-705d-45b1-9b9c-a0fe977998e1',
+};
