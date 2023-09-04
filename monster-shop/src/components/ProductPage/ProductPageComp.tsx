@@ -25,7 +25,6 @@ function ProductPageCard() {
   async function fetchProductData(id: string) {
     try {
       const productResponce = (await getProductId(id)) as ProductProjection;
-      console.log('productResponce: ', productResponce);
       setTitle(productResponce.name.en);
       setImg((productResponce.masterVariant.images as Image[])[0].url);
       setDescription((productResponce.description as LocalizedString).en);
