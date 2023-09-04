@@ -1,14 +1,7 @@
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { InputAdornment, TextField } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
-
-type SearchInputType = {
-  searchQuery: string;
-};
-
-type SearchProps = {
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-};
+import { SearchProps, SearchInputType } from '../../types/inputProps';
 
 function SearchBar({ setSearchQuery }: SearchProps) {
   const {

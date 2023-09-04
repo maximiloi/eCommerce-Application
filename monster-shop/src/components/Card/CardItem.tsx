@@ -10,6 +10,11 @@ import {
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import './_cardItem.scss';
 
+type AttributeType = {
+  key: string;
+  label: string;
+};
+
 function CardItem(props: ProductProjection) {
   const { id, masterVariant, name } = props;
   const tags = masterVariant.attributes as Attribute[];
@@ -43,9 +48,13 @@ function CardItem(props: ProductProjection) {
           <p className="card__title">{name.en}</p>
           <div className="card__tags">
             {tags.map((tag) => (
-              <span key={tag.value} className="tag">
-                {tag.value}
-              </span>
+              <div key={tag.name}>
+                {tag.value.map((el: AttributeType) => (
+                  <span key={el.key} className="tag">
+                    {el.label}
+                  </span>
+                ))}
+              </div>
             ))}
           </div>
           <div className="card__price">

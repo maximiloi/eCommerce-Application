@@ -18,14 +18,15 @@
   }
 
   &__tags {
-    height: 1.5rem;
-    text-align: end;
+    display: flex;
+    justify-content: flex-end;
 
     & > *:not(:last-child) {
       margin-right: 0.3rem;
     }
 
     .tag {
+      font-size: smaller;
       padding: 0 0.5rem;
       border-radius: 2rem;
       background: darken(variables.$color-bright, 10%);

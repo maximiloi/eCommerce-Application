@@ -27,6 +27,7 @@
     background: variables.$color-logo-bg;
     background: rgba(variables.$color-background, $alpha: 0.5);
     .search-input {
+      flex-grow: 1;
       background: variables.$color-background;
       display: flex;
       justify-content: center;
