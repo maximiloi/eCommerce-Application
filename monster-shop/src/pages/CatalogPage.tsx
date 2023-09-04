@@ -13,9 +13,12 @@ import {
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { catalogMenuList } from '../helper/variables';
-import SearchBar from '../components/Searchbar/Searchbar';
-import CardItem from '../components/Card/CardItem';
 import { getProductsFilter } from '../api/requests';
+import { SortOptionType } from '../types/inputProps';
+import SearchBar from '../components/Searchbar/Searchbar';
+import Sort from '../components/Sort/Sort';
+import SortMobile from '../components/Sort/SortMobile';
+import CardItem from '../components/Card/CardItem';
 import Loader from '../components/Loader/Loader';
 import '../sass/pages/_catalogPage.scss';
 
@@ -24,6 +27,10 @@ function CatalogPage() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [sortOption, setSortOption] = useState<SortOptionType>({
+    field: 'name.en',
+    type: 'asc',
+  });
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
   const isLoaded = !!products.length;
@@ -43,8 +50,7 @@ function CatalogPage() {
   async function fetchProductsData(
     category: string,
     search: string,
-    sort: { field: 'name.en' | 'price'; type: 'asc' | 'desc' }
-    // тут варинты сортировки  ^^
+    sort: SortOptionType
   ) {
     try {
       const productsResponce = (await getProductsFilter(
@@ -69,21 +75,23 @@ function CatalogPage() {
     setPage(value);
   };
   useEffect(() => {
-    fetchProductsData(selectedCategory, searchQuery, {
-      field: 'name.en',
-      type: 'asc',
-    }); /* суда передавать переменные сортировки, пока заглушка с именем */
-  }, [searchQuery, selectedCategory]);
+    fetchProductsData(selectedCategory, searchQuery, sortOption);
+  }, [searchQuery, selectedCategory, sortOption]);
   return (
     <Box className="catalog" sx={{ display: 'flex' }}>
       <Box
         component="aside"
         className="catalog__aside catalog__aside_mobile"
-        sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' } }}
+        sx={{
+          flexGrow: 0,
+          display: { xs: 'flex', md: 'none' },
+          flexDirection: 'column',
+        }}
       >
         <IconButton size="large" onClick={handleOpenMenu} color="warning">
           <AutoStoriesIcon />
         </IconButton>
+        <SortMobile setSortOption={setSortOption} />
         <Menu
           anchorEl={anchorEl}
           anchorOrigin={{
@@ -164,7 +172,10 @@ function CatalogPage() {
         className="catalog__content"
         sx={{ flexGrow: 1, width: { sm: 'calc(100% - 200px)' }, p: 1 }}
       >
-        <SearchBar setSearchQuery={setSearchQuery} />
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <SearchBar setSearchQuery={setSearchQuery} />
+          <Sort setSortOption={setSortOption} />
+        </Box>
         <Grid
           container
           spacing={2}
