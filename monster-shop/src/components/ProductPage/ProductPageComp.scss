@@ -13,8 +13,9 @@
   }
 
   &__tags {
-    height: 1.5rem;
-    padding: 1rem 0;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5rem 0;
 
     & > *:not(:last-child) {
       margin-right: 0.3rem;

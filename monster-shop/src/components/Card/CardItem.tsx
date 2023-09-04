@@ -7,13 +7,9 @@ import {
   Price,
   DiscountedPrice,
 } from '@commercetools/platform-sdk';
+import { AttributeType } from '../../types/inputProps';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import './_cardItem.scss';
-
-type AttributeType = {
-  key: string;
-  label: string;
-};
 
 function CardItem(props: ProductProjection) {
   const { id, masterVariant, name } = props;

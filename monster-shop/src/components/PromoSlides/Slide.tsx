@@ -7,9 +7,11 @@ function Slide(props: SlideProps) {
   return (
     <li className={className}>
       <img src={slideImg} style={{ width: sliderWidth }} alt="" />
-      <ColoredBtn type="button" variant="contained">
-        {slideText}
-      </ColoredBtn>
+      {slideText && (
+        <ColoredBtn type="button" variant="contained">
+          {slideText}
+        </ColoredBtn>
+      )}
     </li>
   );
 }

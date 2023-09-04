@@ -19,3 +19,8 @@ export type SortOptionType = {
 export type SortProps = {
   setSortOption: React.Dispatch<React.SetStateAction<SortOptionType>>;
 };
+
+export type AttributeType = {
+  key: string;
+  label: string;
+};
