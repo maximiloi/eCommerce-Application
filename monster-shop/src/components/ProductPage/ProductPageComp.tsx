@@ -7,13 +7,24 @@ import {
   DiscountedPrice,
   LocalizedString,
 } from '@commercetools/platform-sdk';
-import { Box, Card, CardMedia, CardContent, CardActions } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardMedia,
+  CardContent,
+  CardActions,
+  useTheme,
+  useMediaQuery,
+} from '@mui/material';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import { getProductId } from '../../api/requests';
 
 import './ProductPageComp.scss';
 
 function ProductPageCard() {
+  const theme = useTheme();
+  const isTabletOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
+
   const { productId } = useParams();
   // const [id, setId] = useState(null);
   const [title, setTitle] = useState('');
@@ -51,18 +62,27 @@ function ProductPageCard() {
       <Card
         sx={{
           display: 'flex',
-          flexDirection: 'row',
-          bgcolor: '#f8e2a7',
+          flexDirection: isTabletOrSmaller ? 'column' : 'row',
+          maxWidth: isTabletOrSmaller ? '500px' : '100%',
+          margin: '0 auto',
+          bgcolor: '#fff',
           borderRadius: 5,
         }}
       >
         <CardMedia
           component="img"
-          sx={{ width: 350, height: 350 }}
+          sx={{
+            maxWidth: 350,
+            height: '100%',
+            alignSelf: isTabletOrSmaller ? 'center' : 'left',
+          }}
           image={img}
           alt={title}
         />
-        <CardContent className="product__content" sx={{ flexGrow: 1 }}>
+        <CardContent
+          className="product__content"
+          sx={{ flexGrow: 1, bgcolor: '#f8e2a7' }}
+        >
           <Box
             sx={{
               display: 'flex',
