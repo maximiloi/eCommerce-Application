@@ -9,8 +9,8 @@ function Sort({ setSortOption }: SortProps) {
   const [type, setType] = useState<SortOptionType['type']>('asc');
   const [isNameAsc, setIsNameAsc] = useState('arrow');
   const [isPriceAsc, setIsPriceAsc] = useState('arrow');
-  const handleArrow = (target: string) => {
-    if (target === 'NAME') {
+  const handleArrow = (target: HTMLButtonElement | null) => {
+    if (target && target.innerText === 'NAME') {
       setIsNameAsc(isNameAsc === 'arrow' ? 'arrow arrow_desc' : 'arrow');
     } else {
       setIsPriceAsc(isPriceAsc === 'arrow' ? 'arrow arrow_desc' : 'arrow');
@@ -27,7 +27,7 @@ function Sort({ setSortOption }: SortProps) {
       setIsPriceAsc('arrow');
     } else {
       setType(type === 'asc' ? 'desc' : 'asc');
-      handleArrow((event.target as HTMLButtonElement).innerText);
+      handleArrow((event.target as HTMLElement).closest('button'));
     }
   };
   const Setter = useCallback(() => {
