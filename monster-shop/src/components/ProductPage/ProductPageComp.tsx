@@ -51,7 +51,7 @@ function ProductPageCard() {
       >
         <CardMedia
           component="img"
-          sx={{ width: 350 }}
+          sx={{ width: 350, height: 350 }}
           image={img}
           alt={title}
         />
