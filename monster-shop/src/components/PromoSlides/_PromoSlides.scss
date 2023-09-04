@@ -27,6 +27,17 @@
   }
 }
 
+.product__card {
+  .slider {
+    height: 100%;
+
+    .prev,
+    .next {
+      color: #c32b1d;
+    }
+  }
+}
+
 .slides {
   width: 100%;
   height: 100%;
