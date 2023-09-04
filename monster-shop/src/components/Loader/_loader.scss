@@ -1,0 +1,22 @@
+.loader {
+  display: block;
+  width: 10rem;
+  height: 10rem;
+  background: center/cover no-repeat url('images/icons8-loader-100.png');
+  animation: 2s infinite spinLoader;
+  margin: 0 auto;
+}
+
+@keyframes spinLoader {
+  from {
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+  to {
+    transform: rotate(360deg);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

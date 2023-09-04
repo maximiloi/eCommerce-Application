@@ -1,6 +1,5 @@
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { IconButton, InputAdornment, TextField } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import { InputAdornment, TextField } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 
 type SearchInputType = {
@@ -23,14 +22,12 @@ function SearchBar({ setSearchQuery }: SearchProps) {
     },
     mode: 'onChange',
   });
-  const handleClick = (): void => {
-    reset();
-  };
+
   const onSubmit: SubmitHandler<SearchInputType> = (data) => {
     setSearchQuery(data.searchQuery);
   };
   return (
-    <form className="search-input" onSubmit={handleSubmit(onSubmit)}>
+    <form className="search-input" onChange={handleSubmit(onSubmit)}>
       <Controller
         name="searchQuery"
         control={control}
@@ -46,8 +43,14 @@ function SearchBar({ setSearchQuery }: SearchProps) {
               endAdornment: (
                 <InputAdornment
                   position="end"
-                  style={{ display: isDirty ? 'flex' : 'none' }}
-                  onClick={handleClick}
+                  style={{
+                    display: isDirty ? 'flex' : 'none',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    reset();
+                    handleSubmit(onSubmit)();
+                  }}
                 >
                   <ClearIcon />
                 </InputAdornment>
@@ -56,9 +59,6 @@ function SearchBar({ setSearchQuery }: SearchProps) {
           />
         )}
       />
-      <IconButton type="submit" disabled={!isDirty}>
-        <SearchIcon />
-      </IconButton>
     </form>
   );
 }
