@@ -1,10 +1,21 @@
-const validateDateBirth: (value: string | undefined) => string | true = (
-  value: string | undefined
+import { CartResourceIdentifier } from '@commercetools/platform-sdk';
+import { FormValues, AddressFields } from '../types/signupFormValues';
+
+type ValueType =
+  | string
+  | boolean
+  | undefined
+  | FormValues
+  | CartResourceIdentifier
+  | AddressFields;
+
+const validateDateBirth: (value: ValueType) => string | true = (
+  value: ValueType
 ): string | true => {
   const ageConsent = 13;
   const bigAge = 129;
 
-  if (value) {
+  if (typeof value === 'string') {
     const today = new Date();
     const birthDate = new Date(value.toString());
     const age: number = today.getFullYear() - birthDate.getFullYear();

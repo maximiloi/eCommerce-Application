@@ -1,60 +1,36 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useForm, Controller } from 'react-hook-form';
-import {
-  TextField,
-  Button,
-  ButtonProps,
-  Checkbox,
-  Switch,
-  FormControlLabel,
-  styled,
-  IconButton,
-  InputAdornment,
-  MenuItem,
-} from '@mui/material';
-import { DateField } from '@mui/x-date-pickers/DateField';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import {
-  ClientResponse,
-  CustomerSignInResult,
-} from '@commercetools/platform-sdk';
+import { useForm } from 'react-hook-form';
+import { CustomerSignin } from '@commercetools/platform-sdk';
 import dataFormat from '../../helper/registrationDataFormat';
 import validatePassword from '../../helper/validatePassword';
 import validateDateBirth from '../../helper/validateDateBirth';
-import { signup } from '../../api/AuthorizedUser/requests';
+import { signup } from '../../api/requests';
 import { FormValues, KeySignUp } from '../../types/signupFormValues';
-
+import {
+  SignUpDefaultValues,
+  countries,
+  addressShip,
+  addressBill,
+} from '../../helper/variables';
+import ColoredBtn from '../ColoredBtn/ColoredBtn';
+import TextFieldInput from '../Inputs/TextFieldInput';
+import DateInput from '../Inputs/DateInput';
+import SelectInput from '../Inputs/SelectInput';
+import CheckboxInput from '../Inputs/CheckboxInput';
+import SwitchInput from '../Inputs/SwitchInput';
 import './FormSignUp.scss';
-
-const ColorButton = styled(Button)<ButtonProps>(() => ({
-  color: '#000',
-  backgroundColor: '#f0c349',
-  '&:hover': {
-    backgroundColor: '#f0c349',
-  },
-}));
-
-const countries = [
-  { value: 'BY', label: 'Belarus' },
-  { value: 'LT', label: 'Lithuania' },
-  { value: 'PL', label: 'Poland' },
-  { value: 'RU', label: 'Russia' },
-];
 
 export default function FormSignUp() {
   const {
-    register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { isValid },
     reset,
     control,
     setValue,
-  } = useForm<FormValues>({
+  } = useForm<FormValues | CustomerSignin>({
+    defaultValues: SignUpDefaultValues,
     mode: 'onChange',
-    defaultValues: { dateOfBirth: undefined },
   });
   const navigate = useNavigate();
   const handleAddressMatchesChange = (
@@ -62,118 +38,63 @@ export default function FormSignUp() {
   ) => {
     const billing = document.querySelector('.billing');
     const form = document.forms[0];
-    const address = [
-      'shippingStreet',
-      'shippingCity',
-      'shippingPostalCode',
-      'shippingCountry',
-    ];
-    const addressBill: Array<Partial<KeySignUp>> = [
-      'billingStreet',
-      'billingCity',
-      'billingPostalCode',
-      'billingCountry',
-    ];
-    const addressData = address.map(
+    const addressData = addressShip.map(
       (el) => (form.elements.namedItem(el) as HTMLInputElement).value
     );
 
     billing?.classList.toggle('hidden');
     if (event.target.checked)
-      addressBill.map((el, index) => setValue(el, addressData[index]));
-  };
-  const [showPassword, setShowPassword] = React.useState(false);
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
+      (addressBill as Array<Partial<KeySignUp>>).map((el, index) =>
+        setValue(el, addressData[index])
+      );
   };
 
-  const onSubmit = async (data: FormValues) => {
-    await signup(dataFormat(data)).then(
-      (response: ClientResponse<CustomerSignInResult>) => {
-        if (response.statusCode === 201) {
-          navigate('/');
-          reset();
-        }
-      }
-    );
+  const onSubmit = async (data: FormValues | CustomerSignin) => {
+    await signup(dataFormat(data as FormValues))
+      .catch((err) => console.log(err))
+      .then(() => {
+        navigate('/');
+        reset();
+      });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Controller
-        name="email"
+      <TextFieldInput
         control={control}
-        defaultValue=""
+        name="email"
+        label="E-mail"
+        required
+        disabled={false}
         rules={{
-          required: 'Email is required',
+          required: 'Enter your e-mail, required field',
           pattern: {
             value: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
-            message: 'Enter valid email address',
+            message: 'Enter valid e-mail',
           },
         }}
-        render={({ field }) => (
-          <TextField
-            margin="dense"
-            size="small"
-            fullWidth
-            required
-            label="E-mail"
-            error={!!errors.email}
-            helperText={errors.email ? errors.email.message : ''}
-            {...field}
-          />
-        )}
       />
-
-      <Controller
+      <TextFieldInput
+        control={control}
         name="password"
-        control={control}
-        defaultValue=""
-        render={({ field }) => (
-          <TextField
-            {...field}
-            margin="dense"
-            label="Password"
-            size="small"
-            fullWidth
-            required
-            type={showPassword ? 'text' : 'password'}
-            {...register('password', {
-              required: 'Enter your password, required field',
-              minLength: {
-                value: 8,
-                message: 'Password must have at least 8 characters',
-              },
-              validate: validatePassword,
-            })}
-            error={errors?.password !== undefined}
-            helperText={errors?.password?.message}
-            {...register('password')}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-        )}
+        label="Password"
+        required
+        disabled={false}
+        rules={{
+          required: 'Enter your password, required field',
+          minLength: {
+            value: 8,
+            message: 'Password must have at least 8 characters',
+          },
+          validate: validatePassword,
+        }}
       />
-
-      <Controller
-        name="firstName"
+      <TextFieldInput
         control={control}
-        defaultValue=""
+        name="firstName"
+        label="First Name"
+        required
+        disabled={false}
         rules={{
           required: 'First name is required',
           pattern: {
@@ -181,24 +102,13 @@ export default function FormSignUp() {
             message: 'Invalid first name',
           },
         }}
-        render={({ field }) => (
-          <TextField
-            margin="dense"
-            size="small"
-            fullWidth
-            required
-            label="First Name"
-            error={!!errors.firstName}
-            helperText={errors.firstName ? errors.firstName.message : ''}
-            {...field}
-          />
-        )}
       />
-
-      <Controller
-        name="lastName"
+      <TextFieldInput
         control={control}
-        defaultValue=""
+        name="lastName"
+        label="Last Name"
+        required
+        disabled={false}
         rules={{
           required: 'Last name is required',
           pattern: {
@@ -206,58 +116,26 @@ export default function FormSignUp() {
             message: 'Invalid last name',
           },
         }}
-        render={({ field }) => (
-          <TextField
-            margin="dense"
-            size="small"
-            fullWidth
-            required
-            label="Last Name"
-            error={!!errors.lastName}
-            helperText={errors.lastName ? errors.lastName.message : ''}
-            {...field}
-          />
-        )}
       />
-
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Controller
-          name="dateOfBirth"
-          control={control}
-          defaultValue={undefined}
-          rules={{
-            required: 'Date of Birth is required',
-            validate: validateDateBirth,
-          }}
-          render={({ field }) => (
-            <DateField
-              margin="dense"
-              size="small"
-              fullWidth
-              required
-              label="Date of Birth"
-              format="DD/MM/YYYY"
-              slotProps={{
-                textField: {
-                  error: !!errors.dateOfBirth,
-                  helperText: errors.dateOfBirth
-                    ? errors.dateOfBirth.message
-                    : '',
-                },
-              }}
-              {...field}
-            />
-          )}
-        />
-      </LocalizationProvider>
-
+      <DateInput
+        control={control}
+        name="dateOfBirth"
+        label="Date of Birth"
+        required
+        rules={{
+          required: 'Date of Birth is required',
+          validate: validateDateBirth,
+        }}
+      />
       <details>
         <summary>Shipping Address</summary>
         <div>
-          <Controller
-            name="shippingStreet"
+          <TextFieldInput
             control={control}
-            defaultValue=""
+            name="shippingStreet"
+            label="Street"
+            required
+            disabled={false}
             rules={{
               required: 'Street is required',
               minLength: {
@@ -265,27 +143,13 @@ export default function FormSignUp() {
                 message: 'Street must contain at least one character',
               },
             }}
-            render={({ field }) => (
-              <TextField
-                margin="dense"
-                size="small"
-                fullWidth
-                required
-                label="Street"
-                autoComplete="address-line1"
-                {...field}
-                error={!!errors.shippingStreet}
-                helperText={
-                  errors.shippingStreet ? errors.shippingStreet.message : ''
-                }
-              />
-            )}
           />
-
-          <Controller
-            name="shippingCity"
+          <TextFieldInput
             control={control}
-            defaultValue=""
+            name="shippingCity"
+            label="City"
+            required
+            disabled={false}
             rules={{
               required: 'City is required',
               minLength: {
@@ -293,27 +157,13 @@ export default function FormSignUp() {
                 message: 'City must contain at least one character',
               },
             }}
-            render={({ field }) => (
-              <TextField
-                label="City"
-                margin="dense"
-                size="small"
-                fullWidth
-                required
-                autoComplete="address-level2"
-                {...field}
-                error={!!errors.shippingCity}
-                helperText={
-                  errors.shippingCity ? errors.shippingCity.message : ''
-                }
-              />
-            )}
           />
-
-          <Controller
-            name="shippingPostalCode"
+          <TextFieldInput
             control={control}
-            defaultValue=""
+            name="shippingPostalCode"
+            label="Postal code"
+            required
+            disabled={false}
             rules={{
               required: 'Postal code is required',
               minLength: {
@@ -321,29 +171,13 @@ export default function FormSignUp() {
                 message: 'Postal code must contain at least one character',
               },
             }}
-            render={({ field }) => (
-              <TextField
-                label="Postal code"
-                margin="dense"
-                size="small"
-                fullWidth
-                required
-                autoComplete="postal-code"
-                {...field}
-                error={!!errors.shippingPostalCode}
-                helperText={
-                  errors.shippingPostalCode
-                    ? errors.shippingPostalCode.message
-                    : ''
-                }
-              />
-            )}
           />
-
-          <Controller
-            name="shippingCountry"
+          <SelectInput
             control={control}
-            defaultValue=""
+            name="shippingCountry"
+            label="Country"
+            required
+            options={countries}
             rules={{
               required: 'Country is required',
               pattern: {
@@ -351,65 +185,29 @@ export default function FormSignUp() {
                 message: 'Enter valid Country',
               },
             }}
-            render={({ field }) => (
-              <TextField
-                label="Country"
-                margin="dense"
-                size="small"
-                select
-                fullWidth
-                required
-                {...field}
-                error={!!errors.shippingCountry}
-                helperText={
-                  errors.shippingCountry ? errors.shippingCountry.message : ''
-                }
-              >
-                {countries.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            )}
           />
-
-          <Controller
+          <CheckboxInput
+            control={control}
             name="shippingDefaultAddress"
-            control={control}
-            render={({ field }) => (
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Make it a default address"
-                {...field}
-              />
-            )}
+            label="Make it a default address"
           />
-
-          <Controller
-            name="addressMatches"
+          <SwitchInput
             control={control}
-            render={({ field }) => (
-              <FormControlLabel
-                control={
-                  <Switch
-                    onChange={(event) => handleAddressMatchesChange(event)}
-                  />
-                }
-                label="Billing address matches the Shipping address"
-                {...field}
-              />
-            )}
+            name="addressMatches"
+            label="Billing address matches the Shipping address"
+            handleChange={handleAddressMatchesChange}
           />
         </div>
 
         <details className="billing">
           <summary>Billing Address</summary>
           <div>
-            <Controller
-              name="billingStreet"
+            <TextFieldInput
               control={control}
-              defaultValue=""
+              name="billingStreet"
+              label="Street"
+              required
+              disabled={false}
               rules={{
                 required: 'Street is required',
                 minLength: {
@@ -417,27 +215,13 @@ export default function FormSignUp() {
                   message: 'Street must contain at least one character',
                 },
               }}
-              render={({ field }) => (
-                <TextField
-                  required
-                  margin="dense"
-                  size="small"
-                  fullWidth
-                  label="Street"
-                  autoComplete="address-line1"
-                  {...field}
-                  error={!!errors.billingStreet}
-                  helperText={
-                    errors.billingStreet ? errors.billingStreet.message : ''
-                  }
-                />
-              )}
             />
-
-            <Controller
-              name="billingCity"
+            <TextFieldInput
               control={control}
-              defaultValue=""
+              name="billingCity"
+              label="City"
+              required
+              disabled={false}
               rules={{
                 required: 'City is required',
                 minLength: {
@@ -445,27 +229,13 @@ export default function FormSignUp() {
                   message: 'City must contain at least one character',
                 },
               }}
-              render={({ field }) => (
-                <TextField
-                  required
-                  label="City"
-                  margin="dense"
-                  size="small"
-                  fullWidth
-                  autoComplete="address-level2"
-                  {...field}
-                  error={!!errors.billingCity}
-                  helperText={
-                    errors.billingCity ? errors.billingCity.message : ''
-                  }
-                />
-              )}
             />
-
-            <Controller
-              name="billingPostalCode"
+            <TextFieldInput
               control={control}
-              defaultValue=""
+              name="billingPostalCode"
+              label="Postal code"
+              required
+              disabled={false}
               rules={{
                 required: 'Postal code is required',
                 minLength: {
@@ -473,29 +243,13 @@ export default function FormSignUp() {
                   message: 'Postal code must contain at least one character',
                 },
               }}
-              render={({ field }) => (
-                <TextField
-                  required
-                  label="Postal code"
-                  margin="dense"
-                  size="small"
-                  fullWidth
-                  autoComplete="postal-code"
-                  {...field}
-                  error={!!errors.billingPostalCode}
-                  helperText={
-                    errors.billingPostalCode
-                      ? errors.billingPostalCode.message
-                      : ''
-                  }
-                />
-              )}
             />
-
-            <Controller
-              name="billingCountry"
+            <SelectInput
               control={control}
-              defaultValue=""
+              name="billingCountry"
+              label="Country"
+              required
+              options={countries}
               rules={{
                 required: 'Country is required',
                 pattern: {
@@ -503,45 +257,17 @@ export default function FormSignUp() {
                   message: 'Enter valid Country',
                 },
               }}
-              render={({ field }) => (
-                <TextField
-                  required
-                  label="Country"
-                  margin="dense"
-                  size="small"
-                  select
-                  fullWidth
-                  {...field}
-                  error={!!errors.billingCountry}
-                  helperText={
-                    errors.billingCountry ? errors.billingCountry.message : ''
-                  }
-                >
-                  {countries.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
             />
-
-            <Controller
-              name="billingDefaultAddress"
+            <CheckboxInput
               control={control}
-              render={({ field }) => (
-                <FormControlLabel
-                  control={<Checkbox />}
-                  label="Make it a default address"
-                  {...field}
-                />
-              )}
+              name="billingDefaultAddress"
+              label="Make it a default address"
             />
           </div>
         </details>
       </details>
 
-      <ColorButton
+      <ColoredBtn
         className="btn"
         type="submit"
         variant="contained"
@@ -549,7 +275,7 @@ export default function FormSignUp() {
         disabled={!isValid}
       >
         Sign Up
-      </ColorButton>
+      </ColoredBtn>
     </form>
   );
 }

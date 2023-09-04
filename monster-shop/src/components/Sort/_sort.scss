@@ -1,0 +1,19 @@
+.arrow {
+  transition: transform 0.3 ease-in;
+
+  &_desc {
+    transform: rotate(180deg);
+  }
+}
+
+.sort {
+  background-color: rgba(#f0c349, 0.2);
+  height: min-content;
+  border: 1px solid #f0c349;
+
+  &_mobile {
+    & > button {
+      width: 4rem;
+    }
+  }
+}

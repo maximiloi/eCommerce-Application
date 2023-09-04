@@ -1,0 +1,23 @@
+.breadcrumb {
+  padding: 0.2rem 1rem;
+  align-self: flex-end;
+  background: $color-background;
+  border-radius: 1rem;
+  & > * > *,
+  a {
+    color: $color-text;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  &__item {
+    display: flex;
+    align-items: center;
+    &_active {
+      font-size: larger;
+      margin: 0;
+      pointer-events: none;
+      color: darken($color-text, 10%);
+    }
+  }
+}
