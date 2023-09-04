@@ -1,0 +1,30 @@
+@use '../../sass/abstracts/variables';
+@use '../../sass/abstracts/mixins';
+
+.product {
+  &__title {
+    color: variables.$color-background;
+    margin: 0.5rem 0;
+    @include mixins.typography(700, 26px, 28px, 0.5px);
+  }
+
+  &__price {
+    @include mixins.typography(700, 26px, 28px, 0.5px);
+  }
+
+  &__tags {
+    height: 1.5rem;
+    padding: 1rem 0;
+
+    & > *:not(:last-child) {
+      margin-right: 0.3rem;
+    }
+
+    .tag {
+      padding: 0 0.5rem;
+      border-radius: 2rem;
+      background: darken(variables.$color-bright, 10%);
+      color: variables.$color-light-xs;
+    }
+  }
+}
