@@ -158,19 +158,30 @@ function ProfileAddress({ addressType }: AddressProps) {
           <Button variant="text" startIcon={<AddCircleIcon />}>
             Add {addressType === 'shipping' ? 'shipping' : 'billing'} Address
           </Button>
-
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sx={{ display: 'flex', justifyContent: 'flex-end', p: 1 }}
+        >
           <Button
             type="button"
             variant="outlined"
             size="small"
             color="warning"
+            sx={{ mr: 1 }}
             disabled={editMode}
             onClick={() => setEditMode(true)}
           >
             Edit Addresses
           </Button>
 
-          <ColoredBtn type="submit" variant="contained" disabled={!editMode}>
+          <ColoredBtn
+            type="submit"
+            size="small"
+            variant="contained"
+            disabled={!editMode}
+          >
             Save Changes
           </ColoredBtn>
         </Grid>
