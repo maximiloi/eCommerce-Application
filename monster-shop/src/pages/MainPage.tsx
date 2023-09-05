@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import ColoredBtn from '../components/ColoredBtn/ColoredBtn';
 import PromoSlides from '../components/PromoSlides/PromoSlides';
 import { navBtns } from '../helper/variables';
+import User from '../api/user';
 
 function MainPage() {
   return (
@@ -12,7 +13,14 @@ function MainPage() {
           {navBtns.map((link) => (
             <MenuItem key={link.name}>
               <ColoredBtn type="button" variant="contained" fullWidth>
-                <NavLink className="menu-link" to={link.path}>
+                <NavLink
+                  className="menu-link"
+                  to={
+                    link.name === 'Customer Profile' && !User.created
+                      ? '/auth'
+                      : link.path
+                  }
+                >
                   {link.name}
                 </NavLink>
               </ColoredBtn>
