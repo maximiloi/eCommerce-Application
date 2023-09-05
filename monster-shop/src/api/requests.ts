@@ -135,6 +135,7 @@ export function getCategory() {
       });
   });
 }
+
 export function getCustomer() {
   return new Promise((resolve) => {
     User.getApi()
@@ -179,6 +180,20 @@ export function updateUserAdress(
 ) {
   return updateUserData(version, [
     { action: 'changeAddress', address, addressId },
+  ]);
+}
+
+export function removeUserAdress(version: number, addressId: string) {
+  return updateUserData(version, [{ action: 'removeAddress', addressId }]);
+}
+
+export function removeUserAdressType(
+  version: number,
+  addressId: string,
+  type: 'Billing' | 'Shipping'
+) {
+  return updateUserData(version, [
+    { action: `remove${type}AddressId`, addressId },
   ]);
 }
 
