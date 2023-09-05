@@ -1,7 +1,8 @@
 import {
   CustomerSignin,
   MyCustomerDraft,
-  MyCustomerUpdate,
+  MyCustomerUpdateAction,
+  BaseAddress,
 } from '@commercetools/platform-sdk';
 import toastify from '../helper/toastify';
 import User from './user';
@@ -150,18 +151,18 @@ export function getCustomer() {
   });
 }
 
-export function updateUserData(data: MyCustomerUpdate) {
+export function updateUserData(
+  version: number,
+  actions: MyCustomerUpdateAction[]
+) {
   return new Promise((resolve) => {
     User.getApi()
       .me()
       .post({
-        body: data /* можно несколько действий пихать массивом https://docs.commercetools.com/api/projects/me-profile#update-actions */,
+        body: { version, actions },
       })
       .execute()
       .then((response) => {
-        // нужно сетать нового клиента, если меняется пароль User.setClient(email, password);
-        // этот запрос перезаписывает данные пользователя (и возвращяет их же если что) getCustomer();
-        toastify(`Hello, ${User.data?.firstName}`, 'success');
         resolve(response);
       })
       .catch((error) => {
@@ -169,4 +170,18 @@ export function updateUserData(data: MyCustomerUpdate) {
         toastify(error.message, 'error');
       });
   });
+}
+
+export function updateUserAdress(
+  version: number,
+  address: BaseAddress,
+  addressId: string
+) {
+  return updateUserData(version, [
+    { action: 'changeAddress', address, addressId },
+  ]);
+}
+
+export function updateUserMail(version: number, email: string) {
+  return updateUserData(version, [{ action: 'changeEmail', email }]);
 }
