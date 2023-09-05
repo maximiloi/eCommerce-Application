@@ -10,6 +10,8 @@ import User from '../../api/user';
 import TextFieldInput from '../Inputs/TextFieldInput';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import { FormValues } from '../../types/signupFormValues';
+import SelectInput from '../Inputs/SelectInput';
+import { countries } from '../../helper/variables';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -34,7 +36,7 @@ interface AddressValueType {
 function convertToDefaultValues(
   typeAddressArray: AddressValueType[]
 ): Record<string, string> {
-  console.log('typeAddressArray: ', typeAddressArray);
+  // console.log('typeAddressArray: ', typeAddressArray);
   return typeAddressArray.reduce((defaultValues, address) => {
     return {
       ...defaultValues,
@@ -75,11 +77,7 @@ function ProfileAddress({ addressType }: AddressProps) {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
   const spacing = isSmallScreen ? 0 : 2;
 
-  const {
-    handleSubmit,
-    // formState: { isValid },
-    control,
-  } = useForm<FormValues | CustomerSignin>({
+  const { handleSubmit, control } = useForm<FormValues | CustomerSignin>({
     mode: 'onChange',
     defaultValues: { address: defaultValues },
   });
@@ -113,31 +111,61 @@ function ProfileAddress({ addressType }: AddressProps) {
                   name={`address.addressStreet_${address.id}`}
                   control={control}
                   label="Street"
-                  required={false}
+                  required
                   disabled={!editMode}
+                  rules={{
+                    required: 'Street is required',
+                    minLength: {
+                      value: 1,
+                      message: 'Street must contain at least one character',
+                    },
+                  }}
                 />
                 <TextFieldInput
                   name={`address.addressCity_${address.id}`}
                   control={control}
                   label="City"
-                  required={false}
+                  required
                   disabled={!editMode}
+                  rules={{
+                    required: 'City is required',
+                    minLength: {
+                      value: 1,
+                      message: 'City must contain at least one character',
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextFieldInput
                   name={`address.addressPostalCode_${address.id}`}
                   control={control}
-                  label="Postal Code"
-                  required={false}
+                  label="Postal code"
+                  required
                   disabled={!editMode}
+                  rules={{
+                    required: 'Postal code is required',
+                    minLength: {
+                      value: 1,
+                      message:
+                        'Postal code must contain at least one character',
+                    },
+                  }}
                 />
-                <TextFieldInput
+                <SelectInput
                   name={`address.addressCountry_${address.id}`}
                   control={control}
                   label="Country"
-                  required={false}
+                  required
                   disabled={!editMode}
+                  options={countries}
+                  rules={{
+                    required: 'Country is required',
+                    pattern: {
+                      value: /^[A-Z]{2}$/,
+                      message: 'Enter valid Country',
+                    },
+                  }}
                 />
               </Grid>
             </Grid>

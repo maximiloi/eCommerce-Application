@@ -7,7 +7,7 @@ export interface FormValues {
   firstName: string;
   lastName: string;
   password: string;
-  dateOfBirth: string | undefined;
+  dateOfBirth: string | undefined | Date;
   shippingStreet: string;
   shippingCity: string;
   shippingPostalCode: string;
