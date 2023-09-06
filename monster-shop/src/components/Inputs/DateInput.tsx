@@ -9,10 +9,11 @@ function DateInput(
   props: {
     label: string;
     required: boolean;
+    disabled: boolean;
   } & UseControllerProps<FormValues | CustomerSignin>
 ) {
   const { field, fieldState } = useController(props);
-  const { label, required } = props;
+  const { label, required, disabled } = props;
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -23,6 +24,7 @@ function DateInput(
         format="DD/MM/YYYY"
         fullWidth
         required={required}
+        disabled={disabled}
         label={label}
         slotProps={{
           textField: {

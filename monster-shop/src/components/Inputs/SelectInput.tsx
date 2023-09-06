@@ -8,11 +8,12 @@ function SelectInput(
   props: {
     label: string;
     required: boolean;
+    disabled: boolean;
     options: Array<SelectOption>;
   } & UseControllerProps<FormValues | CustomerSignin>
 ) {
   const { field, fieldState } = useController(props);
-  const { label, required, options } = props;
+  const { label, required, disabled, options } = props;
 
   return (
     <TextField
@@ -22,6 +23,7 @@ function SelectInput(
       select
       fullWidth
       required={required}
+      disabled={disabled}
       label={label}
       error={!!fieldState.error}
       helperText={fieldState.error?.message || ''}

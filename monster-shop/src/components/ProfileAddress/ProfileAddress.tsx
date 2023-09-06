@@ -5,11 +5,13 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useForm } from 'react-hook-form';
-import { CustomerSignin } from '@commercetools/platform-sdk';
+import { Customer, CustomerSignin } from '@commercetools/platform-sdk';
 import User from '../../api/user';
 import TextFieldInput from '../Inputs/TextFieldInput';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import { FormValues } from '../../types/signupFormValues';
+import SelectInput from '../Inputs/SelectInput';
+import { countries } from '../../helper/variables';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -34,7 +36,6 @@ interface AddressValueType {
 function convertToDefaultValues(
   typeAddressArray: AddressValueType[]
 ): Record<string, string> {
-  console.log('typeAddressArray: ', typeAddressArray);
   return typeAddressArray.reduce((defaultValues, address) => {
     return {
       ...defaultValues,
@@ -48,17 +49,17 @@ function convertToDefaultValues(
 
 function ProfileAddress({ addressType }: AddressProps) {
   const [editMode, setEditMode] = useState(false);
-
-  const userData = User.data;
-  const addressArray = userData?.addresses; // all address
+  const userData = User.data as Customer;
+  const userVersion = userData.version;
+  const addressArray = userData.addresses; // all address
   const AddressIdArray =
     addressType === 'shipping'
-      ? userData?.shippingAddressIds
-      : userData?.billingAddressIds; // arr ids address
+      ? userData.shippingAddressIds
+      : userData.billingAddressIds; // arr ids address
 
   const typeAddressArray = AddressIdArray
     ? addressArray
-        ?.filter((obj) => obj.id && AddressIdArray.includes(obj.id))
+        .filter((obj) => obj.id && AddressIdArray.includes(obj.id))
         .map(
           (obj): AddressValueType => ({
             id: obj.id!,
@@ -75,14 +76,19 @@ function ProfileAddress({ addressType }: AddressProps) {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
   const spacing = isSmallScreen ? 0 : 2;
 
-  const {
-    handleSubmit,
-    // formState: { isValid },
-    control,
-  } = useForm<FormValues | CustomerSignin>({
+  const { handleSubmit, control } = useForm<FormValues | CustomerSignin>({
     mode: 'onChange',
     defaultValues: { address: defaultValues },
   });
+  const addressTypeText = addressType === 'shipping' ? 'shipping' : 'billing';
+
+  const handleClickDeleteAddress = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    const target = (event.target as HTMLElement).closest('.adress__item');
+    console.log(userVersion, target?.id, addressTypeText);
+    (target as HTMLDivElement).remove();
+  };
 
   const onSubmit = async (data: FormValues | CustomerSignin) => {
     console.log(data);
@@ -91,20 +97,24 @@ function ProfileAddress({ addressType }: AddressProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {typeAddressArray?.map((address) => {
+      {typeAddressArray.map((address) => {
         if (!address) {
           return null;
         }
 
         return (
-          <Item key={address.id}>
+          <Item key={address.id} id={address.id} className="adress__item">
             <Grid container spacing={spacing}>
               <Grid
                 item
                 xs={12}
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
               >
-                <IconButton aria-label="delete" disabled={!editMode}>
+                <IconButton
+                  aria-label="delete"
+                  disabled={!editMode}
+                  onClick={handleClickDeleteAddress}
+                >
                   <DeleteIcon />
                 </IconButton>
               </Grid>
@@ -113,31 +123,61 @@ function ProfileAddress({ addressType }: AddressProps) {
                   name={`address.addressStreet_${address.id}`}
                   control={control}
                   label="Street"
-                  required={false}
+                  required
                   disabled={!editMode}
+                  rules={{
+                    required: 'Street is required',
+                    minLength: {
+                      value: 1,
+                      message: 'Street must contain at least one character',
+                    },
+                  }}
                 />
                 <TextFieldInput
                   name={`address.addressCity_${address.id}`}
                   control={control}
                   label="City"
-                  required={false}
+                  required
                   disabled={!editMode}
+                  rules={{
+                    required: 'City is required',
+                    minLength: {
+                      value: 1,
+                      message: 'City must contain at least one character',
+                    },
+                  }}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextFieldInput
                   name={`address.addressPostalCode_${address.id}`}
                   control={control}
-                  label="Postal Code"
-                  required={false}
+                  label="Postal code"
+                  required
                   disabled={!editMode}
+                  rules={{
+                    required: 'Postal code is required',
+                    minLength: {
+                      value: 1,
+                      message:
+                        'Postal code must contain at least one character',
+                    },
+                  }}
                 />
-                <TextFieldInput
+                <SelectInput
                   name={`address.addressCountry_${address.id}`}
                   control={control}
                   label="Country"
-                  required={false}
+                  required
                   disabled={!editMode}
+                  options={countries}
+                  rules={{
+                    required: 'Country is required',
+                    pattern: {
+                      value: /^[A-Z]{2}$/,
+                      message: 'Enter valid Country',
+                    },
+                  }}
                 />
               </Grid>
             </Grid>
@@ -156,21 +196,32 @@ function ProfileAddress({ addressType }: AddressProps) {
           }}
         >
           <Button variant="text" startIcon={<AddCircleIcon />}>
-            Add {addressType === 'shipping' ? 'shipping' : 'billing'} Address
+            Add {addressTypeText} Address
           </Button>
-
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sx={{ display: 'flex', justifyContent: 'flex-end', p: 1 }}
+        >
           <Button
             type="button"
             variant="outlined"
             size="small"
             color="warning"
+            sx={{ mr: 1 }}
             disabled={editMode}
             onClick={() => setEditMode(true)}
           >
             Edit Addresses
           </Button>
 
-          <ColoredBtn type="submit" variant="contained" disabled={!editMode}>
+          <ColoredBtn
+            type="submit"
+            size="small"
+            variant="contained"
+            disabled={!editMode}
+          >
             Save Changes
           </ColoredBtn>
         </Grid>
