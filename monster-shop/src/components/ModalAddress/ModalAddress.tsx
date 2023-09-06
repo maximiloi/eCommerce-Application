@@ -17,10 +17,12 @@ import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import SelectInput from '../Inputs/SelectInput';
 import { SignUpDefaultValues, countries } from '../../helper/variables';
 import { FormValues } from '../../types/signupFormValues';
+import { addUserAdressType, getCustomer } from '../../api/requests';
+import User from '../../api/user';
 
 interface ModalAddressProps {
   onClose: () => void;
-  addressTypeText: string;
+  addressTypeText: 'Shipping' | 'Billing';
 }
 
 const style = {
@@ -54,8 +56,20 @@ function ModalAddress({ onClose, addressTypeText }: ModalAddressProps) {
     | 'billing';
   const [open] = useState(true);
 
-  const onSubmit = async (data: FormValues | CustomerSignin) => {
-    console.log(data);
+  const onSubmit = async (data: CustomerSignin | FormValues) => {
+    if ('shippingStreet' in data)
+      addUserAdressType(
+        User.data?.version as number,
+        {
+          streetName: data[`${addressTypeLow}Street`] as string,
+          country: data[`${addressTypeLow}Country`],
+          city: data[`${addressTypeLow}City`],
+          postalCode: data[`${addressTypeLow}PostalCode`],
+        },
+        addressTypeText
+      );
+    onClose();
+    getCustomer();
   };
 
   return (
