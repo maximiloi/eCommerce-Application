@@ -20,15 +20,13 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function PersonalInfo() {
   const { data } = User;
-  const dataValue = dayjs(data?.dateOfBirth).format('DD/MM/YYYY');
-  // dayjs(data?.dateOfBirth).format('DD/MM/YYYY');
-  console.log(dataValue);
+  const dataValue = dayjs(data?.dateOfBirth);
   const [editMode, setEditMode] = useState(false);
   const { control, handleSubmit } = useForm<FormValues | CustomerSignin>({
     defaultValues: {
       firstName: data?.firstName,
       lastName: data?.lastName,
-      dateOfBirth: '', // dataValue -> Date object needed ??
+      dateOfBirth: dataValue as unknown as string,
       email: data?.email,
       password: data?.password,
     },
