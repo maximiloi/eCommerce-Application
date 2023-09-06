@@ -49,7 +49,9 @@ function ModalAddress({ onClose, addressTypeText }: ModalAddressProps) {
     mode: 'onChange',
     defaultValues: SignUpDefaultValues,
   });
-
+  const addressTypeLow = addressTypeText.toLocaleLowerCase() as
+    | 'shipping'
+    | 'billing';
   const [open] = useState(true);
 
   const onSubmit = async (data: FormValues | CustomerSignin) => {
@@ -78,7 +80,7 @@ function ModalAddress({ onClose, addressTypeText }: ModalAddressProps) {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Item className="adress__item--new">
               <TextFieldInput
-                name={`${addressTypeText.toLowerCase()}Street`}
+                name={`${addressTypeLow}Street`}
                 control={control}
                 label="Street"
                 required
@@ -89,9 +91,10 @@ function ModalAddress({ onClose, addressTypeText }: ModalAddressProps) {
                     message: 'Street must contain at least one character',
                   },
                 }}
+                disabled={false}
               />
               <TextFieldInput
-                name={`${addressTypeText.toLowerCase()}City`}
+                name={`${addressTypeLow}City`}
                 control={control}
                 label="City"
                 required
@@ -102,9 +105,10 @@ function ModalAddress({ onClose, addressTypeText }: ModalAddressProps) {
                     message: 'City must contain at least one character',
                   },
                 }}
+                disabled={false}
               />
               <TextFieldInput
-                name={`${addressTypeText.toLowerCase()}PostalCode`}
+                name={`${addressTypeLow}PostalCode`}
                 control={control}
                 label="Postal code"
                 required
@@ -115,9 +119,10 @@ function ModalAddress({ onClose, addressTypeText }: ModalAddressProps) {
                     message: 'Postal code must contain at least one character',
                   },
                 }}
+                disabled={false}
               />
               <SelectInput
-                name={`${addressTypeText.toLowerCase()}Country`}
+                name={`${addressTypeLow}Country`}
                 control={control}
                 label="Country"
                 required
@@ -129,6 +134,7 @@ function ModalAddress({ onClose, addressTypeText }: ModalAddressProps) {
                     message: 'Enter valid Country',
                   },
                 }}
+                disabled={false}
               />
             </Item>
             <Grid
