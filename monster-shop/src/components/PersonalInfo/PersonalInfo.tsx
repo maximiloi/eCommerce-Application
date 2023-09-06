@@ -9,6 +9,7 @@ import User from '../../api/user';
 import { FormValues } from '../../types/signupFormValues';
 import validateDateBirth from '../../helper/validateDateBirth';
 import DateInput from '../Inputs/DateInput';
+import { updateUserProfile } from '../../api/requests';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -34,7 +35,18 @@ function PersonalInfo() {
   });
 
   const onSubmit = async (newData: CustomerSignin) => {
-    console.log(newData);
+    if (
+      'firstName' in newData &&
+      'lastName' in newData &&
+      'dateOfBirth' in newData
+    )
+      await updateUserProfile(
+        User.data!.version,
+        newData.email,
+        newData.firstName as string,
+        newData.lastName as string,
+        dayjs(newData.dateOfBirth as dayjs.Dayjs).format('DDMMYYYY')
+      );
     setEditMode(false);
   };
 
