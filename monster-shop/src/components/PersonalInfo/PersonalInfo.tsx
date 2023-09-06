@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { CustomerSignin } from '@commercetools/platform-sdk';
 import { Button, Grid, Paper, styled } from '@mui/material';
-// import dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import TextFieldInput from '../Inputs/TextFieldInput';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import User from '../../api/user';
@@ -20,15 +20,15 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function PersonalInfo() {
   const { data } = User;
-  // const dataValue = dayjs(data?.dateOfBirth).toDate();
+  const dataValue = dayjs(data?.dateOfBirth).format('DD/MM/YYYY');
   // dayjs(data?.dateOfBirth).format('DD/MM/YYYY');
-  // console.log(data?.email);
+  console.log(dataValue);
   const [editMode, setEditMode] = useState(false);
   const { control, handleSubmit } = useForm<FormValues | CustomerSignin>({
     defaultValues: {
       firstName: data?.firstName,
       lastName: data?.lastName,
-      dateOfBirth: '', // dataValue -> Date object needed
+      dateOfBirth: '', // dataValue -> Date object needed ??
       email: data?.email,
       password: data?.password,
     },

@@ -5,7 +5,6 @@ type ValueType =
   | string
   | boolean
   | undefined
-  | Date
   | FormValues
   | CartResourceIdentifier
   | AddressFields;

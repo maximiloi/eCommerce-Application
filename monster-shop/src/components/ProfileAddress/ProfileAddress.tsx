@@ -50,7 +50,6 @@ function convertToDefaultValues(
 
 function ProfileAddress({ addressType }: AddressProps) {
   const [editMode, setEditMode] = useState(false);
-
   const userData = User.data;
   const addressArray = userData?.addresses; // all address
   const AddressIdArray =
@@ -82,6 +81,12 @@ function ProfileAddress({ addressType }: AddressProps) {
     defaultValues: { address: defaultValues },
   });
 
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const target = (event.target as HTMLElement).closest('.adress__item');
+    console.log(target?.id);
+    (target as HTMLDivElement).remove();
+  };
+
   const onSubmit = async (data: FormValues | CustomerSignin) => {
     console.log(data);
     setEditMode(false);
@@ -95,14 +100,18 @@ function ProfileAddress({ addressType }: AddressProps) {
         }
 
         return (
-          <Item key={address.id}>
+          <Item key={address.id} id={address.id} className="adress__item">
             <Grid container spacing={spacing}>
               <Grid
                 item
                 xs={12}
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
               >
-                <IconButton aria-label="delete">
+                <IconButton
+                  aria-label="delete"
+                  disabled={!editMode}
+                  onClick={handleClick}
+                >
                   <DeleteIcon />
                 </IconButton>
               </Grid>
