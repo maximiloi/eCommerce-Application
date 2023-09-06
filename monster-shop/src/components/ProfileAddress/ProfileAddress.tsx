@@ -104,7 +104,7 @@ function ProfileAddress({ addressType }: AddressProps) {
                 xs={12}
                 sx={{ display: 'flex', justifyContent: 'flex-end' }}
               >
-                <IconButton aria-label="delete">
+                <IconButton aria-label="delete" disabled={!editMode}>
                   <DeleteIcon />
                 </IconButton>
               </Grid>
