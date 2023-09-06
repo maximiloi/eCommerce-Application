@@ -122,6 +122,7 @@ export default function FormSignUp() {
         name="dateOfBirth"
         label="Date of Birth"
         required
+        disabled={false}
         rules={{
           required: 'Date of Birth is required',
           validate: validateDateBirth,
@@ -177,6 +178,7 @@ export default function FormSignUp() {
             name="shippingCountry"
             label="Country"
             required
+            disabled={false}
             options={countries}
             rules={{
               required: 'Country is required',
@@ -249,6 +251,7 @@ export default function FormSignUp() {
               name="billingCountry"
               label="Country"
               required
+              disabled={false}
               options={countries}
               rules={{
                 required: 'Country is required',
