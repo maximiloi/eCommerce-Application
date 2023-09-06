@@ -14,9 +14,9 @@ import { CustomerSignin } from '@commercetools/platform-sdk';
 import PropTypes from 'prop-types';
 import TextFieldInput from '../Inputs/TextFieldInput';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
-import { FormValues } from '../../types/signupFormValues';
 import SelectInput from '../Inputs/SelectInput';
-import { countries } from '../../helper/variables';
+import { SignUpDefaultValues, countries } from '../../helper/variables';
+import { FormValues } from '../../types/signupFormValues';
 
 interface ModalAddressProps {
   onClose: () => void;
@@ -47,6 +47,7 @@ const Item = styled(Paper)(({ theme }) => ({
 function ModalAddress({ onClose, addressTypeText }: ModalAddressProps) {
   const { handleSubmit, control } = useForm<FormValues | CustomerSignin>({
     mode: 'onChange',
+    defaultValues: SignUpDefaultValues,
   });
 
   const [open] = useState(true);
@@ -75,13 +76,9 @@ function ModalAddress({ onClose, addressTypeText }: ModalAddressProps) {
             Add New {addressTypeText} Address
           </Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Item
-              // key={id}
-              // id={id}
-              className="adress__item--new"
-            >
+            <Item className="adress__item--new">
               <TextFieldInput
-                name="addressStreet"
+                name={`${addressTypeText.toLowerCase()}Street`}
                 control={control}
                 label="Street"
                 required
@@ -94,7 +91,7 @@ function ModalAddress({ onClose, addressTypeText }: ModalAddressProps) {
                 }}
               />
               <TextFieldInput
-                name="addressCity"
+                name={`${addressTypeText.toLowerCase()}City`}
                 control={control}
                 label="City"
                 required
@@ -107,7 +104,7 @@ function ModalAddress({ onClose, addressTypeText }: ModalAddressProps) {
                 }}
               />
               <TextFieldInput
-                name="addressPostalCode"
+                name={`${addressTypeText.toLowerCase()}PostalCode`}
                 control={control}
                 label="Postal code"
                 required
@@ -120,7 +117,7 @@ function ModalAddress({ onClose, addressTypeText }: ModalAddressProps) {
                 }}
               />
               <SelectInput
-                name="addressCountry"
+                name={`${addressTypeText.toLowerCase()}Country`}
                 control={control}
                 label="Country"
                 required
