@@ -12,7 +12,7 @@ import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import { FormValues } from '../../types/signupFormValues';
 import SelectInput from '../Inputs/SelectInput';
 import { countries } from '../../helper/variables';
-import { removeUserAdressType } from '../../api/requests';
+import { getCustomer, removeUserAdressType } from '../../api/requests';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -90,6 +90,7 @@ function ProfileAddress({ addressType }: AddressProps) {
     if (!target) return;
     removeUserAdressType(userVersion, target.id, addressTypeText);
     (target as HTMLDivElement).remove();
+    getCustomer(); // Todo
   };
 
   const onSubmit = async (data: FormValues | CustomerSignin) => {
