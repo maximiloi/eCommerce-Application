@@ -5,7 +5,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useForm } from 'react-hook-form';
-import { CustomerSignin } from '@commercetools/platform-sdk';
+import { Customer, CustomerSignin } from '@commercetools/platform-sdk';
 import User from '../../api/user';
 import TextFieldInput from '../Inputs/TextFieldInput';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
@@ -36,7 +36,6 @@ interface AddressValueType {
 function convertToDefaultValues(
   typeAddressArray: AddressValueType[]
 ): Record<string, string> {
-  // console.log('typeAddressArray: ', typeAddressArray);
   return typeAddressArray.reduce((defaultValues, address) => {
     return {
       ...defaultValues,
@@ -50,16 +49,17 @@ function convertToDefaultValues(
 
 function ProfileAddress({ addressType }: AddressProps) {
   const [editMode, setEditMode] = useState(false);
-  const userData = User.data;
-  const addressArray = userData?.addresses; // all address
+  const userData = User.data as Customer;
+  const userVersion = userData.version;
+  const addressArray = userData.addresses; // all address
   const AddressIdArray =
     addressType === 'shipping'
-      ? userData?.shippingAddressIds
-      : userData?.billingAddressIds; // arr ids address
+      ? userData.shippingAddressIds
+      : userData.billingAddressIds; // arr ids address
 
   const typeAddressArray = AddressIdArray
     ? addressArray
-        ?.filter((obj) => obj.id && AddressIdArray.includes(obj.id))
+        .filter((obj) => obj.id && AddressIdArray.includes(obj.id))
         .map(
           (obj): AddressValueType => ({
             id: obj.id!,
@@ -80,10 +80,13 @@ function ProfileAddress({ addressType }: AddressProps) {
     mode: 'onChange',
     defaultValues: { address: defaultValues },
   });
+  const addressTypeText = addressType === 'shipping' ? 'shipping' : 'billing';
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClickDeleteAddress = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     const target = (event.target as HTMLElement).closest('.adress__item');
-    console.log(target?.id);
+    console.log(userVersion, target?.id, addressTypeText);
     (target as HTMLDivElement).remove();
   };
 
@@ -94,7 +97,7 @@ function ProfileAddress({ addressType }: AddressProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {typeAddressArray?.map((address) => {
+      {typeAddressArray.map((address) => {
         if (!address) {
           return null;
         }
@@ -110,7 +113,7 @@ function ProfileAddress({ addressType }: AddressProps) {
                 <IconButton
                   aria-label="delete"
                   disabled={!editMode}
-                  onClick={handleClick}
+                  onClick={handleClickDeleteAddress}
                 >
                   <DeleteIcon />
                 </IconButton>
@@ -193,7 +196,7 @@ function ProfileAddress({ addressType }: AddressProps) {
           }}
         >
           <Button variant="text" startIcon={<AddCircleIcon />}>
-            Add {addressType === 'shipping' ? 'shipping' : 'billing'} Address
+            Add {addressTypeText} Address
           </Button>
         </Grid>
         <Grid
