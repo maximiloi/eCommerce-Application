@@ -174,6 +174,21 @@ export function updateUserData(
   });
 }
 
+export function updateUserProfile(
+  version: number,
+  email: string,
+  firstName: string,
+  lastName: string,
+  dateOfBirth: string
+) {
+  return updateUserData(version, [
+    { action: 'changeEmail', email },
+    { action: 'setFirstName', firstName },
+    { action: 'setLastName', lastName },
+    { action: 'setDateOfBirth', dateOfBirth },
+  ]);
+}
+
 export function updateUserAdress(version: number, addresses: BaseAddress[]) {
   const actions = [] as MyCustomerUpdateAction[];
   addresses.forEach((address) => {
