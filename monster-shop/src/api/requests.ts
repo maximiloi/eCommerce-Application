@@ -153,6 +153,28 @@ export function getCustomer() {
   });
 }
 
+export function updateUserPassword(
+  version: number,
+  currentPassword: string,
+  newPassword: string
+) {
+  return new Promise((resolve) => {
+    User.getApi()
+      .me()
+      .password()
+      .post({
+        body: { currentPassword, newPassword, version },
+      })
+      .execute()
+      .then((response) => {
+        resolve(response.body);
+      })
+      .catch((error) => {
+        toastify(error.message, 'error');
+      });
+  });
+}
+
 export function updateUserData(
   version: number,
   actions: MyCustomerUpdateAction[]
