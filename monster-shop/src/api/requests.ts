@@ -174,14 +174,12 @@ export function updateUserData(
   });
 }
 
-export function updateUserAdress(
-  version: number,
-  address: BaseAddress,
-  addressId: string
-) {
-  return updateUserData(version, [
-    { action: 'changeAddress', address, addressId },
-  ]);
+export function updateUserAdress(version: number, addresses: BaseAddress[]) {
+  const actions = [] as MyCustomerUpdateAction[];
+  addresses.forEach((address) => {
+    actions.push({ action: 'changeAddress', address, addressId: address.id });
+  });
+  return updateUserData(version, actions);
 }
 
 export function removeUserAdress(version: number, addressId: string) {
