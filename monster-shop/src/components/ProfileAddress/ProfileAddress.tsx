@@ -12,6 +12,7 @@ import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import { FormValues } from '../../types/signupFormValues';
 import SelectInput from '../Inputs/SelectInput';
 import { countries } from '../../helper/variables';
+import { removeUserAdressType } from '../../api/requests';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -80,13 +81,14 @@ function ProfileAddress({ addressType }: AddressProps) {
     mode: 'onChange',
     defaultValues: { address: defaultValues },
   });
-  const addressTypeText = addressType === 'shipping' ? 'shipping' : 'billing';
+  const addressTypeText = addressType === 'shipping' ? 'Shipping' : 'Billing';
 
   const handleClickDeleteAddress = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     const target = (event.target as HTMLElement).closest('.adress__item');
-    console.log(userVersion, target?.id, addressTypeText);
+    if (!target) return;
+    removeUserAdressType(userVersion, target.id, addressTypeText);
     (target as HTMLDivElement).remove();
   };
 
