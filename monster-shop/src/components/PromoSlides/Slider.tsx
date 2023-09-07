@@ -65,14 +65,13 @@ function Slider(props: { images: Image[] }) {
       >
         <Box
           className="slider slider-popup"
-          sx={{ width: 1000, boxShadow: 3, borderRadius: 3 }}
+          sx={{ boxShadow: 3, borderRadius: 3 }}
         >
           <List className="slides" sx={{ p: 0 }}>
             {images.map((slide, index) => (
               <Slide
                 className={index === count ? 'slide slide_active' : 'slide'}
                 key={slide.url}
-                sliderWidth={1000}
                 slideImg={slide.url}
                 slideText={undefined}
               />

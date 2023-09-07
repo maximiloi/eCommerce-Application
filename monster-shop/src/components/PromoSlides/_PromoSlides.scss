@@ -9,8 +9,13 @@
   overflow: hidden;
 
   &.slider-popup {
-    max-width: 100%;
-    height: 100%;
+    max-width: 900px;
+    height: 900px;
+
+    & .slide {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   .prev,
@@ -36,6 +41,13 @@
     &.slider-popup {
       max-width: 80%;
       height: 80%;
+    }
+  }
+
+  @include mixins.media-mobile {
+    &.slider-popup {
+      max-width: 90%;
+      height: 50%;
     }
   }
 }
