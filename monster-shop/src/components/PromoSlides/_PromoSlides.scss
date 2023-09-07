@@ -1,4 +1,5 @@
 @use '../../sass//abstracts/mixins';
+
 .slider {
   max-width: 60rem;
   width: 100%;
@@ -6,6 +7,16 @@
   margin: 0 auto;
   position: relative;
   overflow: hidden;
+
+  &.slider-popup {
+    max-width: 900px;
+    height: 900px;
+
+    & .slide {
+      width: 100%;
+      height: 100%;
+    }
+  }
 
   .prev,
   .next {
@@ -15,15 +26,29 @@
     transition: all 0.3s ease-in-out;
     color: #f0c349;
   }
+
   .prev {
     left: 1rem;
   }
+
   .next {
     right: 1rem;
   }
 
   @include mixins.media-tablet {
     height: 40vh;
+
+    &.slider-popup {
+      max-width: 80%;
+      height: 80%;
+    }
+  }
+
+  @include mixins.media-mobile {
+    &.slider-popup {
+      max-width: 90%;
+      height: 50%;
+    }
   }
 }
 
