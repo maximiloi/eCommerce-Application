@@ -1,6 +1,6 @@
 export type SlideProps = {
   className: string;
-  sliderWidth: number;
+  sliderWidth?: number;
   slideImg: string;
   slideText?: string;
 };

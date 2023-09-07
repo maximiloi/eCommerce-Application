@@ -153,6 +153,28 @@ export function getCustomer() {
   });
 }
 
+export function updateUserPassword(
+  version: number,
+  currentPassword: string,
+  newPassword: string
+) {
+  return new Promise((resolve) => {
+    User.getApi()
+      .me()
+      .password()
+      .post({
+        body: { currentPassword, newPassword, version },
+      })
+      .execute()
+      .then((response) => {
+        resolve(response.body);
+      })
+      .catch((error) => {
+        toastify(error.message, 'error');
+      });
+  });
+}
+
 export function updateUserData(
   version: number,
   actions: MyCustomerUpdateAction[]
@@ -174,14 +196,27 @@ export function updateUserData(
   });
 }
 
-export function updateUserAdress(
+export function updateUserProfile(
   version: number,
-  address: BaseAddress,
-  addressId: string
+  email: string,
+  firstName: string,
+  lastName: string,
+  dateOfBirth: string
 ) {
   return updateUserData(version, [
-    { action: 'changeAddress', address, addressId },
+    { action: 'changeEmail', email },
+    { action: 'setFirstName', firstName },
+    { action: 'setLastName', lastName },
+    { action: 'setDateOfBirth', dateOfBirth },
   ]);
+}
+
+export function updateUserAdress(version: number, addresses: BaseAddress[]) {
+  const actions = [] as MyCustomerUpdateAction[];
+  addresses.forEach((address) => {
+    actions.push({ action: 'changeAddress', address, addressId: address.id });
+  });
+  return updateUserData(version, actions);
 }
 
 export function removeUserAdress(version: number, addressId: string) {

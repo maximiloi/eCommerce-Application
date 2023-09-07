@@ -9,6 +9,7 @@ import User from '../../api/user';
 import { FormValues } from '../../types/signupFormValues';
 import validateDateBirth from '../../helper/validateDateBirth';
 import DateInput from '../Inputs/DateInput';
+import { updateUserProfile } from '../../api/requests';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -20,15 +21,13 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function PersonalInfo() {
   const { data } = User;
-  const dataValue = dayjs(data?.dateOfBirth).format('DD/MM/YYYY');
-  // dayjs(data?.dateOfBirth).format('DD/MM/YYYY');
-  console.log(dataValue);
+  const dataValue = dayjs(data?.dateOfBirth);
   const [editMode, setEditMode] = useState(false);
   const { control, handleSubmit } = useForm<FormValues | CustomerSignin>({
     defaultValues: {
       firstName: data?.firstName,
       lastName: data?.lastName,
-      dateOfBirth: '', // dataValue -> Date object needed ??
+      dateOfBirth: dataValue as unknown as string,
       email: data?.email,
       password: data?.password,
     },
@@ -36,7 +35,18 @@ function PersonalInfo() {
   });
 
   const onSubmit = async (newData: CustomerSignin) => {
-    console.log(newData);
+    if (
+      'firstName' in newData &&
+      'lastName' in newData &&
+      'dateOfBirth' in newData
+    )
+      await updateUserProfile(
+        User.data!.version,
+        newData.email,
+        newData.firstName as string,
+        newData.lastName as string,
+        dayjs(newData.dateOfBirth as dayjs.Dayjs).format('DDMMYYYY')
+      );
     setEditMode(false);
   };
 

@@ -5,14 +5,22 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useForm } from 'react-hook-form';
-import { Customer, CustomerSignin } from '@commercetools/platform-sdk';
+import {
+  Customer,
+  CustomerSignin,
+  BaseAddress,
+} from '@commercetools/platform-sdk';
 import User from '../../api/user';
 import TextFieldInput from '../Inputs/TextFieldInput';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import { FormValues } from '../../types/signupFormValues';
 import SelectInput from '../Inputs/SelectInput';
 import { countries } from '../../helper/variables';
-import { getCustomer, removeUserAdressType } from '../../api/requests';
+import {
+  getCustomer,
+  removeUserAdressType,
+  updateUserAdress,
+} from '../../api/requests';
 import ModalAddress from '../ModalAddress/ModalAddress';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -93,7 +101,7 @@ function ProfileAddress({ addressType }: AddressProps) {
     if (!target) return;
     removeUserAdressType(userVersion, target.id, addressTypeText);
     (target as HTMLDivElement).remove();
-    getCustomer(); // Todo
+    getCustomer();
   };
 
   const handleClickAddAddress = () => {
@@ -105,7 +113,20 @@ function ProfileAddress({ addressType }: AddressProps) {
   };
 
   const onSubmit = async (data: FormValues | CustomerSignin) => {
-    console.log(data);
+    if ('address' in data) {
+      const dataList = data.address!;
+      const addresses: BaseAddress[] = [];
+      AddressIdArray?.forEach((id) => {
+        addresses.push({
+          country: dataList[`addressCountry_${id}`],
+          city: dataList[`addressCity_${id}`],
+          postalCode: dataList[`addressPostalCode_${id}`],
+          streetName: dataList[`addressStreet_${id}`],
+          id,
+        });
+      });
+      updateUserAdress(userVersion, addresses);
+    }
     setEditMode(false);
   };
 
