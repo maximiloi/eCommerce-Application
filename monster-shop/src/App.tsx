@@ -8,6 +8,8 @@ import Header from './components/Header/Header';
 import Toast from './components/Toast/Toast';
 import CatalogPage from './pages/CatalogPage';
 import ProductPage from './pages/ProductPage';
+import AboutPage from './pages/AboutPage';
+
 import User from './api/user';
 import './App.scss';
 
@@ -31,6 +33,7 @@ function App() {
             <Route path="register" element={<RedirectSignUp />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/catalog" element={<CatalogPage />} />
+            <Route path="/about" element={<AboutPage />} />
             <Route path="/product">
               <Route path=":productId" element={<ProductPage />} />
             </Route>
