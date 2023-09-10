@@ -11,21 +11,18 @@ const CustomBtn = styled(Button)<ButtonProps>(() => ({
   },
 }));
 
-function AddToCartButton({
-  isAdded,
-  text = 'Add to cart',
-  onClick,
-}: AddToCart) {
+function AddToCartButton({ isAdded, disabled = false, onClick }: AddToCart) {
+  const buttonText = isAdded ? 'Remove' : 'Add to cart';
   return (
     <CustomBtn
       type="button"
       variant="contained"
       size="small"
-      disabled={isAdded}
+      disabled={disabled}
       endIcon={<ShoppingCartIcon />}
       onClick={onClick}
     >
-      {text}
+      {buttonText}
     </CustomBtn>
   );
 }

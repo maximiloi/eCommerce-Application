@@ -1,5 +1,5 @@
 export type AddToCart = {
-  isAdded: boolean;
-  text?: string;
+  isAdded?: boolean;
+  disabled?: boolean;
   onClick: () => void;
 };

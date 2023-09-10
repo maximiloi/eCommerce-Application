@@ -75,7 +75,7 @@ function CardItem(props: ProductProjection) {
           <ColoredBtn size="small" variant="contained" onClick={handleClick}>
             View details
           </ColoredBtn>
-          <AddToCartButton isAdded={isAdded} onClick={handleAddToCart} />
+          <AddToCartButton disabled={isAdded} onClick={handleAddToCart} />
         </CardActions>
       </Card>
     </Grid>
