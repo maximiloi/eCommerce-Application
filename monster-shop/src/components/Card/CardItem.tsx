@@ -71,7 +71,7 @@ function CardItem(props: ProductProjection) {
             </span>
           </div>
         </CardContent>
-        <CardActions sx={{ pb: 2, pt: 0 }}>
+        <CardActions sx={{ pb: 2, pt: 0, justifyContent: 'space-between' }}>
           <ColoredBtn size="small" variant="contained" onClick={handleClick}>
             View details
           </ColoredBtn>
