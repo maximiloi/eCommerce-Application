@@ -1,0 +1,89 @@
+@use '../abstracts/variables';
+@use '../abstracts/mixins';
+.cart {
+  & > * {
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: variables.$color-light-s;
+  }
+
+  &__link {
+    display: block;
+    padding: 3rem 0;
+    text-align: center;
+    color: variables.$color-background;
+    transition: all 0.3s ease;
+    @include mixins.typography(400, 24px, 28px, 0.5px);
+
+    &:hover {
+      font-weight: bolder;
+    }
+  }
+
+  &__subtitle {
+    margin: 0.5rem 0;
+    color: variables.$color-background;
+    @include mixins.typography(400, 18px, 22px, 0.5px);
+  }
+
+  .promo-input {
+    display: flex;
+    flex-wrap: wrap;
+
+    & > * {
+      flex: 1 1 50%;
+    }
+  }
+
+  &__calculate {
+    & td {
+      color: variables.$color-background;
+      font-family: variables.$font-base;
+    }
+    .total {
+      & > * {
+        font-weight: bold;
+      }
+    }
+  }
+
+  &__action {
+    padding: 1rem 0;
+
+    .divider {
+      margin: 0.5rem 0;
+      text-align: center;
+      color: variables.$color-dark-l;
+      display: block;
+      position: relative;
+      &:after,
+      &:before {
+        content: '';
+        width: 35%;
+        height: 0.1rem;
+        display: inline-block;
+        background-color: variables.$color-text;
+        position: absolute;
+        top: calc(50% - 0.05rem);
+      }
+      &:before {
+        left: 0;
+      }
+      &:after {
+        right: 0;
+      }
+    }
+    .order {
+      background-color: variables.$color-dark-l;
+      color: variables.$color-text;
+
+      &:hover {
+        background-color: variables.$color-dark-l;
+        box-shadow:
+          0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+          0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+          0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+      }
+    }
+  }
+}
