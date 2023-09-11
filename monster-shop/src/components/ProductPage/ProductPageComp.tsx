@@ -17,6 +17,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import Slider from '../PromoSlides/Slider';
+import Counter from '../Counter/Counter';
 import AddToCartButton from '../AddToCartButton/AddToCartButton';
 import Loader from '../Loader/Loader';
 import { getProductId } from '../../api/requests';
@@ -125,7 +126,8 @@ function ProductPageCard() {
                 </div>
               ))}
             </div>
-            <CardActions sx={{ pb: 2, pt: 0 }}>
+            <CardActions sx={{ pb: 2, pt: 0, justifyContent: 'space-evenly' }}>
+              <Counter />
               <AddToCartButton isAdded={isAdded} onClick={handleAddToCart} />
             </CardActions>
           </CardContent>
