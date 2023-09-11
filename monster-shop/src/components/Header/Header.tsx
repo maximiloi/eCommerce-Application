@@ -126,7 +126,7 @@ function Header() {
                 )}
               </IconButton>
             </Tooltip>
-            <IconButton sx={{ p: 0 }}>
+            <IconButton onClick={() => navigate('/cart')} sx={{ p: 0 }}>
               <Badge
                 color="error"
                 sx={{ color: '#c32b1d' }}
