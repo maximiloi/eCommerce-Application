@@ -2,6 +2,8 @@
 @use '../../sass/abstracts/mixins';
 
 .card {
+  cursor: default;
+
   &:hover {
     background-color: lighten(variables.$color-text, 30%);
     transform: translateY(-0.3rem);
