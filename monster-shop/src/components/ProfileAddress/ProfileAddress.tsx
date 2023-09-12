@@ -20,7 +20,7 @@ import {
   getCustomer,
   removeUserAdressType,
   updateUserAdress,
-} from '../../api/requests';
+} from '../../api/requests/userProfile';
 import ModalAddress from '../ModalAddress/ModalAddress';
 
 const Item = styled(Paper)(({ theme }) => ({
