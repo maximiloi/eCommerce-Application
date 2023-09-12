@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardActions, CardContent, CardMedia, Grid } from '@mui/material';
 import {
@@ -9,10 +10,12 @@ import {
 } from '@commercetools/platform-sdk';
 import { AttributeType } from '../../types/inputProps';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
+import AddToCartButton from '../AddToCartButton/AddToCartButton';
 import './_cardItem.scss';
 
 function CardItem(props: ProductProjection) {
   const { id, masterVariant, name } = props;
+  const [isAdded, setIsAdded] = useState(false);
   const tags = masterVariant.attributes as Attribute[];
   const img = (masterVariant.images as Image[])[0];
   const price = (masterVariant.prices as Price[])[0];
@@ -26,6 +29,10 @@ function CardItem(props: ProductProjection) {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate(`/product/${id}`);
+  };
+  const handleAddToCart = () => {
+    console.log(`Add monster ${id} to the cart`);
+    setIsAdded(true);
   };
   return (
     <Grid item xs={9} sm={4} md={4}>
@@ -64,10 +71,11 @@ function CardItem(props: ProductProjection) {
             </span>
           </div>
         </CardContent>
-        <CardActions sx={{ pb: 2, pt: 0 }}>
+        <CardActions sx={{ pb: 2, pt: 0, justifyContent: 'space-between' }}>
           <ColoredBtn size="small" variant="contained" onClick={handleClick}>
             View details
           </ColoredBtn>
+          <AddToCartButton disabled={isAdded} onClick={handleAddToCart} />
         </CardActions>
       </Card>
     </Grid>
