@@ -17,7 +17,8 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import Slider from '../PromoSlides/Slider';
-import ColoredBtn from '../ColoredBtn/ColoredBtn';
+import Counter from '../Counter/Counter';
+import AddToCartButton from '../AddToCartButton/AddToCartButton';
 import Loader from '../Loader/Loader';
 import { getProductId } from '../../api/requests';
 import { AttributeType } from '../../types/inputProps';
@@ -35,6 +36,7 @@ function ProductPageCard() {
   const [prodDescription, setDescription] = useState('');
   const [price, setPrice] = useState(0);
   const [discount, setDiscount] = useState(0);
+  const [isAdded, setIsAdded] = useState(false);
 
   async function fetchProductData(id: string) {
     try {
@@ -54,6 +56,11 @@ function ProductPageCard() {
       console.log(err);
     }
   }
+
+  const handleAddToCart = () => {
+    console.log(`Add monster ${productId} to the cart`);
+    setIsAdded(!isAdded);
+  };
 
   useEffect(() => {
     fetchProductData(productId as string);
@@ -119,10 +126,9 @@ function ProductPageCard() {
                 </div>
               ))}
             </div>
-            <CardActions sx={{ pb: 2, pt: 0 }}>
-              <ColoredBtn size="small" variant="contained">
-                Add to Cart
-              </ColoredBtn>
+            <CardActions sx={{ pb: 2, pt: 0, justifyContent: 'space-evenly' }}>
+              <Counter />
+              <AddToCartButton isAdded={isAdded} onClick={handleAddToCart} />
             </CardActions>
           </CardContent>
         </Card>

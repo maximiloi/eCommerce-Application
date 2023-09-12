@@ -11,6 +11,8 @@ import {
   Typography,
   Tooltip,
   Container,
+  Avatar,
+  Badge,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -23,6 +25,7 @@ import './Header.scss';
 function Header() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [count] = useState(0);
   const navigate = useNavigate();
   let userTitle = User.created ? User.data?.firstName : 'Log in now';
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -112,11 +115,26 @@ function Header() {
           <Box sx={{ flexGrow: 0, ml: 3 }}>
             <Tooltip title={userTitle}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <AccountCircleIcon fontSize="large" color="warning" />
+                {User.created ? (
+                  <Avatar
+                    sx={{ bgcolor: '#c32b1d', width: 35, height: 35 }}
+                    alt={`${User.data?.firstName}`}
+                    src=".jpg"
+                  />
+                ) : (
+                  <AccountCircleIcon fontSize="large" color="warning" />
+                )}
               </IconButton>
             </Tooltip>
-            <IconButton sx={{ p: 0 }}>
-              <ShoppingCartIcon fontSize="large" color="warning" />
+            <IconButton onClick={() => navigate('/cart')} sx={{ p: 0 }}>
+              <Badge
+                color="error"
+                sx={{ color: '#c32b1d' }}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                badgeContent={count}
+              >
+                <ShoppingCartIcon fontSize="large" color="warning" />
+              </Badge>
             </IconButton>
             <Menu
               sx={{ mt: '45px' }}
