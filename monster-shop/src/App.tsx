@@ -6,7 +6,6 @@ import Page404 from './pages/Page404';
 import Profile from './pages/Profile';
 import Header from './components/Header/Header';
 import Toast from './components/Toast/Toast';
-import Footer from './components/Footer/Footer';
 import CatalogPage from './pages/CatalogPage';
 import ProductPage from './pages/ProductPage';
 import AboutPage from './pages/AboutPage';
@@ -42,7 +41,6 @@ function App() {
           </Routes>
         </div>
       </main>
-      <Footer />
       <Toast />
     </>
   );

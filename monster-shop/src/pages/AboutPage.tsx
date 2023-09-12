@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Avatar, Grid, Paper, styled, Box } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { creators } from '../helper/variables';
+import Footer from '../components/Footer/Footer';
 
 import RSSLogo from '../assets/icons/logo_rs_text.svg';
 
@@ -64,6 +65,7 @@ function AboutPage() {
           />
         </Link>
       </Box>
+      <Footer />
     </>
   );
 }
