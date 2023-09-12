@@ -24,7 +24,7 @@
     max-width: $content-width;
 
     @include media-tablet {
-      padding: 10px;
+      padding: 10px 10px 60px 10px;
     }
   }
 }
