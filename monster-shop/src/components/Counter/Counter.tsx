@@ -10,7 +10,7 @@ function Counter() {
       <Button
         aria-label="reduce"
         onClick={() => {
-          setCount(Math.max(count - 1, 0));
+          setCount(Math.max(count - 1, 1));
         }}
       >
         <Remove fontSize="small" />

@@ -1,0 +1,33 @@
+@use '../../sass/abstracts/variables';
+@use '../../sass/abstracts/mixins';
+
+.cart-item {
+  color: variables.$color-dark-l;
+  td {
+    color: variables.$color-dark-l;
+  }
+
+  &__title {
+    margin: 0;
+    color: variables.$color-background;
+    cursor: pointer;
+    @include mixins.typography(700, 16px, 20px, 0px);
+  }
+
+  &__tags {
+    display: flex;
+    justify-content: flex-end;
+
+    & > *:not(:last-child) {
+      margin-right: 0.3rem;
+    }
+
+    .tag {
+      font-size: smaller;
+      padding: 0 0.5rem;
+      border-radius: 2rem;
+      background: darken(variables.$color-bright, 10%);
+      color: variables.$color-light-xs;
+    }
+  }
+}
