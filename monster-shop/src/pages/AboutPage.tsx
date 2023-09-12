@@ -3,6 +3,8 @@ import { Avatar, Grid, Paper, styled, Box } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { creators } from '../helper/variables';
 
+import RSSLogo from '../assets/icons/logo_rs_text.svg';
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#f8e2a7',
   padding: theme.spacing(2),
@@ -50,6 +52,17 @@ function AboutPage() {
             </Grid>
           ))}
         </Grid>
+      </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Link to="https://rs.school/index.html" target="_blank">
+          <img
+            src={RSSLogo}
+            alt="Rss logo"
+            style={{
+              padding: '10px',
+            }}
+          />
+        </Link>
       </Box>
     </>
   );
