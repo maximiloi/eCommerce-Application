@@ -69,3 +69,9 @@ export const catalogMenuList = {
   'Scary Monsters': '3bb278f1-4669-46a6-b158-a97edb6d77a2',
   'Real Monsters': 'a69edcea-705d-45b1-9b9c-a0fe977998e1',
 };
+
+export const creators = [
+  { name: '/tatsiana', path: 'https://github.com/tbandelikova' },
+  { name: '/gleb', path: 'https://github.com/gruntovgd' },
+  { name: '/maxim', path: 'https://github.com/maximiloi' },
+];
