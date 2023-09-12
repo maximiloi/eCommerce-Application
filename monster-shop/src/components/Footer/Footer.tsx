@@ -9,10 +9,10 @@ function Footer() {
   return (
     <div className="footer">
       <List className="footer__creators">
-        {creators.map((link) => (
-          <ListItem key={link.name}>
-            <Link className="footer__link" to={link.path} target="_blank">
-              {link.name}
+        {creators.map((creator) => (
+          <ListItem key={creator.name}>
+            <Link className="footer__link" to={creator.path} target="_blank">
+              {creator.name}
             </Link>
           </ListItem>
         ))}
