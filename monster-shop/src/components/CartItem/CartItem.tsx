@@ -1,5 +1,13 @@
 import { NavLink } from 'react-router-dom';
-import { Box, CardContent, CardMedia, Divider, Grid } from '@mui/material';
+import {
+  Box,
+  CardContent,
+  CardMedia,
+  Divider,
+  Grid,
+  IconButton,
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Attribute,
   Image,
@@ -26,28 +34,39 @@ function CartItem(props: Partial<ProductProjection>) {
 
   return (
     <Grid item sx={{ width: 1, p: 0 }} className="cart-item">
-      <Box className="cart-item__wrap" sx={{ display: 'flex' }}>
-        <CardMedia
-          component="div"
-          sx={{ width: 50, height: 60, display: { xs: 'none', md: 'block' } }}
-          image={img.url}
-        />
-        <CardContent className="cart-item__content" sx={{ flexGrow: 1, p: 1 }}>
-          <NavLink className="cart-item__title" to={`/product/${id}`}>
-            {name?.en}
-          </NavLink>
-          <div className="cart-item__tags">
-            {tags.map((tag) => (
-              <div key={tag.name}>
-                {tag.value.map((el: AttributeType) => (
-                  <span key={el.key} className="tag">
-                    {el.label}
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </CardContent>
+      <Box
+        className="cart-item__wrap"
+        sx={{ display: 'flex', justifyContent: 'space-between' }}
+      >
+        <Box className="cart-item__inner cart-item__inner--start">
+          <IconButton aria-label="delete" sx={{ height: 40, mr: 1 }}>
+            <DeleteIcon />
+          </IconButton>
+          <CardMedia
+            component="div"
+            sx={{ width: 50, height: 60, display: { xs: 'none', md: 'block' } }}
+            image={img.url}
+          />
+          <CardContent
+            className="cart-item__content"
+            sx={{ flexGrow: 1, p: 1 }}
+          >
+            <NavLink className="cart-item__title" to={`/product/${id}`}>
+              {name?.en}
+            </NavLink>
+            <div className="cart-item__tags">
+              {tags.map((tag) => (
+                <div key={tag.name}>
+                  {tag.value.map((el: AttributeType) => (
+                    <span key={el.key} className="tag">
+                      {el.label}
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Box>
         <Box className="cart-item__inner">
           <div className="cart-item__price cart-item__box">
             <span
