@@ -2,7 +2,7 @@
 @use '../../sass/abstracts/mixins';
 
 .card {
-  cursor: pointer;
+  cursor: default;
 
   &:hover {
     background-color: lighten(variables.$color-text, 30%);

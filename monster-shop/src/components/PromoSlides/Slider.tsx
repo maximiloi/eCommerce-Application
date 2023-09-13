@@ -37,9 +37,8 @@ function Slider(props: { images: Image[] }) {
       <Box
         className="slider"
         sx={{ width: 350, boxShadow: 3, borderRadius: 3 }}
-        onClick={handleModalOpen}
       >
-        <List className="slides" sx={{ p: 0 }}>
+        <List className="slides" sx={{ p: 0 }} onClick={handleModalOpen}>
           {images.map((slide, index) => (
             <Slide
               className={index === count ? 'slide slide_active' : 'slide'}
