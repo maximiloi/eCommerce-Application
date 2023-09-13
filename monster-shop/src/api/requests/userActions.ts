@@ -1,6 +1,7 @@
 import { CustomerSignin, MyCustomerDraft } from '@commercetools/platform-sdk';
 import User from '../user';
 import toastify from '../../helper/toastify';
+import { combineCart } from './cart';
 
 export function login(customerSignin: CustomerSignin) {
   return new Promise((resolve) => {
@@ -14,6 +15,7 @@ export function login(customerSignin: CustomerSignin) {
       .then((response) => {
         User.setClient(customerSignin.email, customerSignin.password);
         User.signin(response.body.customer);
+        combineCart();
         toastify(`Hello, ${User.data?.firstName}`, 'success');
         resolve(response.body);
       })

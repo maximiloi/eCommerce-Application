@@ -1,4 +1,4 @@
-import { Cart } from '@commercetools/platform-sdk';
+import { Cart, MyCartUpdateAction } from '@commercetools/platform-sdk';
 import toastify from '../../helper/toastify';
 import User from '../user';
 
@@ -10,8 +10,25 @@ export function getCarts() {
       .get()
       .execute()
       .then((response) => {
-        console.log(response.body.results);
         resolve(response.body.results);
+      })
+      .catch((error) => {
+        console.error('Error getting carts:', error);
+        toastify(error.message, 'error');
+      });
+  });
+}
+
+export function getCartId(ID: string) {
+  return new Promise((resolve) => {
+    User.getApi()
+      .me()
+      .carts()
+      .withId({ ID })
+      .get()
+      .execute()
+      .then((response) => {
+        resolve(response.body);
       })
       .catch((error) => {
         console.error('Error getting carts:', error);
@@ -32,7 +49,46 @@ export function createCart() {
       })
       .execute()
       .then((response) => {
-        console.log(response.body);
+        resolve(response.body);
+      })
+      .catch((error) => {
+        console.error('Error creating cart:', error);
+        toastify(error.message, 'error');
+      });
+  });
+}
+
+export async function deleteCart(ID: string) {
+  const cart = (await getCartId(ID)) as Cart;
+  return new Promise((resolve) => {
+    User.getApi()
+      .me()
+      .carts()
+      .withId({ ID })
+      .delete({ queryArgs: { version: cart.version } })
+      .execute()
+      .then((response) => {
+        resolve(response.body);
+      })
+      .catch((error) => {
+        console.error('Error creating cart:', error);
+        toastify(error.message, 'error');
+      });
+  });
+}
+
+export async function updateCartId(ID: string, actions: MyCartUpdateAction[]) {
+  const cart = (await getCartId(ID)) as Cart;
+  return new Promise((resolve) => {
+    User.getApi()
+      .me()
+      .carts()
+      .withId({ ID })
+      .post({
+        body: { version: cart.version, actions },
+      })
+      .execute()
+      .then((response) => {
         resolve(response.body);
       })
       .catch((error) => {
@@ -45,7 +101,6 @@ export function createCart() {
 export async function cartAddItem(productId: string) {
   const carts = (await getCarts()) as Cart[];
   const cart = carts[carts.length - 1] || ((await createCart()) as Cart);
-  console.log(cart);
   const { version, id } = cart;
   return new Promise((resolve) => {
     User.getApi()
@@ -60,12 +115,37 @@ export async function cartAddItem(productId: string) {
       })
       .execute()
       .then((response) => {
-        console.log(response.body);
         resolve(response);
       })
       .catch((error) => {
         console.error('Error:', error);
         toastify(error.message, 'error');
       });
+  });
+}
+
+export async function combineCart() {
+  const carts = (await getCarts()) as Cart[];
+  return new Promise((resolve) => {
+    if (carts.length === 1) resolve(carts[0]);
+    const addList: MyCartUpdateAction[] = [];
+    const cartsToRemove: string[] = [];
+    carts.forEach((cart, index) => {
+      const items = cart.lineItems;
+      if (index) {
+        cartsToRemove.push(cart.id);
+        if (items.length)
+          items.forEach((item) => {
+            addList.push({
+              action: 'addLineItem',
+              productId: item.productId,
+              quantity: item.quantity,
+            });
+          });
+      }
+    });
+    updateCartId(carts[0].id, addList).then(() => {
+      cartsToRemove.forEach((cartId) => deleteCart(cartId));
+    });
   });
 }
