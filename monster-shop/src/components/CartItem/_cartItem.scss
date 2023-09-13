@@ -3,6 +3,7 @@
 
 .cart-item {
   color: variables.$color-dark-l;
+
   td {
     color: variables.$color-dark-l;
   }
@@ -15,8 +16,8 @@
   }
 
   &__tags {
-    display: flex;
-    justify-content: flex-end;
+    // display: flex;
+    // justify-content: flex-end;
 
     & > *:not(:last-child) {
       margin-right: 0.3rem;
@@ -28,6 +29,78 @@
       border-radius: 2rem;
       background: darken(variables.$color-bright, 10%);
       color: variables.$color-light-xs;
+    }
+  }
+
+  &__price {
+    position: relative;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+
+    width: 65px;
+
+    &::after {
+      position: absolute;
+      right: 0;
+      top: calc(50% - 15px);
+      content: '';
+      margin-left: 3px;
+      background-image: url('/blood_drop.svg');
+      background-size: 14px 24px;
+      display: inline-block;
+      width: 14px;
+      height: 24px;
+    }
+
+    & .discount_active {
+      margin-right: 0;
+    }
+
+    & .price::after,
+    & .discount::after {
+      display: none;
+    }
+  }
+
+  &__counter {
+    & .counter {
+      margin: 0 1em;
+    }
+
+    & .counter > button {
+      min-width: 34px;
+      height: 34px;
+      // padding: 0;
+      border-radius: 50%;
+    }
+  }
+
+  &__inner {
+    display: flex;
+    min-width: 280px;
+  }
+
+  &__box {
+    min-width: 65px;
+
+    &--center {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .cart-item {
+    &__wrap {
+      flex-direction: column;
+    }
+
+    &__inner {
+      justify-content: flex-end;
+      min-width: auto;
+      padding: 8px;
     }
   }
 }

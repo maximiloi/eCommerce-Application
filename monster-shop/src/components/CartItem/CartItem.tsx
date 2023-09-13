@@ -48,30 +48,32 @@ function CartItem(props: Partial<ProductProjection>) {
             ))}
           </div>
         </CardContent>
-        <div className="cart-item__price">
-          <span className={discount ? 'discount discount_active' : 'discount'}>
-            {discount}
-          </span>
-          <span className={discount ? 'price price_discounted' : 'price'}>
-            {price.value.centAmount / 10 ** price.value.fractionDigits}
-          </span>
-        </div>
-        <Box className="cart-item__counter">
-          <Counter />
+        <Box className="cart-item__inner">
+          <div className="cart-item__price cart-item__box">
+            <span
+              className={discount ? 'discount discount_active' : 'discount'}
+            >
+              {discount}
+            </span>
+            <span className={discount ? 'price price_discounted' : 'price'}>
+              {price.value.centAmount / 10 ** price.value.fractionDigits}
+            </span>
+          </div>
+          <Box className="cart-item__counter  cart-item__box cart-item__box--center">
+            <Counter />
+          </Box>
+          <div className="cart-item__total-price  cart-item__box cart-item__box--center">
+            <span className="price">
+              {discount ||
+                price.value.centAmount / 10 ** price.value.fractionDigits}
+            </span>
+          </div>
         </Box>
-        <div className="cart-item__total-price">
-          <span className={discount ? 'discount discount_active' : 'discount'}>
-            {discount}
-          </span>
-          <span className={discount ? 'price price_discounted' : 'price'}>
-            {price.value.centAmount / 10 ** price.value.fractionDigits}
-          </span>
-        </div>
       </Box>
-      <Box className="cart-item__action">
+      {/* <Box className="cart-item__action">
         <span>Edit</span>
         <span>Remove</span>
-      </Box>
+      </Box> */}
       <Divider />
     </Grid>
   );
