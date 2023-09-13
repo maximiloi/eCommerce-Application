@@ -71,7 +71,7 @@ export async function deleteCart(ID: string) {
         resolve(response.body);
       })
       .catch((error) => {
-        console.error('Error creating cart:', error);
+        console.error('Error deleting cart:', error);
         toastify(error.message, 'error');
       });
   });
@@ -92,9 +92,32 @@ export async function updateCartId(ID: string, actions: MyCartUpdateAction[]) {
         resolve(response.body);
       })
       .catch((error) => {
-        console.error('Error creating cart:', error);
+        console.error('Error updating cart:', error);
         toastify(error.message, 'error');
       });
+  });
+}
+
+export async function combineCart() {
+  const carts = (await getCarts()) as Cart[];
+  const addList: MyCartUpdateAction[] = [];
+  const cartsToRemove: string[] = [];
+  carts.forEach((cart, index) => {
+    const items = cart.lineItems;
+    if (index) {
+      cartsToRemove.push(cart.id);
+      if (items.length)
+        items.forEach((item) => {
+          addList.push({
+            action: 'addLineItem',
+            productId: item.productId,
+            quantity: item.quantity,
+          });
+        });
+    }
+  });
+  updateCartId(carts[0].id, addList).then(() => {
+    cartsToRemove.forEach((cartId) => deleteCart(cartId));
   });
 }
 
@@ -115,7 +138,7 @@ export async function cartAddItem(productId: string) {
       })
       .execute()
       .then((response) => {
-        resolve(response);
+        resolve(response.body);
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -124,28 +147,31 @@ export async function cartAddItem(productId: string) {
   });
 }
 
-export async function combineCart() {
+export async function cartChangeItemQuant(
+  lineItemId: string,
+  quantity: number
+) {
   const carts = (await getCarts()) as Cart[];
+  const cart = carts[carts.length - 1] || ((await createCart()) as Cart);
+  const { version, id } = cart;
   return new Promise((resolve) => {
-    if (carts.length === 1) resolve(carts[0]);
-    const addList: MyCartUpdateAction[] = [];
-    const cartsToRemove: string[] = [];
-    carts.forEach((cart, index) => {
-      const items = cart.lineItems;
-      if (index) {
-        cartsToRemove.push(cart.id);
-        if (items.length)
-          items.forEach((item) => {
-            addList.push({
-              action: 'addLineItem',
-              productId: item.productId,
-              quantity: item.quantity,
-            });
-          });
-      }
-    });
-    updateCartId(carts[0].id, addList).then(() => {
-      cartsToRemove.forEach((cartId) => deleteCart(cartId));
-    });
+    User.getApi()
+      .me()
+      .carts()
+      .withId({ ID: id })
+      .post({
+        body: {
+          version,
+          actions: [{ action: 'changeLineItemQuantity', lineItemId, quantity }],
+        },
+      })
+      .execute()
+      .then((response) => {
+        resolve(response.body);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        toastify(error.message, 'error');
+      });
   });
 }
