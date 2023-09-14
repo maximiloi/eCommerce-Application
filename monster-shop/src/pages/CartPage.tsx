@@ -9,85 +9,15 @@ import {
   TableCell,
   TableRow,
 } from '@mui/material';
+import { ProductProjection } from '@commercetools/platform-sdk';
 import PromoCodeBar from '../components/PromoCodeBar/PromoCodeBar';
 import ColoredBtn from '../components/ColoredBtn/ColoredBtn';
 import Loader from '../components/Loader/Loader';
 import CartItem from '../components/CartItem/CartItem';
 import '../sass/pages/_cartPage.scss';
 
-const dataExample = [
-  {
-    id: 'ee5ce42a-0bdd-4ac0-9f99-967043939c6b',
-    name: { en: 'Big Sweetie' },
-    masterVariant: {
-      attributes: [
-        {
-          value: [
-            {
-              label: 'eхtra small',
-            },
-          ],
-        },
-      ],
-      images: [
-        {
-          url: 'https://2ec847d8486e142af9ff-5ea1dba470d34e5c524c2f22376ea9aa.ssl.cf3.rackcdn.com/Big%20Sweetie-01-XekGCorC.jpg',
-        },
-      ],
-      prices: [
-        {
-          value: {
-            centAmount: 9900,
-            currencyCode: 'EUR',
-            fractionDigits: 2,
-            type: 'centPrecision',
-          },
-        },
-      ],
-    },
-  },
-  {
-    id: '414c8613-fab5-4f10-99a7-0bcfa837451a',
-    name: { en: 'Crystal Heart' },
-    masterVariant: {
-      attributes: [
-        {
-          value: [
-            {
-              label: 'eхtra small',
-            },
-          ],
-        },
-      ],
-      images: [
-        {
-          url: 'https://2ec847d8486e142af9ff-5ea1dba470d34e5c524c2f22376ea9aa.ssl.cf3.rackcdn.com/Crystal%20Heart-02-bytqE0rz.jpg',
-        },
-      ],
-      prices: [
-        {
-          discounted: {
-            value: {
-              centAmount: 8415,
-              currencyCode: 'EUR',
-              fractionDigits: 2,
-              type: 'centPrecision',
-            },
-          },
-          value: {
-            centAmount: 9900,
-            currencyCode: 'EUR',
-            fractionDigits: 2,
-            type: 'centPrecision',
-          },
-        },
-      ],
-    },
-  },
-];
-
 function CartPage() {
-  const [products] = useState(dataExample); // setProducts, [] as ProductProjection[]
+  const [products] = useState<ProductProjection[]>([]); // setProducts
   const [isEmpty] = useState(false); // setIsEmpty
   const [promoCode, setPromoCode] = useState<string>('');
   const isLoaded = !!products.length;
@@ -109,6 +39,7 @@ function CartPage() {
           <Grid container spacing={2}>
             {!isLoaded && <Loader />}
             {isLoaded &&
+              !isEmpty &&
               products.map((card) => <CartItem key={card.id} {...card} />)}
           </Grid>
         )}
