@@ -3,19 +3,24 @@ import { NavLink } from 'react-router-dom';
 import {
   Box,
   Button,
+  Grid,
   Table,
   TableBody,
   TableCell,
   TableRow,
 } from '@mui/material';
+import { ProductProjection } from '@commercetools/platform-sdk';
 import PromoCodeBar from '../components/PromoCodeBar/PromoCodeBar';
 import ColoredBtn from '../components/ColoredBtn/ColoredBtn';
+import Loader from '../components/Loader/Loader';
+import CartItem from '../components/CartItem/CartItem';
 import '../sass/pages/_cartPage.scss';
 
 function CartPage() {
-  const [isEmpty] = useState(true); // setIsEmpty
+  const [products] = useState<ProductProjection[]>([]); // setProducts
+  const [isEmpty] = useState(false); // setIsEmpty
   const [promoCode, setPromoCode] = useState<string>('');
-
+  const isLoaded = !!products.length;
   console.log(promoCode);
   return (
     <Box
@@ -26,10 +31,17 @@ function CartPage() {
         className="cart__content"
         sx={{ flexGrow: 1, width: { sm: 'calc(100% - 200px)' }, p: 1 }}
       >
-        {isEmpty && (
+        {isEmpty ? (
           <NavLink to="/catalog" className="cart__link">
             Nothing here yet... Return to the catalog!
           </NavLink>
+        ) : (
+          <Grid container spacing={2}>
+            {!isLoaded && <Loader />}
+            {isLoaded &&
+              !isEmpty &&
+              products.map((card) => <CartItem key={card.id} {...card} />)}
+          </Grid>
         )}
       </Box>
       <Box component="aside" className="cart__aside" sx={{ flexGrow: 1 }}>
