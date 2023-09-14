@@ -20,9 +20,9 @@ import Slider from '../PromoSlides/Slider';
 import Counter from '../Counter/Counter';
 import AddToCartButton from '../AddToCartButton/AddToCartButton';
 import Loader from '../Loader/Loader';
-import { getProductId } from '../../api/requests';
 import { AttributeType } from '../../types/inputProps';
 import './ProductPageComp.scss';
+import { getProductId } from '../../api/requests/catalog';
 
 function ProductPageCard() {
   const theme = useTheme();

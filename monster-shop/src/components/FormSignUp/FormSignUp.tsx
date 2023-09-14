@@ -5,7 +5,6 @@ import { CustomerSignin } from '@commercetools/platform-sdk';
 import dataFormat from '../../helper/registrationDataFormat';
 import validatePassword from '../../helper/validatePassword';
 import validateDateBirth from '../../helper/validateDateBirth';
-import { signup } from '../../api/requests';
 import { FormValues, KeySignUp } from '../../types/signupFormValues';
 import {
   SignUpDefaultValues,
@@ -20,6 +19,7 @@ import SelectInput from '../Inputs/SelectInput';
 import CheckboxInput from '../Inputs/CheckboxInput';
 import SwitchInput from '../Inputs/SwitchInput';
 import './FormSignUp.scss';
+import { signup } from '../../api/requests/userActions';
 
 export default function FormSignUp() {
   const {

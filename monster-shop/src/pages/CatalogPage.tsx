@@ -13,7 +13,7 @@ import {
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { catalogMenuList } from '../helper/variables';
-import { getProductsFilter } from '../api/requests';
+import { getProductsFilter } from '../api/requests/catalog';
 import { SortOptionType } from '../types/inputProps';
 import SearchBar from '../components/Searchbar/Searchbar';
 import Sort from '../components/Sort/Sort';

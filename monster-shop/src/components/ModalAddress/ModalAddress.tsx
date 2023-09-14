@@ -17,8 +17,8 @@ import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import SelectInput from '../Inputs/SelectInput';
 import { SignUpDefaultValues, countries } from '../../helper/variables';
 import { FormValues } from '../../types/signupFormValues';
-import { addUserAdressType, getCustomer } from '../../api/requests';
 import User from '../../api/user';
+import { addUserAdressType, getCustomer } from '../../api/requests/userProfile';
 
 interface ModalAddressProps {
   onClose: () => void;
