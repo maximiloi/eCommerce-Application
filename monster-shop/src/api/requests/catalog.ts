@@ -11,6 +11,7 @@ export function getProducts() {
         resolve(response.body.results);
       })
       .catch((error) => {
+        console.error('Error:', error);
         toastify(error.message, 'error');
       });
   });
@@ -34,6 +35,7 @@ export function getProductsFilter(filter: string, text: string, sort: string) {
         resolve(response.body.results);
       })
       .catch((error) => {
+        console.error('Error:', error);
         toastify(error.message, 'error');
       });
   });
@@ -50,6 +52,7 @@ export function getProductId(ID: string) {
         resolve(response.body);
       })
       .catch((error) => {
+        console.error('Error:', error);
         toastify(error.message, 'error');
       });
   });
@@ -66,6 +69,7 @@ export function getCategoryId(ID: string) {
         resolve(response.body);
       })
       .catch((error) => {
+        console.error('Error:', error);
         toastify(error.message, 'error');
       });
   });
@@ -81,6 +85,7 @@ export function getCategory() {
         resolve(response.body.results);
       })
       .catch((error) => {
+        console.error('Error:', error);
         toastify(error.message, 'error');
       });
   });

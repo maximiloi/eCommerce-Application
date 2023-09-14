@@ -17,6 +17,7 @@ export function getCustomer() {
         resolve(response.body);
       })
       .catch((error) => {
+        console.error('Error:', error);
         toastify(error.message, 'error');
       });
   });
@@ -39,6 +40,7 @@ export function updateUserPassword(
         resolve(response.body);
       })
       .catch((error) => {
+        console.error('Error:', error);
         toastify(error.message, 'error');
       });
   });
