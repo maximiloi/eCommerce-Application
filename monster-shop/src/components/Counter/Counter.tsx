@@ -3,8 +3,12 @@ import { Button, Box } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
 import './_Counter.scss';
 
-function Counter() {
-  const [count, setCount] = useState(1);
+type CounterProps = {
+  quantity: number;
+};
+
+function Counter({ quantity }: CounterProps) {
+  const [count, setCount] = useState(quantity);
   return (
     <Box className="counter" sx={{ display: 'flex' }}>
       <Button

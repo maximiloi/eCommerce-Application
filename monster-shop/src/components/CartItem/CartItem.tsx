@@ -11,25 +11,23 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Attribute,
   Image,
-  Price,
   DiscountedPrice,
-  ProductProjection,
+  LineItem,
 } from '@commercetools/platform-sdk';
 import { AttributeType } from '../../types/inputProps';
 import Counter from '../Counter/Counter';
 import './_cartItem.scss';
+import calculatePrice from '../../helper/calculatePrice';
 
-function CartItem(props: Partial<ProductProjection>) {
-  const { id, masterVariant, name } = props;
-  const tags = masterVariant?.attributes as Attribute[];
-  const img = (masterVariant?.images as Image[])[0];
-  const price = (masterVariant?.prices as Price[])[0];
+function CartItem(props: LineItem) {
+  const { productId, name, variant, price, quantity, totalPrice } = props;
+  const tags = variant?.attributes as Attribute[];
+  const img = (variant?.images as Image[])[0];
+  const priceEach = calculatePrice(price);
   let discount = 0;
   if (price.discounted) {
     const priceDiscounted = price.discounted as DiscountedPrice;
-    discount =
-      priceDiscounted.value.centAmount /
-      10 ** priceDiscounted.value.fractionDigits;
+    discount = calculatePrice(priceDiscounted);
   }
 
   return (
@@ -51,7 +49,7 @@ function CartItem(props: Partial<ProductProjection>) {
             className="cart-item__content"
             sx={{ flexGrow: 1, p: 1 }}
           >
-            <NavLink className="cart-item__title" to={`/product/${id}`}>
+            <NavLink className="cart-item__title" to={`/product/${productId}`}>
               {name?.en}
             </NavLink>
             <div className="cart-item__tags">
@@ -75,24 +73,19 @@ function CartItem(props: Partial<ProductProjection>) {
               {discount}
             </span>
             <span className={discount ? 'price price_discounted' : 'price'}>
-              {price.value.centAmount / 10 ** price.value.fractionDigits}
+              {priceEach}
             </span>
           </div>
           <Box className="cart-item__counter  cart-item__box cart-item__box--center">
-            <Counter />
+            <Counter quantity={quantity} />
           </Box>
           <div className="cart-item__total-price  cart-item__box cart-item__box--center">
             <span className="price">
-              {discount ||
-                price.value.centAmount / 10 ** price.value.fractionDigits}
+              {totalPrice.centAmount / 10 ** totalPrice.fractionDigits}
             </span>
           </div>
         </Box>
       </Box>
-      {/* <Box className="cart-item__action">
-        <span>Edit</span>
-        <span>Remove</span>
-      </Box> */}
       <Divider />
     </Grid>
   );

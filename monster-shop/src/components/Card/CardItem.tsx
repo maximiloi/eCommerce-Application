@@ -8,7 +8,9 @@ import {
   Price,
   DiscountedPrice,
 } from '@commercetools/platform-sdk';
+import { cartAddItem } from '../../api/requests/cart';
 import { AttributeType } from '../../types/inputProps';
+import calculatePrice from '../../helper/calculatePrice';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import AddToCartButton from '../AddToCartButton/AddToCartButton';
 import './_cardItem.scss';
@@ -22,16 +24,14 @@ function CardItem(props: ProductProjection) {
   let discount = 0;
   if (price.discounted) {
     const priceDiscounted = price.discounted as DiscountedPrice;
-    discount =
-      priceDiscounted.value.centAmount /
-      10 ** priceDiscounted.value.fractionDigits;
+    discount = calculatePrice(priceDiscounted);
   }
   const navigate = useNavigate();
   const handleClick = () => {
     navigate(`/product/${id}`);
   };
   const handleAddToCart = () => {
-    console.log(`Add monster ${id} to the cart`);
+    cartAddItem(id);
     setIsAdded(true);
   };
   return (
@@ -67,7 +67,7 @@ function CardItem(props: ProductProjection) {
               {discount}
             </span>
             <span className={discount ? 'price price_discounted' : 'price'}>
-              {price.value.centAmount / 10 ** price.value.fractionDigits}
+              {calculatePrice(price)}
             </span>
           </div>
         </CardContent>

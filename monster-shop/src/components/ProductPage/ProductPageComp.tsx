@@ -127,7 +127,7 @@ function ProductPageCard() {
               ))}
             </div>
             <CardActions sx={{ pb: 2, pt: 0, justifyContent: 'space-evenly' }}>
-              <Counter />
+              <Counter quantity={1} />
               <AddToCartButton isAdded={isAdded} onClick={handleAddToCart} />
             </CardActions>
           </CardContent>

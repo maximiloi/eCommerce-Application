@@ -4,7 +4,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import { PromoCodeProps, PromoInputType } from '../../types/inputProps';
 
-function PromoCodeBar({ setPromoCode }: PromoCodeProps) {
+function PromoCodeBar({ promoCode, setPromoCode }: PromoCodeProps) {
   const {
     control,
     handleSubmit,
@@ -12,7 +12,7 @@ function PromoCodeBar({ setPromoCode }: PromoCodeProps) {
     formState: { isDirty },
   } = useForm<PromoInputType>({
     defaultValues: {
-      promoCode: '',
+      promoCode,
     },
     mode: 'onSubmit',
   });
