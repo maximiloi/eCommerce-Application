@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { CustomerSignin } from '@commercetools/platform-sdk';
+import { login } from '../../api/requests/userActions';
 import TextFieldInput from '../Inputs/TextFieldInput';
 import validatePassword from '../../helper/validatePassword';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import './FormSignIn.scss';
-import { login } from '../../api/requests/userActions';
 
 function FormSignIn() {
   const {
