@@ -15,23 +15,17 @@ import {
   LineItem,
   Cart,
 } from '@commercetools/platform-sdk';
-import { AttributeType, CartItemProps } from '../../types/inputProps';
+import { AttributeType } from '../../types/inputProps';
 import calculatePrice from '../../helper/calculatePrice';
 import { cartChangeItemQuant } from '../../api/requests/cart';
+import { useAppDispatch } from '../../redux/hooks';
+import { setTotalQuantity } from '../../redux/cartCountSlice';
 import Counter from '../Counter/Counter';
 import './_cartItem.scss';
 
-function CartItem(props: LineItem & CartItemProps) {
-  const {
-    id,
-    productId,
-    name,
-    variant,
-    price,
-    quantity,
-    totalPrice,
-    setTotalQuantity,
-  } = props;
+function CartItem(props: LineItem) {
+  const { id, productId, name, variant, price, quantity, totalPrice } = props;
+  const dispatch = useAppDispatch();
   const tags = variant?.attributes as Attribute[];
   const img = (variant?.images as Image[])[0];
   const priceEach = calculatePrice(price);
@@ -44,7 +38,7 @@ function CartItem(props: LineItem & CartItemProps) {
   const changeItemQuant = async (newQuantity: number) => {
     const result = (await cartChangeItemQuant(id, newQuantity)) as Cart;
     if (result.totalLineItemQuantity)
-      setTotalQuantity(result.totalLineItemQuantity);
+      dispatch(setTotalQuantity(result.totalLineItemQuantity));
   };
 
   return (

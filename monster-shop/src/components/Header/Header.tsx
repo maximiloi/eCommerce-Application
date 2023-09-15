@@ -19,13 +19,14 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Logo from '../Logo/Logo';
 import { pages, settings } from '../../helper/variables';
+import { useAppSelector } from '../../redux/hooks';
 import User from '../../api/user';
 import './Header.scss';
 
 function Header() {
+  const count = useAppSelector((state) => state.cartCount.quantity);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const [count] = useState(0);
   const navigate = useNavigate();
   let userTitle = User.created ? User.data?.firstName : 'Log in now';
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {

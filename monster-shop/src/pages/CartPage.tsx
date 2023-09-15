@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   Box,
@@ -9,7 +9,9 @@ import {
   TableCell,
   TableRow,
 } from '@mui/material';
-import { Cart, LineItem } from '@commercetools/platform-sdk';
+import { Cart } from '@commercetools/platform-sdk';
+import { useAppSelector, useAppDispatch } from '../redux/hooks';
+import { setTotalQuantity, getCartItems } from '../redux/cartCountSlice';
 import { getCarts } from '../api/requests/cart';
 import PromoCodeBar from '../components/PromoCodeBar/PromoCodeBar';
 import ColoredBtn from '../components/ColoredBtn/ColoredBtn';
@@ -18,21 +20,22 @@ import CartItem from '../components/CartItem/CartItem';
 import '../sass/pages/_cartPage.scss';
 
 function CartPage() {
-  const [products, setProducts] = useState<LineItem[]>([]);
+  const products = useAppSelector((state) => state.cartCount.cartItems);
+  const totalQuantity = useAppSelector((state) => state.cartCount.quantity);
+  const dispatch = useAppDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isProducts, setIsProducts] = useState(false);
-  const [totalQuantity, setTotalQuantity] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [promoCode, setPromoCode] = useState<string>('');
 
-  async function fetchCart() {
+  const fetchCart = useCallback(async () => {
     try {
       setIsLoaded(false);
       const cartResponce = (await getCarts()) as Cart[];
       const cart = cartResponce[0];
       setIsProducts(!!cart.lineItems.length);
-      setProducts(cart.lineItems);
-      setTotalQuantity(cart.totalLineItemQuantity || 0);
+      dispatch(getCartItems(cart.lineItems));
+      dispatch(setTotalQuantity(cart.totalLineItemQuantity || 0));
       setTotalPrice(
         cart.totalPrice.centAmount / 10 ** cart.totalPrice.fractionDigits
       );
@@ -40,11 +43,11 @@ function CartPage() {
     } catch (error) {
       console.error(error);
     }
-  }
+  }, [dispatch]);
 
   useEffect(() => {
     fetchCart();
-  }, [totalQuantity]);
+  }, [fetchCart, totalQuantity]);
 
   return (
     <Box
@@ -68,7 +71,7 @@ function CartPage() {
                 <CartItem
                   key={card.id}
                   {...card}
-                  setTotalQuantity={setTotalQuantity}
+                  // setTotalQuantity={setTotalQuantity}
                 />
               ))}
             <Grid item sx={{ width: 1 }} className="cart-item cart-item_total">
