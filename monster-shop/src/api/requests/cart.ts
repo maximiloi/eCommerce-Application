@@ -121,7 +121,7 @@ export async function combineCart() {
   });
 }
 
-export async function cartAddItem(productId: string) {
+export async function cartAddItem(productId: string, quantity?: number) {
   const carts = (await getCarts()) as Cart[];
   const cart = carts[carts.length - 1] || ((await createCart()) as Cart);
   const { version, id } = cart;
@@ -133,7 +133,7 @@ export async function cartAddItem(productId: string) {
       .post({
         body: {
           version,
-          actions: [{ action: 'addLineItem', productId }],
+          actions: [{ action: 'addLineItem', productId, quantity }],
         },
       })
       .execute()
