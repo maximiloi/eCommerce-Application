@@ -5,7 +5,7 @@ import './_Counter.scss';
 
 type CounterProps = {
   quantity: number;
-  changeItemQuant: (newQuantity: number) => Promise<void>;
+  changeItemQuant?: (newQuantity: number) => Promise<void>;
 };
 
 function Counter({ quantity, changeItemQuant }: CounterProps) {
@@ -15,7 +15,9 @@ function Counter({ quantity, changeItemQuant }: CounterProps) {
       <Button
         aria-label="reduce"
         onClick={() => {
-          changeItemQuant(Math.max(count - 1, 1));
+          if (changeItemQuant) {
+            changeItemQuant(Math.max(count - 1, 1));
+          }
           setCount(Math.max(count - 1, 1));
         }}
       >
@@ -25,7 +27,9 @@ function Counter({ quantity, changeItemQuant }: CounterProps) {
       <Button
         aria-label="increase"
         onClick={() => {
-          changeItemQuant(count + 1);
+          if (changeItemQuant) {
+            changeItemQuant(count + 1);
+          }
           setCount(count + 1);
         }}
       >
