@@ -262,3 +262,14 @@ export async function cartRecalc() {
       });
   });
 }
+
+export async function cartClear() {
+  const carts = (await getCarts()) as Cart[];
+  const cart = carts[carts.length - 1] || ((await createCart()) as Cart);
+  const action: MyCartUpdateAction[] = [];
+  const items = cart.lineItems;
+  items.forEach((item) =>
+    action.push({ action: 'removeLineItem', lineItemId: item.id })
+  );
+  return updateCartId(cart.id, action);
+}
