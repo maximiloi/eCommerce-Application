@@ -5,15 +5,17 @@ import './_Counter.scss';
 
 type CounterProps = {
   quantity: number;
+  changeItemQuant: (newQuantity: number) => Promise<void>;
 };
 
-function Counter({ quantity }: CounterProps) {
+function Counter({ quantity, changeItemQuant }: CounterProps) {
   const [count, setCount] = useState(quantity);
   return (
     <Box className="counter" sx={{ display: 'flex' }}>
       <Button
         aria-label="reduce"
         onClick={() => {
+          changeItemQuant(Math.max(count - 1, 1));
           setCount(Math.max(count - 1, 1));
         }}
       >
@@ -23,6 +25,7 @@ function Counter({ quantity }: CounterProps) {
       <Button
         aria-label="increase"
         onClick={() => {
+          changeItemQuant(count + 1);
           setCount(count + 1);
         }}
       >

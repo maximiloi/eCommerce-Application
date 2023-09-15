@@ -41,8 +41,8 @@ function CartItem(props: LineItem & CartItemProps) {
     discount = calculatePrice(priceDiscounted);
   }
 
-  const deleteFromCart = async () => {
-    const result = (await cartChangeItemQuant(id, 0)) as Cart;
+  const changeItemQuant = async (newQuantity: number) => {
+    const result = (await cartChangeItemQuant(id, newQuantity)) as Cart;
     if (result.totalLineItemQuantity)
       setTotalQuantity(result.totalLineItemQuantity);
   };
@@ -57,7 +57,7 @@ function CartItem(props: LineItem & CartItemProps) {
           <IconButton
             aria-label="delete"
             sx={{ height: 40, mr: 1 }}
-            onClick={deleteFromCart}
+            onClick={() => changeItemQuant(0)}
           >
             <DeleteIcon />
           </IconButton>
@@ -98,7 +98,7 @@ function CartItem(props: LineItem & CartItemProps) {
             </span>
           </div>
           <Box className="cart-item__counter  cart-item__box cart-item__box--center">
-            <Counter quantity={quantity} />
+            <Counter quantity={quantity} changeItemQuant={changeItemQuant} />
           </Box>
           <div className="cart-item__total-price  cart-item__box cart-item__box--center">
             <span className="price">
