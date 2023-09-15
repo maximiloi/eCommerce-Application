@@ -20,6 +20,10 @@ export type PromoCodeProps = {
   setPromoCode: React.Dispatch<React.SetStateAction<string>>;
 };
 
+export type CartItemProps = {
+  setTotalQuantity: React.Dispatch<React.SetStateAction<number>>;
+};
+
 export type SortOptionType = {
   field: 'name.en' | 'price';
   type: 'asc' | 'desc';

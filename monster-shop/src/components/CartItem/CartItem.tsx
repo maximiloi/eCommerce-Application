@@ -13,14 +13,25 @@ import {
   Image,
   DiscountedPrice,
   LineItem,
+  Cart,
 } from '@commercetools/platform-sdk';
-import { AttributeType } from '../../types/inputProps';
+import { AttributeType, CartItemProps } from '../../types/inputProps';
+import calculatePrice from '../../helper/calculatePrice';
+import { cartChangeItemQuant } from '../../api/requests/cart';
 import Counter from '../Counter/Counter';
 import './_cartItem.scss';
-import calculatePrice from '../../helper/calculatePrice';
 
-function CartItem(props: LineItem) {
-  const { productId, name, variant, price, quantity, totalPrice } = props;
+function CartItem(props: LineItem & CartItemProps) {
+  const {
+    id,
+    productId,
+    name,
+    variant,
+    price,
+    quantity,
+    totalPrice,
+    setTotalQuantity,
+  } = props;
   const tags = variant?.attributes as Attribute[];
   const img = (variant?.images as Image[])[0];
   const priceEach = calculatePrice(price);
@@ -30,6 +41,12 @@ function CartItem(props: LineItem) {
     discount = calculatePrice(priceDiscounted);
   }
 
+  const deleteFromCart = async () => {
+    const result = (await cartChangeItemQuant(id, 0)) as Cart;
+    if (result.totalLineItemQuantity)
+      setTotalQuantity(result.totalLineItemQuantity);
+  };
+
   return (
     <Grid item sx={{ width: 1, p: 0 }} className="cart-item">
       <Box
@@ -37,7 +54,11 @@ function CartItem(props: LineItem) {
         sx={{ display: 'flex', justifyContent: 'space-between' }}
       >
         <Box className="cart-item__inner cart-item__inner--start">
-          <IconButton aria-label="delete" sx={{ height: 40, mr: 1 }}>
+          <IconButton
+            aria-label="delete"
+            sx={{ height: 40, mr: 1 }}
+            onClick={deleteFromCart}
+          >
             <DeleteIcon />
           </IconButton>
           <CardMedia

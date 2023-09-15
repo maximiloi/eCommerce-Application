@@ -44,7 +44,7 @@ function CartPage() {
 
   useEffect(() => {
     fetchCart();
-  }, []);
+  }, [totalQuantity]);
 
   return (
     <Box
@@ -55,7 +55,7 @@ function CartPage() {
         className="cart__content"
         sx={{ flexGrow: 1, width: { md: 'calc(100% - 200px)' }, p: 2 }}
       >
-        {isLoaded && !isProducts ? (
+        {!isProducts ? (
           <NavLink to="/catalog" className="cart__link">
             Nothing here yet... Return to the catalog!
           </NavLink>
@@ -63,7 +63,14 @@ function CartPage() {
           <Grid container spacing={2}>
             {!isLoaded && <Loader />}
             {isProducts &&
-              products.map((card) => <CartItem key={card.id} {...card} />)}
+              isLoaded &&
+              products.map((card) => (
+                <CartItem
+                  key={card.id}
+                  {...card}
+                  setTotalQuantity={setTotalQuantity}
+                />
+              ))}
             <Grid item sx={{ width: 1 }} className="cart-item cart-item_total">
               <Box
                 className="cart-item__wrap"
