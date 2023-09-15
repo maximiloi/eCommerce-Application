@@ -53,7 +53,6 @@ function ProductPageCard() {
   const [itemQ, setQuantity] = useState(itemQuantity);
   const dispatch = useAppDispatch();
 
-  console.log(itemQ);
   async function fetchProductData(id: string) {
     try {
       const productResponce = (await getProductId(id)) as ProductProjection;
