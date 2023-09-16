@@ -12,7 +12,7 @@ import {
 import { Cart } from '@commercetools/platform-sdk';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
 import { setTotalQuantity, getCartItems } from '../redux/cartCountSlice';
-import { getCarts } from '../api/requests/cart';
+import { cartClear, getCarts } from '../api/requests/cart';
 import PromoCodeBar from '../components/PromoCodeBar/PromoCodeBar';
 import ColoredBtn from '../components/ColoredBtn/ColoredBtn';
 import Loader from '../components/Loader/Loader';
@@ -33,13 +33,27 @@ function CartPage() {
       setIsLoaded(false);
       const cartResponce = (await getCarts()) as Cart[];
       const cart = cartResponce[0];
-      setIsProducts(!!cart.lineItems.length);
-      dispatch(getCartItems(cart.lineItems));
-      dispatch(setTotalQuantity(cart.totalLineItemQuantity || 0));
-      setTotalPrice(
-        cart.totalPrice.centAmount / 10 ** cart.totalPrice.fractionDigits
-      );
+      if (cart) {
+        setIsProducts(!!cart.lineItems.length);
+        dispatch(getCartItems(cart.lineItems || []));
+        dispatch(setTotalQuantity(cart.totalLineItemQuantity || 0));
+        setTotalPrice(
+          cart.totalPrice.centAmount / 10 ** cart.totalPrice.fractionDigits
+        );
+      }
       setIsLoaded(true);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [dispatch]);
+
+  const handleClearCart = useCallback(async () => {
+    try {
+      const responce = (await cartClear()) as Cart;
+      setIsProducts(false);
+      dispatch(getCartItems(responce.lineItems));
+      dispatch(setTotalQuantity(responce.totalLineItemQuantity || 0));
+      setTotalPrice(0);
     } catch (error) {
       console.error(error);
     }
@@ -67,13 +81,7 @@ function CartPage() {
             {!isLoaded && <Loader />}
             {isProducts &&
               isLoaded &&
-              products.map((card) => (
-                <CartItem
-                  key={card.id}
-                  {...card}
-                  // setTotalQuantity={setTotalQuantity}
-                />
-              ))}
+              products.map((card) => <CartItem key={card.id} {...card} />)}
             <Grid item sx={{ width: 1 }} className="cart-item cart-item_total">
               <Box
                 className="cart-item__wrap"
@@ -127,6 +135,7 @@ function CartPage() {
             variant="contained"
             fullWidth
             disabled={false}
+            onClick={handleClearCart}
           >
             Clear Shopping Cart
           </ColoredBtn>
