@@ -121,7 +121,7 @@ export async function combineCart() {
   });
 }
 
-export async function cartAddItem(productId: string) {
+export async function cartAddItem(productId: string, quantity?: number) {
   const carts = (await getCarts()) as Cart[];
   const cart = carts[carts.length - 1] || ((await createCart()) as Cart);
   const { version, id } = cart;
@@ -133,7 +133,7 @@ export async function cartAddItem(productId: string) {
       .post({
         body: {
           version,
-          actions: [{ action: 'addLineItem', productId }],
+          actions: [{ action: 'addLineItem', productId, quantity }],
         },
       })
       .execute()
@@ -174,4 +174,102 @@ export async function cartChangeItemQuant(
         toastify(error.message, 'error');
       });
   });
+}
+
+export async function cartPromoApply(code: string) {
+  const carts = (await getCarts()) as Cart[];
+  const cart = carts[carts.length - 1] || ((await createCart()) as Cart);
+  const { version, id } = cart;
+  return new Promise((resolve) => {
+    User.getApi()
+      .me()
+      .carts()
+      .withId({ ID: id })
+      .post({
+        body: {
+          version,
+          actions: [{ action: 'addDiscountCode', code }],
+        },
+      })
+      .execute()
+      .then((response) => {
+        resolve(response.body);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        toastify(error.message, 'error');
+      });
+  });
+}
+
+export async function cartPromoRemove(codeId: string) {
+  const carts = (await getCarts()) as Cart[];
+  const cart = carts[carts.length - 1] || ((await createCart()) as Cart);
+  const { version, id } = cart;
+  return new Promise((resolve) => {
+    User.getApi()
+      .me()
+      .carts()
+      .withId({ ID: id })
+      .post({
+        body: {
+          version,
+          actions: [
+            {
+              action: 'removeDiscountCode',
+              discountCode: { typeId: 'discount-code', id: codeId },
+            },
+          ],
+        },
+      })
+      .execute()
+      .then((response) => {
+        resolve(response.body);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        toastify(error.message, 'error');
+      });
+  });
+}
+
+export async function cartRecalc() {
+  const carts = (await getCarts()) as Cart[];
+  const cart = carts[carts.length - 1] || ((await createCart()) as Cart);
+  const { version, id } = cart;
+  return new Promise((resolve) => {
+    User.getApi()
+      .me()
+      .carts()
+      .withId({ ID: id })
+      .post({
+        body: {
+          version,
+          actions: [
+            {
+              action: 'recalculate',
+            },
+          ],
+        },
+      })
+      .execute()
+      .then((response) => {
+        resolve(response.body);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        toastify(error.message, 'error');
+      });
+  });
+}
+
+export async function cartClear() {
+  const carts = (await getCarts()) as Cart[];
+  const cart = carts[carts.length - 1] || ((await createCart()) as Cart);
+  const action: MyCartUpdateAction[] = [];
+  const items = cart.lineItems;
+  items.forEach((item) =>
+    action.push({ action: 'removeLineItem', lineItemId: item.id })
+  );
+  return updateCartId(cart.id, action);
 }
