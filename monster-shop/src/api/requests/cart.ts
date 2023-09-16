@@ -147,6 +147,32 @@ export async function cartAddItem(productId: string, quantity?: number) {
   });
 }
 
+// export async function cartAddItem(productId: string) {
+//   const carts = (await getCarts()) as Cart[];
+//   const cart = carts[carts.length - 1] || ((await createCart()) as Cart);
+//   const { version, id } = cart;
+//   return new Promise((resolve) => {
+//     User.getApi()
+//       .me()
+//       .carts()
+//       .withId({ ID: id })
+//       .post({
+//         body: {
+//           version,
+//           actions: [{ action: 'addLineItem', productId }],
+//         },
+//       })
+//       .execute()
+//       .then((response) => {
+//         resolve(response.body);
+//       })
+//       .catch((error) => {
+//         console.error('Error:', error);
+//         toastify(error.message, 'error');
+//       });
+//   });
+// }
+
 export async function cartChangeItemQuant(
   lineItemId: string,
   quantity: number

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardActions, CardContent, CardMedia, Grid } from '@mui/material';
 import {
@@ -7,32 +6,41 @@ import {
   ProductProjection,
   Price,
   DiscountedPrice,
+  Cart,
 } from '@commercetools/platform-sdk';
+import { cartAddItem } from '../../api/requests/cart';
 import { AttributeType } from '../../types/inputProps';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { setTotalQuantity, getCartItems } from '../../redux/cartCountSlice';
+import calculatePrice from '../../helper/calculatePrice';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import AddToCartButton from '../AddToCartButton/AddToCartButton';
 import './_cardItem.scss';
 
 function CardItem(props: ProductProjection) {
   const { id, masterVariant, name } = props;
-  const [isAdded, setIsAdded] = useState(false);
+  const products = useAppSelector((state) => state.cartCount.cartItems);
+  const isAdded = Boolean(
+    products.map((prod) => prod.productId).find((el) => el === id)
+  );
   const tags = masterVariant.attributes as Attribute[];
   const img = (masterVariant.images as Image[])[0];
   const price = (masterVariant.prices as Price[])[0];
   let discount = 0;
   if (price.discounted) {
     const priceDiscounted = price.discounted as DiscountedPrice;
-    discount =
-      priceDiscounted.value.centAmount /
-      10 ** priceDiscounted.value.fractionDigits;
+    discount = calculatePrice(priceDiscounted);
   }
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const handleClick = () => {
     navigate(`/product/${id}`);
   };
-  const handleAddToCart = () => {
-    console.log(`Add monster ${id} to the cart`);
-    setIsAdded(true);
+  const handleAddToCart = async () => {
+    const result = (await cartAddItem(id)) as Cart;
+    dispatch(getCartItems(result.lineItems));
+    if (result.totalLineItemQuantity)
+      dispatch(setTotalQuantity(result.totalLineItemQuantity));
   };
   return (
     <Grid item xs={9} sm={4} md={4}>
@@ -67,7 +75,7 @@ function CardItem(props: ProductProjection) {
               {discount}
             </span>
             <span className={discount ? 'price price_discounted' : 'price'}>
-              {price.value.centAmount / 10 ** price.value.fractionDigits}
+              {calculatePrice(price)}
             </span>
           </div>
         </CardContent>

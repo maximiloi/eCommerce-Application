@@ -4,8 +4,9 @@
 .cart-item {
   color: variables.$color-dark-l;
 
-  td {
-    color: variables.$color-dark-l;
+  &_total p {
+    margin: 0;
+    font-weight: 700;
   }
 
   &__wrap {
@@ -20,8 +21,8 @@
   }
 
   &__tags {
-    // display: flex;
-    // justify-content: flex-end;
+    display: flex;
+    justify-content: flex-start;
 
     & > *:not(:last-child) {
       margin-right: 0.3rem;

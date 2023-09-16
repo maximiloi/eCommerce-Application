@@ -16,6 +16,7 @@ export type PromoInputType = {
 };
 
 export type PromoCodeProps = {
+  promoCode: string;
   setPromoCode: React.Dispatch<React.SetStateAction<string>>;
 };
 
