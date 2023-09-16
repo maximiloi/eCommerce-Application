@@ -37,8 +37,12 @@ function CartItem(props: LineItem) {
 
   const changeItemQuant = async (newQuantity: number) => {
     const result = (await cartChangeItemQuant(id, newQuantity)) as Cart;
-    if (result.totalLineItemQuantity)
+    if (result.totalLineItemQuantity) {
       dispatch(setTotalQuantity(result.totalLineItemQuantity));
+    }
+    if (!result.lineItems.length) {
+      dispatch(setTotalQuantity(0));
+    }
   };
 
   return (
