@@ -4,13 +4,16 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { useCallback, useState } from 'react';
 import { Cart } from '@commercetools/platform-sdk';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
-import { PromoCodeProps, PromoInputType } from '../../types/inputProps';
+import { PromoInputType } from '../../types/inputProps';
 import { cartPromoApply, cartPromoRemove } from '../../api/requests/cart';
+import { useAppDispatch } from '../../redux/hooks';
+import { getDiscountedAmount } from '../../redux/cartCountSlice';
 
-function PromoCodeBar({ setDiscountAmount }: PromoCodeProps) {
+function PromoCodeBar() {
   const [promoCode, setPromoCode] = useState<string>('');
   const [promoCodeId, setPromoCodeId] = useState<string>('');
   const [isPromo, setIsPromo] = useState(false);
+  const dispatch = useAppDispatch();
   const {
     control,
     handleSubmit,
@@ -26,25 +29,15 @@ function PromoCodeBar({ setDiscountAmount }: PromoCodeProps) {
     async (code: string) => {
       try {
         const responce = (await cartPromoApply(code)) as Cart;
-        const discontValue: Array<number> = [];
-        responce.lineItems.forEach((item) => {
-          discontValue.push(
-            (item.discountedPricePerQuantity[0].discountedPrice
-              .includedDiscounts[0].discountedAmount.centAmount /
-              10 ** 2) *
-              item.discountedPricePerQuantity[0].quantity
-          );
-        });
-        const amount = discontValue.reduce((acc, cur) => acc + cur);
+        if (responce) dispatch(getDiscountedAmount(responce.lineItems));
         setPromoCode(code);
         setIsPromo(true);
         setPromoCodeId(responce.discountCodes[0].discountCode.id);
-        setDiscountAmount(amount);
       } catch (error) {
         console.error(error);
       }
     },
-    [setDiscountAmount]
+    [dispatch]
   );
   const handleRemovePromoCode = useCallback(
     async (codeId: string) => {
@@ -53,12 +46,12 @@ function PromoCodeBar({ setDiscountAmount }: PromoCodeProps) {
         setIsPromo(false);
         setPromoCode('');
         setPromoCodeId('');
-        setDiscountAmount(0);
+        dispatch(getDiscountedAmount([]));
       } catch (error) {
         console.error(error);
       }
     },
-    [setDiscountAmount]
+    [dispatch]
   );
 
   const onSubmit: SubmitHandler<PromoInputType> = (data) => {

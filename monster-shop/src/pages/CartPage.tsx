@@ -11,7 +11,11 @@ import {
 } from '@mui/material';
 import { Cart } from '@commercetools/platform-sdk';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import { setTotalQuantity, getCartItems } from '../redux/cartCountSlice';
+import {
+  setTotalQuantity,
+  getCartItems,
+  getDiscountedAmount,
+} from '../redux/cartCountSlice';
 import { cartClear, getCarts } from '../api/requests/cart';
 import PromoCodeBar from '../components/PromoCodeBar/PromoCodeBar';
 import ColoredBtn from '../components/ColoredBtn/ColoredBtn';
@@ -22,11 +26,13 @@ import '../sass/pages/_cartPage.scss';
 function CartPage() {
   const products = useAppSelector((state) => state.cartCount.cartItems);
   const totalQuantity = useAppSelector((state) => state.cartCount.quantity);
+  const discountAmount = useAppSelector(
+    (state) => state.cartCount.discountAmount
+  );
   const dispatch = useAppDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isProducts, setIsProducts] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [discountAmount, setDiscountAmount] = useState<number>(0);
 
   const fetchCart = useCallback(async () => {
     try {
@@ -37,6 +43,7 @@ function CartPage() {
         setIsProducts(!!cart.lineItems.length);
         dispatch(getCartItems(cart.lineItems || []));
         dispatch(setTotalQuantity(cart.totalLineItemQuantity || 0));
+        dispatch(getDiscountedAmount(cart.lineItems));
         setTotalPrice(
           cart.totalPrice.centAmount / 10 ** cart.totalPrice.fractionDigits
         );
@@ -53,6 +60,7 @@ function CartPage() {
       setIsProducts(false);
       dispatch(getCartItems(responce.lineItems));
       dispatch(setTotalQuantity(responce.totalLineItemQuantity || 0));
+      dispatch(getDiscountedAmount([]));
       setTotalPrice(0);
     } catch (error) {
       console.error(error);
@@ -104,7 +112,7 @@ function CartPage() {
       </Box>
       <Box component="aside" className="cart__aside" sx={{ flexGrow: 1 }}>
         <h4 className="cart__subtitle">Enter promo code</h4>
-        <PromoCodeBar setDiscountAmount={setDiscountAmount} />
+        <PromoCodeBar />
         <Table className="cart__calculate" size="small">
           <TableBody>
             <TableRow>
@@ -117,15 +125,17 @@ function CartPage() {
             </TableRow>
             <TableRow>
               <TableCell>Before discount</TableCell>
-              <TableCell align="right">{totalPrice + discountAmount}</TableCell>
+              <TableCell align="right">
+                {(totalPrice + discountAmount).toFixed(2)}
+              </TableCell>
             </TableRow>
             <TableRow className="calculate-discount">
               <TableCell>Discount</TableCell>
-              <TableCell align="right">{discountAmount}</TableCell>
+              <TableCell align="right">{discountAmount.toFixed(2)}</TableCell>
             </TableRow>
             <TableRow className="total">
               <TableCell>Total</TableCell>
-              <TableCell align="right">{totalPrice}</TableCell>
+              <TableCell align="right">{totalPrice.toFixed(2)}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
