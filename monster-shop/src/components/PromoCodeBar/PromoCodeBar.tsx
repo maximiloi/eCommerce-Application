@@ -1,18 +1,21 @@
+import { useCallback } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { InputAdornment, TextField } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
-import { useCallback, useState } from 'react';
 import { Cart } from '@commercetools/platform-sdk';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
 import { PromoInputType } from '../../types/inputProps';
 import { cartPromoApply, cartPromoRemove } from '../../api/requests/cart';
-import { useAppDispatch } from '../../redux/hooks';
-import { getDiscountedAmount } from '../../redux/cartCountSlice';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import {
+  setPromoCodeId,
+  getDiscountedAmount,
+  setIsPromo,
+} from '../../redux/promoCodeSlice';
 
 function PromoCodeBar() {
-  const [promoCode, setPromoCode] = useState<string>('');
-  const [promoCodeId, setPromoCodeId] = useState<string>('');
-  const [isPromo, setIsPromo] = useState(false);
+  const promoCodeId = useAppSelector((state) => state.discount.promoCodeId);
+  const isPromo = useAppSelector((state) => state.discount.isPromo);
   const dispatch = useAppDispatch();
   const {
     control,
@@ -21,7 +24,7 @@ function PromoCodeBar() {
     formState: { isDirty },
   } = useForm<PromoInputType>({
     defaultValues: {
-      promoCode,
+      promoCode: '',
     },
     mode: 'onSubmit',
   });
@@ -30,9 +33,9 @@ function PromoCodeBar() {
       try {
         const responce = (await cartPromoApply(code)) as Cart;
         if (responce) dispatch(getDiscountedAmount(responce.lineItems));
-        setPromoCode(code);
-        setIsPromo(true);
-        setPromoCodeId(responce.discountCodes[0].discountCode.id);
+        dispatch(setPromoCodeId(responce.discountCodes[0].discountCode.id));
+        dispatch(setIsPromo(true));
+        // setPromoCode(code);
       } catch (error) {
         console.error(error);
       }
@@ -43,9 +46,8 @@ function PromoCodeBar() {
     async (codeId: string) => {
       try {
         (await cartPromoRemove(codeId)) as Cart;
-        setIsPromo(false);
-        setPromoCode('');
-        setPromoCodeId('');
+        dispatch(setPromoCodeId(''));
+        dispatch(setIsPromo(false));
         dispatch(getDiscountedAmount([]));
       } catch (error) {
         console.error(error);

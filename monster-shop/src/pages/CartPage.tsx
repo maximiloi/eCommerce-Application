@@ -11,11 +11,12 @@ import {
 } from '@mui/material';
 import { Cart } from '@commercetools/platform-sdk';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
+import { setTotalQuantity, getCartItems } from '../redux/cartCountSlice';
 import {
-  setTotalQuantity,
-  getCartItems,
+  setPromoCodeId,
   getDiscountedAmount,
-} from '../redux/cartCountSlice';
+  setIsPromo,
+} from '../redux/promoCodeSlice';
 import { cartClear, getCarts } from '../api/requests/cart';
 import PromoCodeBar from '../components/PromoCodeBar/PromoCodeBar';
 import ColoredBtn from '../components/ColoredBtn/ColoredBtn';
@@ -27,7 +28,7 @@ function CartPage() {
   const products = useAppSelector((state) => state.cartCount.cartItems);
   const totalQuantity = useAppSelector((state) => state.cartCount.quantity);
   const discountAmount = useAppSelector(
-    (state) => state.cartCount.discountAmount
+    (state) => state.discount.discountAmount
   );
   const dispatch = useAppDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -40,10 +41,14 @@ function CartPage() {
       const cartResponce = (await getCarts()) as Cart[];
       const cart = cartResponce[0];
       if (cart) {
+        if (cart.discountCodes.length) {
+          dispatch(getDiscountedAmount(cart.lineItems));
+          dispatch(setPromoCodeId(cart.discountCodes[0].discountCode.id));
+          dispatch(setIsPromo(true));
+        }
         setIsProducts(!!cart.lineItems.length);
         dispatch(getCartItems(cart.lineItems || []));
         dispatch(setTotalQuantity(cart.totalLineItemQuantity || 0));
-        dispatch(getDiscountedAmount(cart.lineItems));
         setTotalPrice(
           cart.totalPrice.centAmount / 10 ** cart.totalPrice.fractionDigits
         );
