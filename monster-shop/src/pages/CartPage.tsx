@@ -26,7 +26,7 @@ function CartPage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isProducts, setIsProducts] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [promoCode, setPromoCode] = useState<string>('');
+  const [discountAmount, setDiscountAmount] = useState<number>(0);
 
   const fetchCart = useCallback(async () => {
     try {
@@ -61,7 +61,7 @@ function CartPage() {
 
   useEffect(() => {
     fetchCart();
-  }, [fetchCart, totalQuantity]);
+  }, [fetchCart, totalQuantity, discountAmount]);
 
   return (
     <Box
@@ -104,7 +104,7 @@ function CartPage() {
       </Box>
       <Box component="aside" className="cart__aside" sx={{ flexGrow: 1 }}>
         <h4 className="cart__subtitle">Enter promo code</h4>
-        <PromoCodeBar promoCode={promoCode} setPromoCode={setPromoCode} />
+        <PromoCodeBar setDiscountAmount={setDiscountAmount} />
         <Table className="cart__calculate" size="small">
           <TableBody>
             <TableRow>
@@ -112,12 +112,16 @@ function CartPage() {
               <TableCell align="right">0</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>Discount</TableCell>
-              <TableCell align="right">-0</TableCell>
-            </TableRow>
-            <TableRow>
               <TableCell>Tax</TableCell>
               <TableCell align="right">0</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Before discount</TableCell>
+              <TableCell align="right">{totalPrice + discountAmount}</TableCell>
+            </TableRow>
+            <TableRow className="calculate-discount">
+              <TableCell>Discount</TableCell>
+              <TableCell align="right">{discountAmount}</TableCell>
             </TableRow>
             <TableRow className="total">
               <TableCell>Total</TableCell>
