@@ -42,13 +42,13 @@ function CartPage() {
       const cart = cartResponce[0];
       if (cart) {
         if (cart.discountCodes.length) {
-          dispatch(getDiscountedAmount(cart.lineItems));
           dispatch(setPromoCodeId(cart.discountCodes[0].discountCode.id));
           dispatch(setIsPromo(true));
         }
         setIsProducts(!!cart.lineItems.length);
         dispatch(getCartItems(cart.lineItems || []));
         dispatch(setTotalQuantity(cart.totalLineItemQuantity || 0));
+        dispatch(getDiscountedAmount(cart.lineItems));
         setTotalPrice(
           cart.totalPrice.centAmount / 10 ** cart.totalPrice.fractionDigits
         );

@@ -61,7 +61,7 @@ function CartItem(props: LineItem) {
           </IconButton>
           <CardMedia
             component="div"
-            sx={{ width: 50, height: 60, display: { xs: 'none', md: 'block' } }}
+            sx={{ width: 50, height: 60, display: { xs: 'none', sm: 'block' } }}
             image={img.url}
           />
           <CardContent
