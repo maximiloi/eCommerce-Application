@@ -2,12 +2,14 @@ import { LineItem } from '@commercetools/platform-sdk';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface DiscountState {
+  promoCode: string | null;
   promoCodeId: string;
   discountAmount: number;
   isPromo: boolean;
 }
 
 const initialState: DiscountState = {
+  promoCode: null,
   promoCodeId: '',
   discountAmount: 0,
   isPromo: false,
@@ -17,6 +19,9 @@ export const promoCodeSlice = createSlice({
   name: 'discount',
   initialState,
   reducers: {
+    setPromoCode: (state, action: PayloadAction<string | null>) => {
+      state.promoCode = action.payload;
+    },
     setPromoCodeId: (state, action: PayloadAction<string>) => {
       state.promoCodeId = action.payload;
     },
@@ -46,7 +51,7 @@ export const promoCodeSlice = createSlice({
   },
 });
 
-export const { setPromoCodeId, getDiscountedAmount, setIsPromo } =
+export const { setPromoCode, setPromoCodeId, getDiscountedAmount, setIsPromo } =
   promoCodeSlice.actions;
 
 export default promoCodeSlice.reducer;

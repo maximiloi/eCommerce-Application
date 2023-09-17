@@ -8,12 +8,14 @@ import { PromoInputType } from '../../types/inputProps';
 import { cartPromoApply, cartPromoRemove } from '../../api/requests/cart';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import {
+  setPromoCode,
   setPromoCodeId,
   getDiscountedAmount,
   setIsPromo,
 } from '../../redux/promoCodeSlice';
 
 function PromoCodeBar() {
+  const promoCode = useAppSelector((state) => state.discount.promoCode);
   const promoCodeId = useAppSelector((state) => state.discount.promoCodeId);
   const isPromo = useAppSelector((state) => state.discount.isPromo);
   const dispatch = useAppDispatch();
@@ -34,8 +36,8 @@ function PromoCodeBar() {
         const responce = (await cartPromoApply(code)) as Cart;
         if (responce) dispatch(getDiscountedAmount(responce.lineItems));
         dispatch(setPromoCodeId(responce.discountCodes[0].discountCode.id));
+        dispatch(setPromoCode(code));
         dispatch(setIsPromo(true));
-        // setPromoCode(code);
       } catch (error) {
         console.error(error);
       }
@@ -47,6 +49,7 @@ function PromoCodeBar() {
       try {
         (await cartPromoRemove(codeId)) as Cart;
         dispatch(setPromoCodeId(''));
+        dispatch(setPromoCode(null));
         dispatch(setIsPromo(false));
         dispatch(getDiscountedAmount([]));
       } catch (error) {
@@ -59,11 +62,10 @@ function PromoCodeBar() {
   const onSubmit: SubmitHandler<PromoInputType> = (data) => {
     if (data.promoCode) {
       handleAddPromoCode(data.promoCode);
-      reset();
     } else if (promoCodeId) {
       handleRemovePromoCode(promoCodeId);
-      reset();
     }
+    reset();
   };
   return (
     <form className="promo-input" onSubmit={handleSubmit(onSubmit)}>
@@ -74,7 +76,7 @@ function PromoCodeBar() {
           <TextField
             {...field}
             variant="outlined"
-            placeholder="Promo Code"
+            placeholder={promoCode || 'Promo Code'}
             size="small"
             color="warning"
             sx={{ width: [0.8, 0.6, 0.5] }}
