@@ -37,8 +37,12 @@ function CartItem(props: LineItem) {
 
   const changeItemQuant = async (newQuantity: number) => {
     const result = (await cartChangeItemQuant(id, newQuantity)) as Cart;
-    if (result.totalLineItemQuantity)
+    if (result.totalLineItemQuantity) {
       dispatch(setTotalQuantity(result.totalLineItemQuantity));
+    }
+    if (!result.lineItems.length) {
+      dispatch(setTotalQuantity(0));
+    }
   };
 
   return (
@@ -57,7 +61,7 @@ function CartItem(props: LineItem) {
           </IconButton>
           <CardMedia
             component="div"
-            sx={{ width: 50, height: 60, display: { xs: 'none', md: 'block' } }}
+            sx={{ width: 50, height: 60, display: { xs: 'none', sm: 'block' } }}
             image={img.url}
           />
           <CardContent

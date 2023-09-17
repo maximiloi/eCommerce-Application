@@ -15,11 +15,6 @@ export type PromoInputType = {
   promoCode: string;
 };
 
-export type PromoCodeProps = {
-  promoCode: string;
-  setPromoCode: React.Dispatch<React.SetStateAction<string>>;
-};
-
 export type SortOptionType = {
   field: 'name.en' | 'price';
   type: 'asc' | 'desc';

@@ -12,7 +12,12 @@ import {
 import { Cart } from '@commercetools/platform-sdk';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
 import { setTotalQuantity, getCartItems } from '../redux/cartCountSlice';
-import { getCarts } from '../api/requests/cart';
+import {
+  setPromoCodeId,
+  getDiscountedAmount,
+  setIsPromo,
+} from '../redux/promoCodeSlice';
+import { cartClear, getCarts } from '../api/requests/cart';
 import PromoCodeBar from '../components/PromoCodeBar/PromoCodeBar';
 import ColoredBtn from '../components/ColoredBtn/ColoredBtn';
 import Loader from '../components/Loader/Loader';
@@ -22,24 +27,46 @@ import '../sass/pages/_cartPage.scss';
 function CartPage() {
   const products = useAppSelector((state) => state.cartCount.cartItems);
   const totalQuantity = useAppSelector((state) => state.cartCount.quantity);
+  const discountAmount = useAppSelector(
+    (state) => state.discount.discountAmount
+  );
   const dispatch = useAppDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isProducts, setIsProducts] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [promoCode, setPromoCode] = useState<string>('');
 
   const fetchCart = useCallback(async () => {
     try {
       setIsLoaded(false);
       const cartResponce = (await getCarts()) as Cart[];
       const cart = cartResponce[0];
-      setIsProducts(!!cart.lineItems.length);
-      dispatch(getCartItems(cart.lineItems));
-      dispatch(setTotalQuantity(cart.totalLineItemQuantity || 0));
-      setTotalPrice(
-        cart.totalPrice.centAmount / 10 ** cart.totalPrice.fractionDigits
-      );
+      if (cart) {
+        if (cart.discountCodes.length) {
+          dispatch(setPromoCodeId(cart.discountCodes[0].discountCode.id));
+          dispatch(setIsPromo(true));
+        }
+        setIsProducts(!!cart.lineItems.length);
+        dispatch(getCartItems(cart.lineItems || []));
+        dispatch(setTotalQuantity(cart.totalLineItemQuantity || 0));
+        dispatch(getDiscountedAmount(cart.lineItems));
+        setTotalPrice(
+          cart.totalPrice.centAmount / 10 ** cart.totalPrice.fractionDigits
+        );
+      }
       setIsLoaded(true);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [dispatch]);
+
+  const handleClearCart = useCallback(async () => {
+    try {
+      const responce = (await cartClear()) as Cart;
+      setIsProducts(false);
+      dispatch(getCartItems(responce.lineItems));
+      dispatch(setTotalQuantity(responce.totalLineItemQuantity || 0));
+      dispatch(getDiscountedAmount([]));
+      setTotalPrice(0);
     } catch (error) {
       console.error(error);
     }
@@ -47,7 +74,7 @@ function CartPage() {
 
   useEffect(() => {
     fetchCart();
-  }, [fetchCart, totalQuantity]);
+  }, [fetchCart, totalQuantity, discountAmount]);
 
   return (
     <Box
@@ -67,13 +94,7 @@ function CartPage() {
             {!isLoaded && <Loader />}
             {isProducts &&
               isLoaded &&
-              products.map((card) => (
-                <CartItem
-                  key={card.id}
-                  {...card}
-                  // setTotalQuantity={setTotalQuantity}
-                />
-              ))}
+              products.map((card) => <CartItem key={card.id} {...card} />)}
             <Grid item sx={{ width: 1 }} className="cart-item cart-item_total">
               <Box
                 className="cart-item__wrap"
@@ -96,7 +117,7 @@ function CartPage() {
       </Box>
       <Box component="aside" className="cart__aside" sx={{ flexGrow: 1 }}>
         <h4 className="cart__subtitle">Enter promo code</h4>
-        <PromoCodeBar promoCode={promoCode} setPromoCode={setPromoCode} />
+        <PromoCodeBar />
         <Table className="cart__calculate" size="small">
           <TableBody>
             <TableRow>
@@ -104,16 +125,22 @@ function CartPage() {
               <TableCell align="right">0</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>Discount</TableCell>
-              <TableCell align="right">-0</TableCell>
-            </TableRow>
-            <TableRow>
               <TableCell>Tax</TableCell>
               <TableCell align="right">0</TableCell>
             </TableRow>
+            <TableRow>
+              <TableCell>Before discount</TableCell>
+              <TableCell align="right">
+                {(totalPrice + discountAmount).toFixed(2)}
+              </TableCell>
+            </TableRow>
+            <TableRow className="calculate-discount">
+              <TableCell>Discount</TableCell>
+              <TableCell align="right">{discountAmount.toFixed(2)}</TableCell>
+            </TableRow>
             <TableRow className="total">
               <TableCell>Total</TableCell>
-              <TableCell align="right">{totalPrice}</TableCell>
+              <TableCell align="right">{totalPrice.toFixed(2)}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
@@ -127,6 +154,7 @@ function CartPage() {
             variant="contained"
             fullWidth
             disabled={false}
+            onClick={handleClearCart}
           >
             Clear Shopping Cart
           </ColoredBtn>

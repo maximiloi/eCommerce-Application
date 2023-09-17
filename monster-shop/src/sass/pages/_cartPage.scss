@@ -36,6 +36,9 @@
   }
 
   &__calculate {
+    .calculate-discount td {
+      color: variables.$color-bright;
+    }
     & td {
       color: variables.$color-background;
       font-family: variables.$font-base;
