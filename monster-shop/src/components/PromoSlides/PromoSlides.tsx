@@ -39,9 +39,9 @@ function PromoSlides() {
           <Slide
             className={index === count ? 'slide slide_active' : 'slide'}
             key={slide.id}
-            sliderWidth={sliderWidth}
+            // sliderWidth={sliderWidth}
             slideImg={slide.img}
-            slideText={slide.text}
+            // slideText={slide.text}
           />
         ))}
       </List>

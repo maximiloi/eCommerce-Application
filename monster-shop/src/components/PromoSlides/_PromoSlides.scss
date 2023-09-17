@@ -1,9 +1,9 @@
-@use '../../sass//abstracts/mixins';
+@use '../../sass/abstracts/mixins';
 
 .slider {
-  max-width: 60rem;
+  max-width: 100%;
   width: 100%;
-  height: 80vh;
+  height: 600px;
   margin: 0 auto;
   position: relative;
   overflow: hidden;
