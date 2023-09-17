@@ -39,7 +39,6 @@ function PromoSlides() {
           <Slide
             className={index === count ? 'slide slide_active' : 'slide'}
             key={slide.id}
-            // sliderWidth={sliderWidth}
             slideImg={slide.img}
             slideText={slide.text}
             slideLink={slide.path}
