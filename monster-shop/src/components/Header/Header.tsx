@@ -25,7 +25,7 @@ import {
   setIsPromo,
   setPromoCode,
 } from '../../redux/promoCodeSlice';
-import { setTotalQuantity } from '../../redux/cartCountSlice';
+import { getCartItems, setTotalQuantity } from '../../redux/cartCountSlice';
 import User from '../../api/user';
 import './Header.scss';
 
@@ -53,6 +53,7 @@ function Header() {
       User.logout();
       dispatch(setTotalQuantity(0));
       dispatch(getDiscountedAmount([]));
+      dispatch(getCartItems([]));
       dispatch(setPromoCode(null));
       dispatch(setIsPromo(false));
       userTitle = 'Log in now';
