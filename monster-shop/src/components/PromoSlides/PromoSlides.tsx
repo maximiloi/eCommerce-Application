@@ -41,7 +41,8 @@ function PromoSlides() {
             key={slide.id}
             // sliderWidth={sliderWidth}
             slideImg={slide.img}
-            // slideText={slide.text}
+            slideText={slide.text}
+            slideLink={slide.path}
           />
         ))}
       </List>

@@ -39,8 +39,13 @@ export const addressBill = [
 ];
 
 export const promo = [
-  { id: 0, img: '/images/promo_banner_autumn.jpg', text: 'Order Now - 1' },
-  { id: 1, img: '/images/promo_pennywise.jpg', text: 'Order Now - 2' },
+  { id: 0, img: '/images/promo_banner_autumn.jpg' },
+  {
+    id: 1,
+    img: '/images/promo_pennywise.jpg',
+    text: 'Buy me',
+    path: '/product/94ce2d02-dd65-4e30-b073-3dedda872961',
+  },
 ];
 
 export const pages = [
