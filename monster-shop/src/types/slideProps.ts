@@ -3,4 +3,5 @@ export type SlideProps = {
   sliderWidth?: number;
   slideImg: string;
   slideText?: string;
+  slideLink?: string;
 };

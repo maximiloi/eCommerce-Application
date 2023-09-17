@@ -64,10 +64,12 @@
       "npx prettier --write"
     ],
     "*.tsx": [
-      "npx prettier --write"
+      "npx prettier --write",
+      "npx eslint --fix"
     ],
     "*.ts": [
-      "npx prettier --write"
+      "npx prettier --write",
+      "npx eslint --fix"
     ]
   }
 }
