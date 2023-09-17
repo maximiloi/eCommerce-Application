@@ -20,7 +20,11 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Logo from '../Logo/Logo';
 import { pages, settings } from '../../helper/variables';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { getDiscountedAmount, setIsPromo } from '../../redux/promoCodeSlice';
+import {
+  getDiscountedAmount,
+  setIsPromo,
+  setPromoCode,
+} from '../../redux/promoCodeSlice';
 import { setTotalQuantity } from '../../redux/cartCountSlice';
 import User from '../../api/user';
 import './Header.scss';
@@ -49,6 +53,7 @@ function Header() {
       User.logout();
       dispatch(setTotalQuantity(0));
       dispatch(getDiscountedAmount([]));
+      dispatch(setPromoCode(null));
       dispatch(setIsPromo(false));
       userTitle = 'Log in now';
       navigate('/');
