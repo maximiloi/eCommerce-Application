@@ -1,0 +1,16 @@
+.profile {
+  &__wrapper {
+    padding: 15px 30px 30px 30px;
+    color: #343636;
+    border: 1px solid #343636;
+    border-radius: 10px;
+    background-color: rgba(246, 246, 246, 0.9);
+    box-shadow: 10px 10px 25px -5px rgba(0, 0, 0, 0.75);
+
+    justify-content: center;
+  }
+}
+
+.MuiInputBase-root .MuiInputBase-input.Mui-disabled {
+  -webkit-text-fill-color: rgba(0, 0, 0, 1);
+}

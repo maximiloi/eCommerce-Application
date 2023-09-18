@@ -1,0 +1,20 @@
+@use '../../sass/abstracts/variables';
+@use '../../sass/abstracts/mixins';
+.counter {
+  @include mixins.media-mobile {
+    margin-right: 1rem;
+  }
+  & > button {
+    color: variables.$color-bright;
+    border: 1px solid variables.$color-bright;
+    border-radius: 0.5rem;
+  }
+  &__amount {
+    padding: 0 1rem;
+    text-align: center;
+    @include mixins.typography(600, 1.6rem, 2rem, 0);
+    @include mixins.media-tablet {
+      padding: 0 0.3rem;
+    }
+  }
+}

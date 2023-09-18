@@ -1,0 +1,35 @@
+/* abstracts */
+@import './sass/abstracts/variables';
+@import './sass/abstracts/mixins';
+@import './sass/abstracts/placeholders';
+
+/* base */
+@import './sass/base/typography';
+@import './sass/base/normalize';
+
+/* components */
+@import './sass/components/breadcrumb';
+@import './sass/components/buttons';
+
+/* pages */
+@import './sass/pages/cartPage';
+@import './sass/pages/catalogPage';
+@import './sass/pages/login-form';
+@import './sass/pages/productPage';
+@import './sass/pages/mainPage';
+
+.main {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    min-height: 80vh;
+
+    margin: 0 auto;
+    padding: 30px 30px 60px 30px;
+    max-width: $content-width;
+
+    @include media-tablet {
+      padding: 10px 10px 60px 10px;
+    }
+  }
+}

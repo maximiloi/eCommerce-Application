@@ -1,0 +1,35 @@
+@import '../../sass/abstracts/variables';
+
+.login-button {
+  &__wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    font-size: $font-desktop;
+  }
+
+  &__item {
+    width: 100%;
+    padding: $font-desktop 0;
+
+    border: 1px solid $color-dark-s;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+    text-decoration: none;
+    text-align: center;
+
+    color: $color-dark-xs;
+    background-color: rgba(246, 246, 246, 0.75);
+
+    &.active {
+      cursor: default;
+
+      border-bottom: none;
+
+      color: black;
+      background-color: rgba(246, 246, 246, 0.9);
+    }
+  }
+}
