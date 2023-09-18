@@ -7,6 +7,7 @@ import {
   DiscountedPrice,
   LocalizedString,
   Attribute,
+  Cart,
 } from '@commercetools/platform-sdk';
 import {
   Box,
@@ -17,10 +18,14 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import Slider from '../PromoSlides/Slider';
-import ColoredBtn from '../ColoredBtn/ColoredBtn';
+import Counter from '../Counter/Counter';
+import AddToCartButton from '../AddToCartButton/AddToCartButton';
 import Loader from '../Loader/Loader';
-import { getProductId } from '../../api/requests';
 import { AttributeType } from '../../types/inputProps';
+import { getProductId } from '../../api/requests/catalog';
+import { cartAddItem, cartChangeItemQuant } from '../../api/requests/cart';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { setTotalQuantity, getCartItems } from '../../redux/cartCountSlice';
 import './ProductPageComp.scss';
 
 function ProductPageCard() {
@@ -28,6 +33,16 @@ function ProductPageCard() {
   const isTabletOrSmaller = useMediaQuery(theme.breakpoints.down('md'));
 
   const { productId } = useParams();
+
+  const products = useAppSelector((state) => state.cartCount.cartItems);
+  const isAdded = Boolean(
+    products.map((prod) => prod.productId).find((el) => el === productId)
+  );
+  let itemQuantity = 1;
+  if (isAdded) {
+    itemQuantity = products.find((item) => item.productId === productId)
+      ?.quantity as number;
+  }
   const [isLoaded, setIsLoaded] = useState(false);
   const [title, setTitle] = useState('');
   const [tags, setTags] = useState<Attribute[]>([]);
@@ -35,6 +50,8 @@ function ProductPageCard() {
   const [prodDescription, setDescription] = useState('');
   const [price, setPrice] = useState(0);
   const [discount, setDiscount] = useState(0);
+  const [itemQ, setQuantity] = useState(itemQuantity);
+  const dispatch = useAppDispatch();
 
   async function fetchProductData(id: string) {
     try {
@@ -54,6 +71,24 @@ function ProductPageCard() {
       console.log(err);
     }
   }
+
+  const handleAddOrRemove = async () => {
+    if (!isAdded) {
+      const result = (await cartAddItem(productId as string, itemQ)) as Cart;
+      dispatch(getCartItems(result.lineItems));
+      if (result.totalLineItemQuantity)
+        dispatch(setTotalQuantity(result.totalLineItemQuantity));
+    } else {
+      const itemId = products.find((item) => item.productId === productId)?.id;
+      if (itemId) {
+        const result = (await cartChangeItemQuant(itemId, 0)) as Cart;
+        if (result.totalLineItemQuantity) {
+          dispatch(setTotalQuantity(result.totalLineItemQuantity));
+        }
+        dispatch(getCartItems(result.lineItems));
+      }
+    }
+  };
 
   useEffect(() => {
     fetchProductData(productId as string);
@@ -119,10 +154,13 @@ function ProductPageCard() {
                 </div>
               ))}
             </div>
-            <CardActions sx={{ pb: 2, pt: 0 }}>
-              <ColoredBtn size="small" variant="contained">
-                Add to Cart
-              </ColoredBtn>
+            <CardActions sx={{ pb: 2, pt: 0, justifyContent: 'space-evenly' }}>
+              <Counter
+                isActive={!isAdded}
+                quantity={itemQ}
+                setQuantity={setQuantity}
+              />
+              <AddToCartButton isAdded={isAdded} onClick={handleAddOrRemove} />
             </CardActions>
           </CardContent>
         </Card>

@@ -3,7 +3,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import { Box, Breadcrumbs } from '@mui/material';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { ProductProjection } from '@commercetools/platform-sdk';
-import { getProductId, getCategoryId } from '../../api/requests';
+import { getCategoryId, getProductId } from '../../api/requests/catalog';
 
 function BreadcrumbsComp() {
   const { productId } = useParams();

@@ -1,7 +1,11 @@
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { CustomerSignin } from '@commercetools/platform-sdk';
-import { login } from '../../api/requests';
+import { Cart, CustomerSignin } from '@commercetools/platform-sdk';
+import { login } from '../../api/requests/userActions';
+import { getCarts } from '../../api/requests/cart';
+import { useAppDispatch } from '../../redux/hooks';
+import { setTotalQuantity } from '../../redux/cartCountSlice';
 import TextFieldInput from '../Inputs/TextFieldInput';
 import validatePassword from '../../helper/validatePassword';
 import ColoredBtn from '../ColoredBtn/ColoredBtn';
@@ -21,6 +25,16 @@ function FormSignIn() {
     mode: 'onChange',
   });
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const fetchCart = useCallback(async () => {
+    try {
+      const cartResponce = (await getCarts()) as Cart[];
+      const cart = cartResponce[0];
+      if (cart) dispatch(setTotalQuantity(cart.totalLineItemQuantity || 0));
+    } catch (error) {
+      console.error(error);
+    }
+  }, [dispatch]);
 
   const onSubmit = (data: CustomerSignin) => {
     login(data)
@@ -28,6 +42,7 @@ function FormSignIn() {
       .then(() => {
         navigate('/');
         reset();
+        fetchCart();
       });
   };
   return (

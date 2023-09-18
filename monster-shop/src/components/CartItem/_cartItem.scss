@@ -1,0 +1,122 @@
+@use '../../sass/abstracts/variables';
+@use '../../sass/abstracts/mixins';
+
+.cart-item {
+  color: variables.$color-dark-l;
+
+  &_total p {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  &__wrap {
+    align-items: center;
+  }
+
+  &__title {
+    margin: 0;
+    color: variables.$color-background;
+    cursor: pointer;
+    @include mixins.typography(700, 16px, 20px, 0px);
+  }
+
+  &__tags {
+    display: flex;
+    justify-content: flex-start;
+
+    & > *:not(:last-child) {
+      margin-right: 0.3rem;
+    }
+
+    .tag {
+      font-size: smaller;
+      padding: 0 0.5rem;
+      border-radius: 2rem;
+      background: darken(variables.$color-bright, 10%);
+      color: variables.$color-light-xs;
+    }
+  }
+
+  &__price {
+    position: relative;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    width: 65px;
+
+    &::after {
+      position: absolute;
+      right: 0;
+      top: calc(50% - 10px);
+      content: '';
+      margin-left: 3px;
+      background: no-repeat center/contain url('/blood_drop.svg');
+      display: inline-block;
+      width: 10px;
+      height: 20px;
+    }
+
+    & .discount_active {
+      margin-right: 0;
+    }
+
+    & .price::after,
+    & .discount::after {
+      display: none;
+    }
+  }
+
+  &__counter {
+    & .counter {
+      margin: 0 1em;
+    }
+
+    & .counter > button {
+      min-width: 34px;
+      height: 34px;
+      border-radius: 50%;
+    }
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    min-width: 280px;
+  }
+
+  &__box {
+    min-width: 65px;
+
+    & .price::after {
+      top: calc(50% - 10px);
+      background: no-repeat center/contain url('/blood_drop.svg');
+      width: 10px;
+      height: 20px;
+    }
+
+    &--center {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .cart-item {
+    &__wrap {
+      flex-direction: column;
+      align-items: start;
+    }
+
+    &__inner {
+      align-self: flex-end;
+      min-width: auto;
+      padding: 8px;
+
+      &--start {
+        align-self: flex-start;
+      }
+    }
+  }
+}

@@ -11,6 +11,10 @@ export type SearchProps = {
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 };
 
+export type PromoInputType = {
+  promoCode: string;
+};
+
 export type SortOptionType = {
   field: 'name.en' | 'price';
   type: 'asc' | 'desc';

@@ -9,7 +9,7 @@ import User from '../../api/user';
 import { FormValues } from '../../types/signupFormValues';
 import validateDateBirth from '../../helper/validateDateBirth';
 import DateInput from '../Inputs/DateInput';
-import { updateUserProfile } from '../../api/requests';
+import { updateUserProfile } from '../../api/requests/userProfile';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',

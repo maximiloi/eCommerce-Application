@@ -11,18 +11,29 @@ import {
   Typography,
   Tooltip,
   Container,
+  Avatar,
+  Badge,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Logo from '../Logo/Logo';
 import { pages, settings } from '../../helper/variables';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import {
+  getDiscountedAmount,
+  setIsPromo,
+  setPromoCode,
+} from '../../redux/promoCodeSlice';
+import { getCartItems, setTotalQuantity } from '../../redux/cartCountSlice';
 import User from '../../api/user';
 import './Header.scss';
 
 function Header() {
+  const count = useAppSelector((state) => state.cartCount.quantity);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   let userTitle = User.created ? User.data?.firstName : 'Log in now';
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -40,6 +51,11 @@ function Header() {
     const target = event.target as HTMLParagraphElement;
     if (target.textContent === 'Logout') {
       User.logout();
+      dispatch(setTotalQuantity(0));
+      dispatch(getDiscountedAmount([]));
+      dispatch(getCartItems([]));
+      dispatch(setPromoCode(null));
+      dispatch(setIsPromo(false));
       userTitle = 'Log in now';
       navigate('/');
     }
@@ -112,11 +128,26 @@ function Header() {
           <Box sx={{ flexGrow: 0, ml: 3 }}>
             <Tooltip title={userTitle}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <AccountCircleIcon fontSize="large" color="warning" />
+                {User.created ? (
+                  <Avatar
+                    sx={{ bgcolor: '#c32b1d', width: 35, height: 35 }}
+                    alt={`${User.data?.firstName}`}
+                    src=".jpg"
+                  />
+                ) : (
+                  <AccountCircleIcon fontSize="large" color="warning" />
+                )}
               </IconButton>
             </Tooltip>
-            <IconButton sx={{ p: 0 }}>
-              <ShoppingCartIcon fontSize="large" color="warning" />
+            <IconButton onClick={() => navigate('/cart')} sx={{ p: 0 }}>
+              <Badge
+                color="error"
+                sx={{ color: '#c32b1d' }}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                badgeContent={count}
+              >
+                <ShoppingCartIcon fontSize="large" color="warning" />
+              </Badge>
             </IconButton>
             <Menu
               sx={{ mt: '45px' }}
