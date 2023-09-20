@@ -1,0 +1,28 @@
+.footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  position: fixed;
+  min-height: 50px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  margin-bottom: 0px;
+
+  color: #f0c349;
+  background: rgba(31, 85, 87, 0.5);
+
+  &__creators {
+    display: flex;
+  }
+
+  &__link {
+    color: #f0c349;
+  }
+
+  &__date {
+    display: flex;
+    align-items: center;
+  }
+}

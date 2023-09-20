@@ -1,0 +1,37 @@
+.btn {
+  display: block;
+  position: relative;
+  padding: 15px 25px;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: $color-dark-m;
+  transition: all 0.3s;
+  border: 1px solid $color-dark-m;
+  overflow: hidden;
+  background-color: rgba(240, 195, 73, 1);
+}
+
+.btn:before,
+.btn:after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: rgba(243, 242, 239, 0.25);
+  transition: all 0.3s;
+  transition-timing-function: ease;
+  transform: translate(-13%, -190%) rotate(-30deg);
+  transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+}
+
+.btn:hover:before,
+.btn:hover:after {
+  transform: translate(0, 0);
+}
+
+.btn:after {
+  transition-delay: 0.2s;
+}
